@@ -3,7 +3,7 @@
 Plugin Name: Global Videos
 Plugin URI: https://www.globalvideos.com.br
 description: >- Plugins para os sites de eventos
-Version: 1.0,0
+Version: 1.0.0
 Author: Global Videos
 Author URI: https://www.globalvideos.com.br
 License: GPL2
@@ -26,7 +26,7 @@ function global_cadastra_form($atts)
 
     if (!empty($_POST)) {
 
-        $area_atuacao = $_POST["area-atuacao"];
+        $area_atuacao = $_POST["area_atuacao"];
         $evento = $_POST["evento"];
         $nome = $_POST["nome"];
         $email = $_POST["email"];
@@ -43,14 +43,14 @@ function global_cadastra_form($atts)
         $valor = "";
         $sabendo = $_POST["sabendo"];
         $termo = $_POST["termo"];
-        $senha = $_POST["senha"];
+        $senha = $_POST["password"];
 
         if ($area_atuacao == "Medicina") {
             $role = "medicos";
         } else if ($area_atuacao == "Staff") {
-            $role = "nao_medicos";
-        } else {
             $role = "staff";
+        } else {
+            $role = "nao_medicos";
         }
 
         $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
@@ -64,7 +64,7 @@ function global_cadastra_form($atts)
             'role' => $role,
         );
 
-        print_r($userdata);
+        //print_r($userdata);
 
         $user_id = wp_insert_user($userdata);
 
@@ -97,9 +97,12 @@ function global_cadastra_form($atts)
             "termo" => $termo,
             "produto" => $produto,
             "valor" => $valor,
+            "profissao" => $area_atuacao
         );
 
         $postdata = json_encode($data);
+
+        print_r($data);
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -113,9 +116,18 @@ function global_cadastra_form($atts)
         curl_close($ch);
         print_r($result);
 
-        if (!is_wp_error($user_id)) {
-            echo "User created : " . $user_id;
+        $creds = array(
+            'user_login'    => $email,
+            'user_password' => $senha,
+            'remember'      => true
+        );
+        $user = wp_signon($creds, false);
+
+        if (is_wp_error($user)) {
+            echo $user->get_error_message();
         }
+        wp_redirect(home_url());
+
     } else {
 
 ?>
@@ -197,6 +209,7 @@ function global_cadastra_form($atts)
         </style>
 
         <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
             jQuery(document).ready(function($) {
@@ -221,6 +234,7 @@ function global_cadastra_form($atts)
                     }
                     console.log($(this).val());
 
+                    $('input[name=nome]').attr("readonly", false);
                     $('input[type=text], input[type=email], input[type=password]').val('');
                     $(':checkbox, :radio').prop('checked', false);
                     $('#cadastramento select[name=crm_uf], #cadastramento select[name=especialidade], #cadastramento select[name=uf], #cadastramento select[name=sabendo]').val('');
@@ -230,15 +244,9 @@ function global_cadastra_form($atts)
                 $('select[name=crm_uf]').on('change', function() {
 
                     if ($(this).val() == "RJ" && $("select[name=area_atuacao]").val() == "Medicina") {
-
                         $('<small id="crm_rj">Não inserir o 52 a frente do seu registro</small>').insertBefore($('#crm_num'));
-
-                        console.log('med rj')
-
                     } else {
-
                         $('#crm_rj').remove();
-
                     }
 
                 });
@@ -279,7 +287,7 @@ function global_cadastra_form($atts)
 
                     var uf = $('select[name=crm_uf]').val();
                     var crm = $('input[name=crm]').val();
-                    var url = "https://webmodera.com.br/cfm/medicos.php?uf=" + uf + "&crm=" + crm;
+                    var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/check-crm/" + uf + "/" + crm;
 
                     console.log(url)
 
@@ -296,6 +304,7 @@ function global_cadastra_form($atts)
                                     $(".nmd, .staff").hide();
                                     $(".md2, .md1").css('display', 'inline-block');
                                     $('input[name=nome]').val(field.nome);
+                                    $('input[name=nome]').attr("readonly", true);
 
                                 } else {
                                     $('#crm_error').html('<div class="validation_error semi-error">Somente médicos com cadastro ativo podem se cadastrar, verifique o crm e o estado informado para prosseguir.</div>');
@@ -310,6 +319,36 @@ function global_cadastra_form($atts)
                     });
 
                     return false;
+                });
+
+                $('input[name=telefone]').mask('(00) 00000-0000');
+
+                $('select[name=uf]').on('change', function() {
+
+                    var uf = $(this).val();
+                    var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/municipios/" + uf;
+                    $("select[name=cidade] option").remove();
+                    $("select[name=cidade]").append(new Option("", "Selecione"));
+
+                    $.getJSON(url, function(result) {
+
+                        if (result.length) {
+
+                            $.each(result, function(i, field) {
+
+                                $("select[name=cidade]").append(new Option(field.cidade, field.cidade));
+
+                            });
+
+                        } else {
+
+                            console.log('ERRO!!')
+
+                        }
+
+                    });
+
+
                 });
 
             });
