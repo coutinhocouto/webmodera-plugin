@@ -12,5 +12,5 @@ Este é um repositório da [Global Videos](https://www.globalvideos.com.br)
 
 ### Shortcode botão para teste do aovivo
 
-> [btn-aovivo]
+> [btn_aovivo]
 
