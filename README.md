@@ -36,3 +36,16 @@ password = ""
 
 > [acesso_gravado live=1]
 
+---
+
+### Shortcode Countdown
+
+> [contador live=1 data="2021/01/01 12:00"]
+
+### Shortcode Login
+
+> [form_login]
+
+### Shortcode para monitorar acessos
+
+> [acessos]

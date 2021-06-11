@@ -22,7 +22,7 @@ function global_acesso_gravado($atts)
 
         var email = $("#email").val();
 
-        var dataString='{"live": <?php echo $live; ?>, "email":'<?php echo $email; ?>',"tipo": 2}';
+        var dataString='{"live": <?php echo $live; ?>, "email":"<?php echo $email; ?>","tipo": 2}';
 
         console.log(dataString);
 

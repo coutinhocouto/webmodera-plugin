@@ -85,6 +85,14 @@ function my_settings_init()
         'global-page',
         'global_page_setting_section'
     );
+	
+	add_settings_field(
+        'login_global',
+        'Link de redirecionamento (após login)',
+        'global_login_markup',
+        'global-page',
+        'global_page_setting_section'
+    );
 
     add_settings_field(
         'tem_medico_global',
@@ -113,6 +121,7 @@ function my_settings_init()
     register_setting('global-page', 'evento_global');
     register_setting('global-page', 'aovivo_global');
     register_setting('global-page', 'inscrito_global');
+	register_setting('global-page', 'login_global');
     register_setting('global-page', 'categoria_global');
     register_setting('global-page', 'codigos_global');
     register_setting('global-page', 'tem_medico_global');
@@ -209,6 +218,13 @@ function global_aovivo_markup()
 {
 ?>
     <input type="text" class="global_field" id="aovivo_global" name="aovivo_global" value="<?php echo get_option('aovivo_global'); ?>">
+<?php
+}
+
+function global_login_markup()
+{
+?>
+    <input type="text" class="global_field" id="login_global" name="login_global" value="<?php echo get_option('login_global'); ?>">
 <?php
 }
 
