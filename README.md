@@ -14,3 +14,15 @@ Este é um repositório da [Global Videos](https://www.globalvideos.com.br)
 
 > [btn_aovivo]
 
+### Api ao vivo
+
+> /wp-json/global-login/global-login
+
+_não é json_
+
+```
+action = login_ajax
+username = ""
+password = ""
+```
+

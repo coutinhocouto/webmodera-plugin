@@ -1,16 +1,7 @@
-<?php 
+<?php
 
-function global_cadastra_form($atts)
+function global_cadastra_form()
 {
-
-    $atts = shortcode_atts(
-        array(
-            'evento' => '',
-        ),
-        $atts,
-        'global_cadastra_form'
-    );
-
     if (!empty($_POST)) {
 
         $area_atuacao = $_POST["area_atuacao"];
@@ -24,7 +15,7 @@ function global_cadastra_form($atts)
         $crm = $_POST["crm"];
         $crm_uf = $_POST["crm_uf"];
         $especialidade = $_POST["especialidade"];
-        $codigo = "";
+        $codigo = $_POST["codigo"];
         $pagante = "0";
         $produto = "";
         $valor = "";
@@ -66,6 +57,7 @@ function global_cadastra_form($atts)
         update_user_meta($user_id, 'billing_pagante', $pagante);
         update_user_meta($user_id, 'billing_sabendo', $sabendo);
         update_user_meta($user_id, 'billing_termo', $termo);
+        update_user_meta($user_id, 'billing_codigo', $codigo);
 
         $data = array(
             "evento" => $evento,
@@ -113,7 +105,7 @@ function global_cadastra_form($atts)
         if (is_wp_error($user)) {
             echo $user->get_error_message();
         }
-        wp_redirect(home_url());
+        wp_redirect(get_option('evento_global'));
     } else {
 
 ?>
@@ -221,7 +213,7 @@ function global_cadastra_form($atts)
                     console.log($(this).val());
 
                     $('input[name=nome]').attr("readonly", false);
-                    $('input[type=text], input[type=email], input[type=password]').val('');
+                    $('input[type=text]:not([name=codigo]), input[type=email], input[type=password]').val('');
                     $(':checkbox, :radio').prop('checked', false);
                     $('#cadastramento select[name=crm_uf], #cadastramento select[name=especialidade], #cadastramento select[name=uf], #cadastramento select[name=sabendo]').val('');
 
@@ -344,22 +336,58 @@ function global_cadastra_form($atts)
 
             <input type="hidden" value="<?php echo get_option('evento_global'); ?>" name="evento" />
 
-            <div class="wb-100">
+            <?php if (get_option('categoria_global') == "2") { ?>
+
+                <script>
+                    jQuery(document).ready(function($) {
+
+                        $("#area_atuacao").hide();
+
+                        $('input[name=codigo]').focusout(function() {
+
+                            <?php echo "var a = '" . get_option('codigos_global') . "';"; ?>
+
+                            if(a.indexOf($(this).val()) > -1) {
+                                $("#area_atuacao").show();
+                            } else {
+                                $("#area_atuacao").hide();
+                            }
+                        });
+                    });
+                </script>
+
+                <div class="wb-100">
+                    <label for="codigo">Código *</label>
+                    <input type="text" name="codigo" required />
+                </div>
+
+            <?php } ?>
+
+            <div class="wb-100" id="area_atuacao">
                 <label for="area_atuacao">Área de atuação *</label>
+
                 <select name="area_atuacao" required>
                     <option></option>
-                    <option value="Medicina">Medicina</option>
-                    <option value="Farmácia">Farmácia</option>
-                    <option value="Enfermagem">Enfermagem</option>
-                    <option value="Nutrição">Nutrição</option>
-                    <option value="Psicologia">Psicologia</option>
-                    <option value="Gestão em Saúde">Gestão em Saúde</option>
-                    <option value="Educação Física">Educação Física</option>
-                    <option value="Gerontologia">Gerontologia</option>
-                    <option value="Fisioterapia">Fisioterapia</option>
-                    <option value="Odontologia">Odontologia</option>
-                    <option value="Biomedicina">Biomedicina</option>
+
+                    <?php
+                    if (get_option('tem_medico_global') == '1') {
+                        echo '<option value="Medicina">Medicina</option>';
+                    }
+                    ?>
+
+                    <?php
+                    if (get_option('tem_nao_medico_global') == '1') {
+
+                        $areas = explode(",", get_option('nao_medico_atuacao_global'));
+
+                        foreach ($areas as $area) {
+                            echo '<option value="' . ltrim($area) . '">' . ltrim($area) . '</option>';
+                        }
+                    }
+                    ?>
+
                     <option value="Staff">Staff</option>
+
                 </select>
             </div>
 
@@ -580,7 +608,7 @@ function global_cadastra_form($atts)
             </div>
         </form>
 
-    <?php }
+<?php }
 }
 
 add_shortcode('cadastro', 'global_cadastra_form');

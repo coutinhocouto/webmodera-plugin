@@ -14,11 +14,12 @@ add_role('nao_medicos', 'Não Médicos', array('read' => true));
 add_role('staff', 'Staff', array('read' => true));
 add_role('convidado', 'Convidado', array('read' => true));
 
-include( plugin_dir_path( __FILE__ ) . 'btn_aovivo.php.php');
+//include( plugin_dir_path( __FILE__ ) . 'btn_aovivo.php');
 include( plugin_dir_path( __FILE__ ) . 'countdown.php');
 include( plugin_dir_path( __FILE__ ) . 'form_cadastro.php');
 include( plugin_dir_path( __FILE__ ) . 'form_login.php');
 include( plugin_dir_path( __FILE__ ) . 'painel_admin.php');
 include( plugin_dir_path( __FILE__ ) . 'restict_pages.php');
 include( plugin_dir_path( __FILE__ ) . 'woocommerce.php');
+include( plugin_dir_path( __FILE__ ) . 'custom_functions.php');
 
