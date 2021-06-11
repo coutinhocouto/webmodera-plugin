@@ -12,9 +12,9 @@ Este é um repositório da [Global Videos](https://www.globalvideos.com.br)
 
 ### Shortcode botão para teste do aovivo
 
-> [btn_aovivo]
+> [btn_aovivo live=1]
 
-### Api ao vivo
+### API ao vivo
 
 > /wp-json/global-login/global-login
 
@@ -25,4 +25,8 @@ action = login_ajax
 username = ""
 password = ""
 ```
+
+### Shortcode Acesso Gravado
+
+> [acesso_gravado live=1]
 

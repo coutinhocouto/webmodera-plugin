@@ -19,8 +19,8 @@ function global_btn_aovivo($atts)
     $id = $current_user->ID;
     $url = get_option('aovivo_global');
 
-    echo $url;
-    echo '<a style="color: #fff; padding: 10px; background: #17A2B8;" href="' + $url + '/?usuario=' . $id . '&live=' . $atts['live'] . '&nome=' . $nome .  '&cidade=' . $cidade .  '&uf=' . $uf .  '&email=' . $email . '" target="_blank">Acessar Aovivo</a>';
+    echo '<a style="color: #fff; padding: 10px; background: #17A2B8;" href="' . $url . '/?usuario=' . $id . '&live=' . $atts['live'] . '&nome=' . $nome .  '&cidade=' . $cidade .  '&uf=' . $uf .  '&email=' . $email . '" target="_blank">Acessar Aovivo</a>';
+	
 }
 
 add_shortcode('btn_aovivo', 'global_btn_aovivo');
