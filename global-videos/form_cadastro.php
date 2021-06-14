@@ -343,15 +343,18 @@ function global_cadastra_form()
 
                         $("#area_atuacao").hide();
 
+                        <?php echo "var codigos_v = '" . get_option('codigos_global') . "';"; ?>
+                        var codigos_b = codigos_v.replace(',', '|');
+                        var codigos = new RegExp(codigos_b);
+
                         $('input[name=codigo]').focusout(function() {
 
-                            <?php echo "var a = '" . get_option('codigos_global') . "';"; ?>
-
-                            if(a.indexOf($(this).val()) > -1) {
-                                $("#area_atuacao").show();
-                            } else {
+                            if(codigos.test($('#plz-input').val())){
                                 $("#area_atuacao").hide();
+                            } else {
+                                $("#area_atuacao").show();
                             }
+
                         });
                     });
                 </script>

@@ -73,27 +73,36 @@ function my_function($order_id)
     print_r($result);
 }
 
-//-------------------------------------------------------------------------
+//-----------------------------------------------------------
+//---------------------  CSS --------------------------------
+//-----------------------------------------------------------
 
-add_action('woocommerce_checkout_after_customer_details', 'billing_crm_details', 20);
-function billing_crm_details()
-{
-    $domain = 'woocommerce';
-    $checkout = WC()->checkout;
+function billing_css (){
 
     echo '
 		<style>
 			.woocommerce-checkout .col-6 {width: 100% !important;}
 			.woocommerce-additional-fields, .woocommerce-shipping-fields {display: none;}
 			.form-row-first, .form-row-last {width: 50%; display: inline-block;}
+            .woocommerce-checkout select {width: 100%;}
 		</style>
 	';
+
+}
+
+//-----------------------------------------------------------
+//---------------------  CRM --------------------------------
+//-----------------------------------------------------------
+
+function billing_crm_details()
+{
+    $checkout = WC()->checkout;
 
     echo '<div class="billing_crm form-row-first">';
 
     woocommerce_form_field('billing_crm', array(
         'type'          => 'text',
-        'label'         => __('Número do conselho', $domain),
+        'label'         => 'Número do conselho',
         'placeholder'   => '',
         'class'         => array('billing_crm'),
         'required'      => true, // or false
@@ -118,30 +127,54 @@ function billing_crm_field_update_meta($order, $data)
         $order->update_meta_data('billing_crm', sanitize_text_field($_POST['billing_crm']));
 }
 
-//-------------------------------------------------------------------------
-
-//* Add select field to the checkout page
-
-add_action('woocommerce_checkout_after_customer_details', 'billing_crm_uf_field');
+//-----------------------------------------------------------
+//---------------------  CRM UF -----------------------------
+//-----------------------------------------------------------
 
 function billing_crm_uf_field($checkout)
 {
 
+    $checkout = WC()->checkout;
     woocommerce_form_field(
         'billing_crm_uf',
         array(
             'type'          => 'select',
-            'class'         => array('njengah-drop'),
-            'label'         => __('Delivery options'),
+            'class'         => array('form-row-last'),
+            'label'         => 'Selecione o estado conselho',
+            'required'      => true, // or false
             'options'       => array(
-                'blank'             => __('Select a day part', 'njengah'),
-                'morning' => __('In the morning', 'njengah'),
-                'afternoon'           => __('In the afternoon', 'njengah'),
-                'evening' => __('In the evening', 'njengah')
+                'blank' =>  "Selecione um estado",
+                "AC"    =>  "AC",
+                "AL"    =>  "AL",
+                "AP"    =>  "AP",
+                "AM"    =>  "AM",
+                "BA"    =>  "BA",
+                "CE"    =>  "CE",
+                "DF"    =>  "DF",
+                "ES"    =>  "ES",
+                "GO"    =>  "GO",
+                "MA"    =>  "MA",
+                "MT"    =>  "MT",
+                "MS"    =>  "MS",
+                "MG"    =>  "MG",
+                "PA"    =>  "PA",
+                "PB"    =>  "PB",
+                "PR"    =>  "PR",
+                "PE"    =>  "PE",
+                "PI"    =>  "PI",
+                "RJ"    =>  "RJ",
+                "RN"    =>  "RN",
+                "RS"    =>  "RS",
+                "RO"    =>  "RO",
+                "RR"    =>  "RR",
+                "SC"    =>  "SC",
+                "SP"    =>  "SP",
+                "SE"    =>  "SE",
+                "TO"    =>  "TO"
             )
 
         ),
-        //$checkout->get_value('billing_crm_uf')
+        $checkout->get_value('billing_crm_uf')
     );
 }
 //* Process the checkout
@@ -171,11 +204,10 @@ function billing_crm_uf_display_admin_order_meta($order)
     echo '<p><strong>' . __('Estado do conselho') . ':</strong> ' . get_post_meta($order->id, 'billing_crm_uf', true) . '</p>';
 }
 
-//* Add selection field value to emails
+//-----------------------------------------------------------
+//---------------------  ADICIONAR CAMPOS -------------------
+//-----------------------------------------------------------
 
-add_filter('woocommerce_email_order_meta_keys', 'billing_crm_uf_order_meta_keys');
-function billing_crm_uf_order_meta_keys($keys)
-{
-    $keys['Estado do conselho:'] = 'billing_crm_uf';
-    return $keys;
-}
+add_action('woocommerce_checkout_after_customer_details', 'billing_css', 19);
+add_action('woocommerce_checkout_after_customer_details', 'billing_crm_details', 20);
+add_action('woocommerce_checkout_after_customer_details', 'billing_crm_uf_field', 21);
