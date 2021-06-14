@@ -11,7 +11,6 @@ Este é um repositório da [Global Videos](https://www.globalvideos.com.br)
 > [cadastro]
 
 > Não médicos padrão:
-
 > Farmácia, Enfermagem, Nutrição, Psicologia, Gestão em Saúde, Educação Física, Gerontologia, Fisioterapia, Odontologia. Biomedicina```
 
 ---
