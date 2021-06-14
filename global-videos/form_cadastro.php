@@ -342,20 +342,31 @@ function global_cadastra_form()
                     jQuery(document).ready(function($) {
 
                         $("#area_atuacao").hide();
+                        var codigos = [];
 
-                        <?php echo "var codigos_v = '" . get_option('codigos_global') . "';"; ?>
-                        var codigos_b = codigos_v.replace(',', '|');
-                        var codigos = new RegExp(codigos_b);
+                        <?php
+
+                        $areas = explode(",", get_option('codigos_global'));
+
+                        foreach ($areas as $area) {
+                            echo 'codigos.push("' . ltrim($area) . '");';
+                        }
+
+                        ?>
+
+                        console.log(JSON.stringify(codigos))
 
                         $('input[name=codigo]').focusout(function() {
 
-                            if(codigos.test($('#plz-input').val())){
-                                $("#area_atuacao").hide();
-                            } else {
+                            if($.inArray($(this).val().toUpperCase(), codigos) >= 0) {
                                 $("#area_atuacao").show();
+                            } else {
+                                $("#area_atuacao").hide();
+                                $("<span style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 20px; border-radius: 3px; font-weight: 700;'>Este código não é válido!</span>").insertAfter("input[name=codigo]");
                             }
 
                         });
+                        
                     });
                 </script>
 
