@@ -132,7 +132,7 @@ function global_cadastra_form()
             #cadastramento input[type=text],
             #cadastramento input:not([type=checkbox]),
             #cadastramento button {
-                height: 40px;
+                /*height: 40px;*/
             }
 
             #cadastramento .wb-100,
@@ -360,9 +360,11 @@ function global_cadastra_form()
 
                             if($.inArray($(this).val().toUpperCase(), codigos) >= 0) {
                                 $("#area_atuacao").show();
+                                $("#codigo_errado").remove();
                             } else {
                                 $("#area_atuacao").hide();
-                                $("<span style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 20px; border-radius: 3px; font-weight: 700;'>Este código não é válido!</span>").insertAfter("input[name=codigo]");
+                                $("#codigo_errado").remove();
+                                $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 20px; border-radius: 3px; font-weight: 700;'>Este código não é válido!</span>").insertAfter("input[name=codigo]");
                             }
 
                         });
@@ -598,12 +600,12 @@ function global_cadastra_form()
             </div>
 
             <div class="wb-100 md2 nmd staff">
-                <input type="checkbox" name="termo" value="Ok">
+                <input type="checkbox" name="termo" value="1">
                 <label form="termo">Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad</label>
             </div>
 
             <div class="wb-100 md2 nmd">
-                <input type="checkbox" name="termo2" value="Ok" required>
+                <input type="checkbox" name="termo2" value="1" required>
                 <label form="termo2">Estou ciente de que este site é restrito ao público prescritor e assumo completa responsabilidade pela veracidade das informações acima *</label>
             </div>
 

@@ -2,7 +2,23 @@
 
 function global_menu()
 {
-    add_menu_page('Global Videos', 'Global Videos', 'manage_options', 'global.php', 'global_admin_page', 'dashicons-tickets', 2);
+    add_menu_page(
+        "Global Videos", // the page title
+        'Global Videos', //menu title
+        'manage_options', //capability 
+        'global-admin', //menu slug/handle this is what you need!!!
+        'global_admin_page', //callback function
+        'dashicons-tickets', //icon_url,
+        2 //position
+    );
+    add_submenu_page(
+        'global-admin',
+        'Documentação', //page title
+        'Documentação', //menu title
+        'manage_options', //capability,
+        'global-admin-documentacao', //menu slug
+        'global_documentacao_page' //callback function
+    );
 }
 add_action('admin_menu', 'global_menu');
 
@@ -85,8 +101,8 @@ function my_settings_init()
         'global-page',
         'global_page_setting_section'
     );
-	
-	add_settings_field(
+
+    add_settings_field(
         'login_global',
         'Link de redirecionamento (após login)',
         'global_login_markup',
@@ -121,7 +137,7 @@ function my_settings_init()
     register_setting('global-page', 'evento_global');
     register_setting('global-page', 'aovivo_global');
     register_setting('global-page', 'inscrito_global');
-	register_setting('global-page', 'login_global');
+    register_setting('global-page', 'login_global');
     register_setting('global-page', 'categoria_global');
     register_setting('global-page', 'codigos_global');
     register_setting('global-page', 'tem_medico_global');
@@ -258,4 +274,72 @@ function global_nao_medico_atuacao_markup()
 ?>
     <textarea rows="5" class="global_field" id="nao_medico_atuacao_global" name="nao_medico_atuacao_global"><?php echo get_option('nao_medico_atuacao_global'); ?></textarea>
 <?php
+}
+
+function global_documentacao_page()
+{ ?>
+    <div class="wrap">
+        <style>
+            code {width: 90%; padding: 10px; display: block;}
+        </style>
+
+        <h1>
+            <img width="150" src="https://www.globalvideos.com.br/wp-content/uploads/2015/08/global_logo_web_transparente-e1439243390827.png" alt="" />
+        </h1>
+
+        <h3>Shortcode de cadastro</h3>
+
+        <code>[cadastro]</code><br>
+
+        <code>**Não médicos (padrão)**:<br>
+        Farmácia, Enfermagem, Nutrição, Psicologia, Gestão em Saúde, Educação Física, Gerontologia, Fisioterapia, Odontologia. Biomedicina
+        </code>
+
+        <br><hr />
+
+        <h3>Shortcode botão para teste do aovivo</h3>
+
+        <code>[btn_aovivo live=1]</code>
+
+        <br><hr />
+
+        <h3>API ao vivo</h3>
+
+        <code>/wp-json/global-login/global-login</code><br>
+
+        <em>não é json</em><br><br>
+
+        <code>
+        action = login_ajax<br>
+        username = ""<br>
+        password = ""
+        </code>
+
+        <br><hr />
+
+        <h3>Shortcode Acesso Gravado</h3>
+
+        <code>[acesso_gravado live=1]</code>
+
+        <br><hr />
+
+        <h3> Shortcode Countdown</h3>
+
+        <code>[contador live=1 data="2021/01/01 12:00"]</code>
+
+        <br><hr />
+
+        <h3>Shortcode Login</h3>
+
+        <code>[form_login]</code>
+
+        <br><hr />
+
+        <h3>Shortcode para monitorar acessos</h3>
+
+        <code>[acessos]</code>
+
+    </div>
+<?php
+
 }
