@@ -52,3 +52,7 @@ password = ""
 ### Shortcode para monitorar acessos
 
 > [acessos]
+
+### Shortcode para cadastro do Staff
+
+> [cadastro_staff]

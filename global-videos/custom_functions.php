@@ -16,9 +16,21 @@ function global_phrase() {
 		$check = wp_authenticate_username_password( NULL, $_POST["username"], $_POST["password"]);
 
 		if ( is_wp_error( $check ) ) {
-			$arr = array('mensage' => 'não autorizado');
+			$arr = array('message' => 'não autorizado');
 		} else{
-			$arr = array('mensage' => 'autorizado');
+			$user = get_user_by( 'login', $_POST["username"] );
+			$id = $user->ID;
+			$live = get_option('evento_global');
+			$nome = $user->first_name;
+			$cidade = get_user_meta( $id, 'billing_city', true);
+			$uf = get_user_meta( $id, 'billing_state', true);
+			$email = $_POST["username"];
+			$arr = array(
+				'nome' => $nome,
+				'cidade' => $cidade,
+				'uf' => $uf,
+				'email' => $email
+			);
 		}
 
 		echo json_encode($arr);

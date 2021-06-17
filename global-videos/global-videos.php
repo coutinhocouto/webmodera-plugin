@@ -19,6 +19,7 @@ include( plugin_dir_path( __FILE__ ) . 'acessos.php');
 include( plugin_dir_path( __FILE__ ) . 'acesso_gravado.php');
 include( plugin_dir_path( __FILE__ ) . 'countdown.php');
 include( plugin_dir_path( __FILE__ ) . 'form_cadastro.php');
+include( plugin_dir_path( __FILE__ ) . 'form_staff.php');
 include( plugin_dir_path( __FILE__ ) . 'form_login.php');
 include( plugin_dir_path( __FILE__ ) . 'painel_admin.php');
 include( plugin_dir_path( __FILE__ ) . 'restict_pages.php');

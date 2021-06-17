@@ -20,7 +20,7 @@ function global_countdown($atts)
     $id = $current_user->ID;
     $url = get_option('aovivo_global');
 
-    echo do_shortcode('[ujicountdown id="global" expire="' . $atts['data'] . '" hide="true" url=' . $url . '/?usuario=' . $id . '&live=' . $atts['live'] . '&nome=' . $nome .  '&cidade=' . $cidade .  '&uf=' . $uf .  '&email=' . $email . '" subscr="" recurring="2" rectype="second" repeats=""]');
+    echo do_shortcode('[ujicountdown id="global" expire="' . $atts['data'] . '" hide="true" url=' . $url . '/?live=' . $atts['live'] . '&nome=' . $nome .  '&cidade=' . $cidade .  '&uf=' . $uf .  '&email=' . $email . '" subscr="" recurring="2" rectype="second" repeats=""]');
 	
 }
 

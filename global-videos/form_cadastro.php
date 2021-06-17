@@ -57,7 +57,6 @@ function global_cadastra_form()
         update_user_meta($user_id, 'billing_pagante', $pagante);
         update_user_meta($user_id, 'billing_sabendo', $sabendo);
         update_user_meta($user_id, 'billing_termo', $termo);
-        update_user_meta($user_id, 'billing_codigo', $codigo);
 
         $data = array(
             "evento" => $evento,
@@ -105,7 +104,7 @@ function global_cadastra_form()
         if (is_wp_error($user)) {
             echo $user->get_error_message();
         }
-        wp_redirect(get_option('evento_global'));
+        wp_redirect(get_option('inscrito_global'));
     } else {
 
 ?>
@@ -354,11 +353,9 @@ function global_cadastra_form()
 
                         ?>
 
-                        console.log(JSON.stringify(codigos))
-
                         $('input[name=codigo]').focusout(function() {
 
-                            if($.inArray($(this).val().toUpperCase(), codigos) >= 0) {
+                            if ($.inArray($(this).val().toUpperCase(), codigos) >= 0) {
                                 $("#area_atuacao").show();
                                 $("#codigo_errado").remove();
                             } else {
@@ -368,7 +365,7 @@ function global_cadastra_form()
                             }
 
                         });
-                        
+
                     });
                 </script>
 
@@ -393,16 +390,18 @@ function global_cadastra_form()
 
                     <?php
                     if (get_option('tem_nao_medico_global') == '1') {
-
                         $areas = explode(",", get_option('nao_medico_atuacao_global'));
-
                         foreach ($areas as $area) {
                             echo '<option value="' . ltrim($area) . '">' . ltrim($area) . '</option>';
                         }
                     }
                     ?>
 
-                    <option value="Staff">Staff</option>
+                    <?php
+                    if (get_option('categoria_global') == '1') {
+                        echo '<option value="Staff">Staff</option>';
+                    }
+                    ?>
 
                 </select>
             </div>
