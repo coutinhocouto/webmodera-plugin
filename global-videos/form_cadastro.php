@@ -127,16 +127,11 @@ function global_cadastra_form()
                 width: auto;
             }
 
-            #cadastramento select,
-            #cadastramento input[type=text],
-            #cadastramento input:not([type=checkbox]),
-            #cadastramento button {
-                /*height: 40px;*/
-            }
-
             #cadastramento .wb-100,
             #cadastramento .wb-50,
-            #cadastramento .wb-33 {
+            #cadastramento .wb-33,
+            #cadastramento .wb-70,
+            #cadastramento .wb-30 {
                 display: inline-block;
                 margin-bottom: 30px;
             }
@@ -145,8 +140,16 @@ function global_cadastra_form()
                 width: 100%;
             }
 
+            #cadastramento .wb-70 {
+                width: 69%;
+            }
+
             #cadastramento .wb-50 {
-                width: 49.7%;
+                width: 49.4%;
+            }
+
+            #cadastramento .wb-30 {
+                width: 30%;
             }
 
             #cadastramento .wb-33 {
@@ -182,6 +185,25 @@ function global_cadastra_form()
             #cadastramento small {
                 display: block;
                 color: #f00;
+            }
+
+            label.error {
+                background: #f00;
+                color: #fff;
+                padding: 5px;
+                display: block;
+                margin-top: 5px;
+                border-radius: 3px;
+            }
+
+            @media only screen and (max-width: 800px) {
+
+                #cadastramento .wb-70,
+                #cadastramento .wb-50,
+                #cadastramento .wb-33,
+                #cadastramento .wb-30 {
+                    width: 100%;
+                }
             }
         </style>
 
@@ -353,25 +375,32 @@ function global_cadastra_form()
 
                         ?>
 
-                        $('input[name=codigo]').focusout(function() {
+                        $('#valida-codigo button').click(function() {
 
-                            if ($.inArray($(this).val().toUpperCase(), codigos) >= 0) {
+                            if ($.inArray($('input[name=codigo]').val().toUpperCase(), codigos) >= 0) {
                                 $("#area_atuacao").show();
                                 $("#codigo_errado").remove();
+                                $('input[name=codigo]').attr("readonly", true);
                             } else {
                                 $("#area_atuacao").hide();
                                 $("#codigo_errado").remove();
-                                $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 20px; border-radius: 3px; font-weight: 700;'>Este código não é válido!</span>").insertAfter("input[name=codigo]");
+                                $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Este código não é válido!</span>").insertAfter("#valida-codigo");
                             }
+
+                            return false;
 
                         });
 
                     });
                 </script>
 
-                <div class="wb-100">
+                <div class="wb-70">
                     <label for="codigo">Código *</label>
                     <input type="text" name="codigo" required />
+                </div>
+
+                <div class="wb-30" id="valida-codigo">
+                    <button>Validar Código</button>
                 </div>
 
             <?php } ?>

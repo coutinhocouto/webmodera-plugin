@@ -114,16 +114,11 @@ function global_cadastra_staff_form()
                 width: auto;
             }
 
-            #cadastramento select,
-            #cadastramento input[type=text],
-            #cadastramento input:not([type=checkbox]),
-            #cadastramento button {
-                /*height: 40px;*/
-            }
-
             #cadastramento .wb-100,
             #cadastramento .wb-50,
-            #cadastramento .wb-33 {
+            #cadastramento .wb-33,
+            #cadastramento .wb-70,
+            #cadastramento .wb-30 {
                 display: inline-block;
                 margin-bottom: 30px;
             }
@@ -132,8 +127,16 @@ function global_cadastra_staff_form()
                 width: 100%;
             }
 
+            #cadastramento .wb-70 {
+                width: 69%;
+            }
+
             #cadastramento .wb-50 {
-                width: 49.7%;
+                width: 49.4%;
+            }
+
+            #cadastramento .wb-30 {
+                width: 30%;
             }
 
             #cadastramento .wb-33 {
@@ -166,6 +169,25 @@ function global_cadastra_staff_form()
             #cadastramento small {
                 display: block;
                 color: #f00;
+            }
+
+            label.error {
+                background: #f00;
+                color: #fff;
+                padding: 5px;
+                display: block;
+                margin-top: 5px;
+                border-radius: 3px;
+            }
+
+            @media only screen and (max-width: 800px) {
+
+                #cadastramento .wb-70,
+                #cadastramento .wb-50,
+                #cadastramento .wb-33,
+                #cadastramento .wb-30 {
+                    width: 100%;
+                }
             }
         </style>
 
@@ -249,19 +271,22 @@ function global_cadastra_staff_form()
                 }
                 ?>
 
-                $('#email input').focusout(function() {
+                $('#valida-email button').click(function() {
 
-                    var noarroba = $(this).val();
+                    var noarroba = $('#email input').val();
                     var semarroba = noarroba.substr(noarroba.indexOf("@") + 1)
 
                     if ($.inArray(semarroba.toLowerCase(), dominios) >= 0) {
                         $(".p1").css('display', 'inline-block');
                         $("#codigo_errado").remove();
+                        $('#email input').attr("readonly", true);
                     } else {
                         $(".p1").hide();
                         $("#codigo_errado").remove();
-                        $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 20px; border-radius: 3px; font-weight: 700;'>Este email não é válido!</span>").insertAfter("#email input");
+                        $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Este email não é válido!</span>").insertAfter("#valida-email");
                     }
+
+                    return false;
 
                 });
 
@@ -272,9 +297,13 @@ function global_cadastra_staff_form()
 
             <input type="hidden" value="<?php echo get_option('evento_global'); ?>" name="evento" />
 
-            <div class="wb-100" id="email">
+            <div class="wb-70" id="email">
                 <label for="nome">E-mail *</label>
                 <input type="email" name="email" required />
+            </div>
+
+            <div class="wb-30" id="valida-email">
+                <button>Validar E-mail</button>
             </div>
 
             <div class="wb-100 p1">

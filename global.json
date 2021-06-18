@@ -1,0 +1,18 @@
+{
+	"version" : "1.0.3",
+	"download_url" : "https://global-plugin.s3.amazonaws.com/global-videos.zip",
+	"requires" : "3.0",
+	"tested" : "4.8.1",
+	"requires_php" : "5.3",
+	"last_updated" : "2021-06-18 15:00:00",
+	"sections" : {
+		"description" : ">- Plugins para os sites de eventos",
+		"installation" : ">- Plugins para os sites de eventos",
+		"changelog" : "<h4>1.0.2 –  18 de junho de 2021</h4><ul><li>Versão de ançamento</li></ul>"
+	},
+	"banners" : {
+		"low" : "https://global-plugin.s3.amazonaws.com/menor.jpg",
+		"high" : "https://global-plugin.s3.amazonaws.com/maior.jpg"
+	},
+	"screenshots" : "<ol><li><a href='IMG_URL' target='_blank'><img src='IMG_URL' alt='CAPTION' /></a><p>CAPTION</p></li></ol>"
+}

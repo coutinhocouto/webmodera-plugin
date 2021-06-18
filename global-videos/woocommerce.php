@@ -381,32 +381,7 @@ function billing_espec_medica_field($checkout)
         ),
         $checkout->get_value('billing_espec_medica')
     );
-?>
 
-    <script>
-        jQuery(document).ready(function($) {
-
-            <?php
-            if (get_option('tem_medico_global') == '1') {
-                echo '$("#billing_area_atuacao").append(new Option("Medicina", "Medicina"));';
-            }
-            ?>
-
-            <?php
-            if (get_option('tem_nao_medico_global') == '1') {
-
-                $areas = explode(",", get_option('nao_medico_atuacao_global'));
-
-                foreach ($areas as $area) {
-                    echo '$("#billing_area_atuacao").append(new Option("' . ltrim($area) . '", "' . ltrim($area) . '"));';
-                }
-            }
-            ?>
-
-        });
-    </script>
-
-<?php
 }
 //* Process the checkout
 
