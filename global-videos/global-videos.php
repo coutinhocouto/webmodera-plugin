@@ -2,8 +2,8 @@
 /*
 Plugin Name: Global Videos
 Plugin URI: https://www.globalvideos.com.br
-description: >- Plugins para os sites de eventos
-Version: 1.0.3
+description: Plugins para os sites de eventos
+Version: 1.0.5
 Author: Global Videos
 Author URI: https://www.globalvideos.com.br
 License: GPL2

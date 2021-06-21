@@ -91,7 +91,9 @@ function global_cadastra_staff_form()
         if (is_wp_error($user)) {
             echo $user->get_error_message();
         }
-        wp_redirect(get_option('inscrito_global'));
+        
+		echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
+		
     } else {
 
 ?>

@@ -24,7 +24,7 @@ function misha_plugin_info( $res, $action, $args ){
 	if( false == $remote = get_transient( 'misha_update_' . $plugin_slug ) ) {
 
 		// info.json is the file with the actual plugin information on your server
-		$remote = wp_remote_get( 'https://global-plugin.s3.amazonaws.com/global.json', array(
+		$remote = wp_remote_get( 'https://global-plugin.s3.us-east-1.amazonaws.com/global.json', array(
 			'timeout' => 10,
 			'headers' => array(
 				'Accept' => 'application/json'
@@ -32,7 +32,7 @@ function misha_plugin_info( $res, $action, $args ){
 		);
 
 		if ( ! is_wp_error( $remote ) && isset( $remote['response']['code'] ) && $remote['response']['code'] == 200 && ! empty( $remote['body'] ) ) {
-			set_transient( 'misha_update_' . $plugin_slug, $remote, 43200 ); // 12 hours cache
+			set_transient( 'misha_update_' . $plugin_slug, $remote, 3600 ); // 12 hours cache
 		}
 	
 	}
