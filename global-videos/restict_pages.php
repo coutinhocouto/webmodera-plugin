@@ -131,8 +131,7 @@ function wpse69369_special_thingy()
 				exit();
 			} else {
 				if (!empty($global_roles)) {
-					if ($user_role == 'administrator' || !in_array($user_role, $global_roles)) {
-						echo 'redirecionar fora array';
+					if ($user_role != 'administrator' && !in_array($user_role, $global_roles)) {
 						wp_redirect($url);
 						exit();
 					}
