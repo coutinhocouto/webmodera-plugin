@@ -80,7 +80,7 @@ function global_cadastra_form()
 
         $postdata = json_encode($data);
 
-        print_r($data);
+        //print_r($data);
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
