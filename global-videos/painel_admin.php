@@ -191,16 +191,16 @@ function global_categoria_markup()
             }
 
             if ($('#tem_nao_medico_global:checked').length > 0) {
-                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
+                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
             } else {
-                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
+                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
             }
 
             $('#tem_nao_medico_global').click(function() {
                 if ($('#tem_nao_medico_global:checked').length > 0) {
-                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
+                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
                 } else {
-                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
+                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
                 }
             })
 
