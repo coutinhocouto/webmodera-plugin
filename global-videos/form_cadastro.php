@@ -49,7 +49,6 @@ function global_cadastra_form()
         if (is_wp_error($user_id)) {
 
             echo '<label class="error" for="email">' . $user_id->get_error_message() . '</label>';
-
         } else {
 
             update_user_meta($user_id, 'billing_area_atuacao', $area_atuacao);
@@ -354,6 +353,37 @@ function global_cadastra_form()
 
                 });
 
+                var dominios = [];
+
+                <?php
+
+                $dominios = explode(",", get_option('dominios_staff_global'));
+
+                foreach ($dominios as $dominio) {
+
+                    echo 'dominios.push("' . ltrim($dominio) . '");';
+                }
+                ?>
+
+                $('#valida-email button').click(function() {
+
+                    var noarroba = $('#email input').val();
+                    var semarroba = noarroba.substr(noarroba.indexOf("@") + 1)
+
+                    if ($.inArray(semarroba.toLowerCase(), dominios) >= 0) {
+                        $(".staff2").css('display', 'inline-block');
+                        $("#codigo_errado").remove();
+                        $('#email input').attr("readonly", true);
+                    } else {
+                        $(".p1").hide();
+                        $("#codigo_errado").remove();
+                        $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Este email não é válido!</span>").insertAfter("#valida-email");
+                    }
+
+                    return false;
+
+                });
+
             });
         </script>
 
@@ -486,14 +516,18 @@ function global_cadastra_form()
 
             </div>
 
-            <div class="wb-100 md2 nmd staff">
-                <label for="nome">Nome Completo *</label>
-                <input type="text" name="nome" required />
-            </div>
-
-            <div class="wb-100 md2 nmd staff">
+            <div class="wb-70 md2 nmd staff" id="email">
                 <label for="nome">E-mail *</label>
                 <input type="email" name="email" required />
+            </div>
+
+            <div class="wb-30 staff" id="valida-email">
+                <button>Validar E-mail</button>
+            </div>
+
+            <div class="wb-100 md2 nmd staff2">
+                <label for="nome">Nome Completo *</label>
+                <input type="text" name="nome" required />
             </div>
 
             <div class="wb-100 md2">
@@ -573,7 +607,7 @@ function global_cadastra_form()
                 </select>
             </div>
 
-            <div class="wb-50 md2 nmd staff">
+            <div class="wb-50 md2 nmd staff2">
                 <label form="uf">Estado</label>
                 <select name="uf" required>
                     <option>Selecione</option>
@@ -607,14 +641,14 @@ function global_cadastra_form()
                 </select>
             </div>
 
-            <div class="wb-50 md2 nmd staff">
+            <div class="wb-50 md2 nmd staff2">
                 <label form="cidade">Cidade *</label>
                 <select name="cidade" required>
                     <option></option>
                 </select>
             </div>
 
-            <div class="wb-100 md2 nmd staff">
+            <div class="wb-100 md2 nmd staff2">
                 <label form="nome">Telefone (com ddd) *</label>
                 <input type="text" name="telefone" required />
             </div>
@@ -631,7 +665,7 @@ function global_cadastra_form()
                 </select>
             </div>
 
-            <div class="wb-100 md2 nmd staff">
+            <div class="wb-100 md2 nmd staff2">
                 <input type="checkbox" name="termo" value="1">
                 <label form="termo">Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad</label>
             </div>
@@ -641,17 +675,17 @@ function global_cadastra_form()
                 <label form="termo2">Estou ciente de que este site é restrito ao público prescritor e assumo completa responsabilidade pela veracidade das informações acima *</label>
             </div>
 
-            <div class="wb-50 md2 nmd staff">
+            <div class="wb-50 md2 nmd staff2">
                 <label form="nome">Senha</label>
                 <input type="password" name="password" id="password" required />
             </div>
 
-            <div class="wb-50 md2 nmd staff">
+            <div class="wb-50 md2 nmd staff2">
                 <label form="nome">Confirme sua senha</label>
                 <input type="password" name="cpassword" required />
             </div>
 
-            <div class="wb-100 md2 nmd staff">
+            <div class="wb-100 md2 nmd staff2">
                 <input type="submit" value="Cadastre-se" />
             </div>
         </form>

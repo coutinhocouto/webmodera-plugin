@@ -35,7 +35,7 @@ Olá, <?php echo $current_user->user_firstname . " " . $current_user->user_lastn
 <input type="hidden" value="<?php echo esc_attr( $redirect_to ); ?>" name="redirect_to">
 <input type="hidden" value="1" name="testcookie">
 <br>
-<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>">Esqueceu sua senha?</a>
+<a href="<?php echo wp_lostpassword_url(); ?>">Esqueceu sua senha?</a>
 
 </form>
 

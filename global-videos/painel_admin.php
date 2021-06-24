@@ -175,19 +175,15 @@ function global_categoria_markup()
 
                 if ($(this).val() == "2") {
                     $("#wpbody .form-table tbody tr:first-child + tr").show();
-                    $("#wpbody .form-table tbody tr:first-child + tr + tr").show();
                 } else {
                     $("#wpbody .form-table tbody tr:first-child + tr").hide();
-                    $("#wpbody .form-table tbody tr:first-child + tr + tr").hide();
                 }
             });
 
             if ($('#categoria_global').val() == "2") {
                 $("#wpbody .form-table tbody tr:first-child + tr").show();
-                $("#wpbody .form-table tbody tr:first-child + tr + tr").show();
             } else {
                 $("#wpbody .form-table tbody tr:first-child + tr").hide();
-                $("#wpbody .form-table tbody tr:first-child + tr + tr").hide();
             }
 
             if ($('#tem_nao_medico_global:checked').length > 0) {
