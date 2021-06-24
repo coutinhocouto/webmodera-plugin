@@ -46,67 +46,69 @@ function global_cadastra_form()
 
         $user_id = wp_insert_user($userdata);
 
-        update_user_meta($user_id, 'billing_area_atuacao', $area_atuacao);
-        update_user_meta($user_id, 'billing_state', $uf);
-        update_user_meta($user_id, 'billing_city', $cidade);
-        update_user_meta($user_id, 'billing_phone', $telefone);
-        update_user_meta($user_id, 'billing_crm', $crm);
-        update_user_meta($user_id, 'billing_crm_uf', $crm_uf);
-        update_user_meta($user_id, 'billing_espec_medica', $especialidade);
-        update_user_meta($user_id, 'billing_codigo', $codigo);
-        update_user_meta($user_id, 'billing_pagante', $pagante);
-        update_user_meta($user_id, 'billing_sabendo', $sabendo);
-        update_user_meta($user_id, 'billing_termo', $termo);
+        if (is_wp_error($user_id)) {
 
-        $data = array(
-            "evento" => $evento,
-            "email" => $email,
-            "nome" => $nome,
-            "uf" => $uf,
-            "cidade" => $cidade,
-            "telefone" => $telefone,
-            "cpf" => $cpf,
-            "crm" => $crm,
-            "crm_uf" => $crm_uf,
-            "codigo" => $codigo,
-            "especialidade" => $especialidade,
-            "pagante" => $pagante,
-            "sabendo" => $sabendo,
-            "termo" => $termo,
-            "produto" => $produto,
-            "valor" => $valor,
-            "profissao" => $area_atuacao
-        );
+            echo '<label class="error" for="email">' . $user_id->get_error_message() . '</label>';
 
-        $postdata = json_encode($data);
+        } else {
 
-        //print_r($data);
+            update_user_meta($user_id, 'billing_area_atuacao', $area_atuacao);
+            update_user_meta($user_id, 'billing_state', $uf);
+            update_user_meta($user_id, 'billing_city', $cidade);
+            update_user_meta($user_id, 'billing_phone', $telefone);
+            update_user_meta($user_id, 'billing_crm', $crm);
+            update_user_meta($user_id, 'billing_crm_uf', $crm_uf);
+            update_user_meta($user_id, 'billing_espec_medica', $especialidade);
+            update_user_meta($user_id, 'billing_codigo', $codigo);
+            update_user_meta($user_id, 'billing_pagante', $pagante);
+            update_user_meta($user_id, 'billing_sabendo', $sabendo);
+            update_user_meta($user_id, 'billing_termo', $termo);
 
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        $result = curl_exec($ch);
-        curl_close($ch);
-        print_r($result);
+            $data = array(
+                "evento" => $evento,
+                "email" => $email,
+                "nome" => $nome,
+                "uf" => $uf,
+                "cidade" => $cidade,
+                "telefone" => $telefone,
+                "cpf" => $cpf,
+                "crm" => $crm,
+                "crm_uf" => $crm_uf,
+                "codigo" => $codigo,
+                "especialidade" => $especialidade,
+                "pagante" => $pagante,
+                "sabendo" => $sabendo,
+                "termo" => $termo,
+                "produto" => $produto,
+                "valor" => $valor,
+                "profissao" => $area_atuacao
+            );
 
-        $creds = array(
-            'user_login'    => $email,
-            'user_password' => $senha,
-            'remember'      => true
-        );
-        $user = wp_signon($creds, false);
+            $postdata = json_encode($data);
 
-        if (is_wp_error($user)) {
-            echo $user->get_error_message();
+            //print_r($data);
+
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            $result = curl_exec($ch);
+            curl_close($ch);
+
+            //print_r($result);
+
+            $creds = array(
+                'user_login'    => $email,
+                'user_password' => $senha,
+                'remember'      => true
+            );
+            $user = wp_signon($creds, false);
+            echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
         }
-
-        echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
-
     } else {
 
 ?>
@@ -155,7 +157,7 @@ function global_cadastra_form()
             }
 
             #cadastramento .wb-33 {
-                width: 33%;
+                width: 32.7%;
             }
 
             #cadastramento input[type=submit],
