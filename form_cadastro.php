@@ -226,6 +226,10 @@ function global_cadastra_form()
                     } else if ($(this).val() == "Staff") {
                         $(".nmd, .md1, .md2").hide();
                         $(".staff").css('display', 'inline-block');
+                    } else if ($(this).val() == "Outros") {
+                        $(".nmd, .md1, .md2").hide();
+                        $(".staff, .staff2").css('display', 'inline-block');
+                        $("#valida-email").hide();
                     } else if ($(this).val() == "") {
                         $(".md, .staff, .md1, .md2").hide();
                     } else {
