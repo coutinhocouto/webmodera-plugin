@@ -49,7 +49,7 @@ function global_cadastra_form()
         if (is_wp_error($user_id)) {
 
             echo '<label class="error" for="email">' . $user_id->get_error_message() . '</label>';
-        } else {
+        } else { 
 
             update_user_meta($user_id, 'billing_area_atuacao', $area_atuacao);
             update_user_meta($user_id, 'billing_state', $uf);

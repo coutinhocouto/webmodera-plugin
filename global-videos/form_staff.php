@@ -288,7 +288,7 @@ function global_cadastra_staff_form()
                         $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Este email não é válido!</span>").insertAfter("#valida-email");
                     }
 
-                    return false;
+                    return false; 
 
                 });
 
