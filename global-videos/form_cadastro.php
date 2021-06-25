@@ -330,7 +330,7 @@ function global_cadastra_form()
                     var uf = $(this).val();
                     var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/municipios/" + uf;
                     $("select[name=cidade] option").remove();
-                    $("select[name=cidade]").append(new Option("", "Selecione"));
+                    $("select[name=cidade]").append(new Option("", ""));
 
                     $.getJSON(url, function(result) {
 
@@ -610,7 +610,7 @@ function global_cadastra_form()
             <div class="wb-50 md2 nmd staff2">
                 <label form="uf">Estado</label>
                 <select name="uf" required>
-                    <option>Selecione</option>
+                    <option></option>
                     <option value="AC">AC</option>
                     <option value="AL">AL</option>
                     <option value="AP">AP</option>
