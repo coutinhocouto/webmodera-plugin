@@ -398,3 +398,5 @@ function global_cadastra_staff_form()
 
 <?php }
 }
+
+add_shortcode('cadastro_staff', 'global_cadastra_staff_form');
