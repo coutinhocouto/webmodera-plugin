@@ -37,7 +37,7 @@ password = ""
 
 ### Shortcode Acesso Gravado
 
-> [acesso_gravado live=1]
+> [acesso_gravado live=1 data="2021-30-01 12:00"]
 
 ---
 

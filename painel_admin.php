@@ -343,7 +343,7 @@ function global_documentacao_page()
 
         <h3>Shortcode Acesso Gravado</h3>
 
-        <code>[acesso_gravado live=1]</code>
+        <code>[acesso_gravado live=1 data="2021-30-01 12:00"]</code>
 
         <br><hr />
 
