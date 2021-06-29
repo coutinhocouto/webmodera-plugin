@@ -367,6 +367,14 @@ function global_documentacao_page()
 
         <code>[cadastro_staff]</code>
 
+        <h3>Shortcode para conteudos bloqueados (somente usuários logados podem ver)</h3>
+
+        <code>
+            [bloqueado]<br>
+            conteúdo bloqueado<br>
+            [/bloqueado]
+        </code>
+
     </div>
 <?php
 

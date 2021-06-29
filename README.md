@@ -56,3 +56,9 @@ password = ""
 ### Shortcode para cadastro do Staff
 
 > [cadastro_staff]
+
+### Shortcode para conteudos bloqueados (somente usuários logados podem ver)
+
+> [bloqueado]
+> conteúdo bloqueado
+> [/bloqueado]

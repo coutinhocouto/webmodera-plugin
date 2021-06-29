@@ -46,4 +46,17 @@ function global_phrase()
 
 		echo json_encode($arr);
 	}
+};
+
+
+//------------------------------------------------------------------
+//---------------------- CONTEUDO BLOQUEADO ------------------------
+//------------------------------------------------------------------
+
+function bloqueado_shortcode( $atts = array(), $content = null ) {
+    if(is_user_logged_in()) {
+		return $content;
+	}
 }
+
+add_shortcode( 'bloqueado', 'bloqueado_shortcode' );
