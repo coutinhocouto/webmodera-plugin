@@ -14,8 +14,7 @@ function my_function($order_id)
     $user_id = get_post_meta($order_id, '_customer_user', true);
     $user_info = get_userdata(get_post_meta($order_id, '_customer_user', true));
 
-    $nome = get_user_meta($user_id, 'first_name');
-    $sobrenome = get_user_meta($user_id, 'last_name');
+    $nome = get_user_meta($user_id, 'first_name') . " " . get_user_meta($user_id, 'last_name');
     $email = $user_info->user_email;
     $uf = get_user_meta($user_id, 'billing_state');
     $cidade = get_user_meta($user_id, 'billing_city');
@@ -24,9 +23,9 @@ function my_function($order_id)
     $cep = get_user_meta($user_id, 'billing_postcode');
     $telefone = get_user_meta($user_id, 'billing_phone');
     $cpf = get_user_meta($user_id, 'billing_cpf');
-    $crm = get_user_meta($user_id, 'billing_crm');
-    $crm_uf = get_user_meta($user_id, 'billing_crm_uf');
-    $especialidade = get_user_meta($user_id, 'billing_espec_medica');
+    $crm = get_user_meta($user_id, 'billing_crm', true);
+    $crm_uf = get_user_meta($user_id, 'billing_crm_uf', true);
+    $especialidade = get_user_meta($user_id, 'billing_area_atuacao', true);
     $sexo = get_user_meta($user_id, 'sexo');
     $evento = get_option('evento_global');
     $pagante = 1;
@@ -562,3 +561,54 @@ add_action('woocommerce_after_checkout_billing_form', 'billing_espec_medica_fiel
 add_action('woocommerce_after_checkout_billing_form', 'billing_sabendo_field', 24);
 add_action('woocommerce_after_checkout_billing_form', 'billing_termo_field', 25);
 add_action('woocommerce_after_checkout_billing_form', 'billing_termo_2_field', 26);
+
+
+
+//------------------------------------------------------------------
+//---------------- API PARA LISTAR TODOS OS PRODUTOS ---------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_woo');
+
+function global_woo()
+{
+	register_rest_route(
+		'global-login',
+		'woocommerce',
+		array(
+			'methods' => 'GET',
+			'callback' => 'global_woo_phrase'
+		)
+	);
+}
+
+function global_woo_phrase()
+{
+	
+	$orders = wc_get_orders( $args );
+
+	$arr = [];
+	
+	foreach ( $orders as $order ) {
+		$order_id = $order->get_id();
+		$order_data = $order->get_data();
+		
+		array_push($arr, (object)[
+			'id_pedido' =>  $order_data['id'],
+			'nome' => $order_data['billing']['first_name'] . " " . $order_data['billing']['last_name'],
+			'email' => $order_data['billing']['email'],
+			'uf' => $order_data['billing']['state'],
+			'cidade' => $order_data['billing']['city'],
+			'crm' => get_post_meta($order_data['id'], 'billing_crm', true),
+			'cpf' => get_post_meta($order_data['id'], '_billing_cpf', true),
+			'area_atuacao' => get_post_meta($order_data['id'], 'billing_area_atuacao', true),
+			'status' => $order_data['status'],
+			'valor' => $order_data['total'],
+			'data' =>  $order_data['date_created']->date('Y-m-d H:i:s'),
+		]);
+		
+	}
+	
+	echo json_encode($arr);
+	
+};
