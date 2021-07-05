@@ -375,6 +375,12 @@ function global_documentacao_page()
             [/bloqueado]
         </code>
 
+        <h3>API pedidos woocommerce</h3>
+
+        <code>
+            wp-json/global-login/woocommerce
+        </code>
+
     </div>
 <?php
 

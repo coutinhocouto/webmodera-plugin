@@ -14,18 +14,20 @@ function my_function($order_id)
     $user_id = get_post_meta($order_id, '_customer_user', true);
     $user_info = get_userdata(get_post_meta($order_id, '_customer_user', true));
 
-    $nome = get_user_meta($user_id, 'first_name') . " " . get_user_meta($user_id, 'last_name');
+    $nome =  $user_info->first_name . " " . $user_info->last_name;
     $email = $user_info->user_email;
     $uf = get_user_meta($user_id, 'billing_state');
     $cidade = get_user_meta($user_id, 'billing_city');
-    $profissao = get_user_meta($user_id, 'billing_area_atuacao');
+    $profissao = get_post_meta($order->id, 'billing_area_atuacao', true);
     $pais = get_user_meta($user_id, 'billing_country');
     $cep = get_user_meta($user_id, 'billing_postcode');
     $telefone = get_user_meta($user_id, 'billing_phone');
     $cpf = get_user_meta($user_id, 'billing_cpf');
-    $crm = get_user_meta($user_id, 'billing_crm', true);
-    $crm_uf = get_user_meta($user_id, 'billing_crm_uf', true);
-    $especialidade = get_user_meta($user_id, 'billing_area_atuacao', true);
+    $crm = get_post_meta($order->id, 'billing_crm', true);
+    $crm_uf = get_post_meta($order->id, 'billing_crm_uf', true);
+    $especialidade = get_post_meta($order->id, 'billing_area_atuacao', true);
+	$termo = get_post_meta($order->id, 'billing_termo', true);
+	$sabendo = get_post_meta($order->id, 'billing_sabendo', true);
     $sexo = get_user_meta($user_id, 'sexo');
     $evento = get_option('evento_global');
     $pagante = 1;
@@ -54,7 +56,9 @@ function my_function($order_id)
         "sexo" => $sexo,
         "produto" => $produto,
         "valor" => $valor,
-        "pagante" => $pagante
+        "pagante" => $pagante,
+		"termo" => $termo,
+        "sabendo" => $sabendo
     );
 
     $postdata = json_encode($data);
@@ -118,8 +122,11 @@ function billing_crm_field_process()
 add_action('woocommerce_checkout_create_order', 'billing_crm_field_update_meta', 10, 2);
 function billing_crm_field_update_meta($order, $data)
 {
-    if (isset($_POST['billing_crm']) && !empty($_POST['billing_crm']))
+    if (isset($_POST['billing_crm']) && !empty($_POST['billing_crm'])){
+        
         $order->update_meta_data('billing_crm', sanitize_text_field($_POST['billing_crm']));
+
+    }
 }
 
 //-----------------------------------------------------------
@@ -188,15 +195,9 @@ function billing_crm_uf_field_process()
 add_action('woocommerce_checkout_update_order_meta', 'billing_crm_uf_update_order_meta');
 function billing_crm_uf_update_order_meta($order_id)
 {
-    if ($_POST['billing_crm_uf']) update_post_meta($order_id, 'billing_crm_uf', esc_attr($_POST['billing_crm_uf']));
-}
-
-//* Display field value on the order edition page
-
-add_action('woocommerce_admin_order_data_after_billing_address', 'billing_crm_uf_display_admin_order_meta', 10, 1);
-function billing_crm_uf_display_admin_order_meta($order)
-{
-    echo '<p><strong>' . __('Estado do conselho') . ':</strong> ' . get_post_meta($order->id, 'billing_crm_uf', true) . '</p>';
+    if ($_POST['billing_crm_uf']) {
+        update_post_meta($order_id, 'billing_crm_uf', esc_attr($_POST['billing_crm_uf']));
+    }
 }
 
 //-----------------------------------------------------------
@@ -277,15 +278,9 @@ function billing_area_atuacao_field_process()
 add_action('woocommerce_checkout_update_order_meta', 'billing_area_atuacao_update_order_meta');
 function billing_area_atuacao_update_order_meta($order_id)
 {
-    if ($_POST['billing_area_atuacao']) update_post_meta($order_id, 'billing_area_atuacao', esc_attr($_POST['billing_area_atuacao']));
-}
-
-//* Display field value on the order edition page
-
-add_action('woocommerce_admin_order_data_after_billing_address', 'billing_area_atuacao_display_admin_order_meta', 10, 1);
-function billing_area_atuacao_display_admin_order_meta($order)
-{
-    echo '<p><strong>' . __('Área de atuação') . ':</strong> ' . get_post_meta($order->id, 'billing_area_atuacao', true) . '</p>';
+    if ($_POST['billing_area_atuacao']){
+        update_post_meta($order_id, 'billing_area_atuacao', esc_attr($_POST['billing_area_atuacao']));
+    }
 }
 
 //-----------------------------------------------------------
@@ -400,15 +395,9 @@ function billing_espec_medica_field_process()
 add_action('woocommerce_checkout_update_order_meta', 'billing_espec_medica_update_order_meta');
 function billing_espec_medica_update_order_meta($order_id)
 {
-    if ($_POST['billing_espec_medica']) update_post_meta($order_id, 'billing_espec_medica', esc_attr($_POST['billing_espec_medica']));
-}
-
-//* Display field value on the order edition page
-
-add_action('woocommerce_admin_order_data_after_billing_address', 'bbilling_espec_medica_display_admin_order_meta', 10, 1);
-function billing_espec_medica_display_admin_order_meta($order)
-{
-    echo '<p><strong>' . __('Especialidade Médica') . ':</strong> ' . get_post_meta($order->id, 'billing_espec_medica', true) . '</p>';
+    if ($_POST['billing_espec_medica']) {
+        update_post_meta($order_id, 'billing_espec_medica', esc_attr($_POST['billing_espec_medica']));
+    }
 }
 
 //-----------------------------------------------------------
@@ -455,15 +444,9 @@ function billing_sabendo_field_process()
 add_action('woocommerce_checkout_update_order_meta', 'billing_sabendo_update_order_meta');
 function billing_sabendo_update_order_meta($order_id)
 {
-    if ($_POST['billing_sabendo']) update_post_meta($order_id, 'billing_sabendo', esc_attr($_POST['billing_sabendo']));
-}
-
-//* Display field value on the order edition page
-
-add_action('woocommerce_admin_order_data_after_billing_address', 'billing_sabendo_display_admin_order_meta', 10, 1);
-function billing_sabendo_display_admin_order_meta($order)
-{
-    echo '<p><strong>' . __('Como ficou sabendo?') . ':</strong> ' . get_post_meta($order->id, 'billing_sabendo', true) . '</p>';
+    if ($_POST['billing_sabendo']) {
+        update_post_meta($order_id, 'billing_sabendo', esc_attr($_POST['billing_sabendo']));
+    }
 }
 
 //-----------------------------------------------------------
@@ -490,14 +473,9 @@ function billing_termo_field($checkout)
 add_action('woocommerce_checkout_update_order_meta', 'billing_termo_update_order_meta');
 function billing_termo_update_order_meta($order_id)
 {
-    if ($_POST['billing_termo']) update_post_meta($order_id, 'billing_termo', esc_attr($_POST['billing_termo']));
-}
-
-//* Display field value on the order edition page
-add_action('woocommerce_admin_order_data_after_billing_address', 'billing_termo_display_admin_order_meta', 10, 1);
-function billing_termo_display_admin_order_meta($order)
-{
-    echo '<p><strong>' . __('Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad: ') . ':</strong> ' . get_post_meta($order->id, 'billing_termo', true) . '</p>';
+    if ($_POST['billing_termo']){
+        update_post_meta($order_id, 'billing_termo', esc_attr($_POST['billing_termo']));
+    }
 }
 
 //-----------------------------------------------------------
@@ -538,16 +516,37 @@ function billing_termo_2_checkbox_warning()
 add_action('woocommerce_checkout_update_order_meta', 'billing_termo_2_update_order_meta');
 function billing_termo_2_update_order_meta($order_id)
 {
-    if ($_POST['billing_termo_2']) update_post_meta($order_id, 'billing_termo_2', esc_attr($_POST['billing_termo_2']));
+    if ($_POST['billing_termo_2']){
+        update_post_meta($order_id, 'billing_termo_2', esc_attr($_POST['billing_termo_2']));
+    }
 }
 
-//* Display field value on the order edition page
+//-----------------------------------------------------------
+//--------------  CAMPOS NA EDIÇÃO DOS PEDIDOS --------------
+//----------------------------------------------------------- 
 
-add_action('woocommerce_admin_order_data_after_billing_address', 'billing_termo_2_display_admin_order_meta', 10, 1);
-function billing_termo_2_display_admin_order_meta($order)
+add_action('woocommerce_admin_order_data_after_billing_address', 'billing_display_admin_order_meta', 10, 1);
+function billing_display_admin_order_meta($order)
 {
-    echo '<p><strong>' . __('Termo de responsabilidade: ') . ':</strong> ' . get_post_meta($order->id, 'billing_termo_2', true) . '</p>';
+    $termo = 'Não';
+    if(get_post_meta($order->id, 'billing_termo_2', true) == '1'){
+        $termo = 'Ok';
+    }
+
+    $termo2 = 'Não aceito';
+    if(get_post_meta($order->id, 'billing_termo', true) == '1'){
+        $termo2 = 'Aceito';
+    }
+
+    echo '<h3>Dados Adicionais</h3>';
+    echo '<p><strong>' . __('CRM') . ':</strong> ' . get_post_meta($order->id, 'billing_crm', true) . ' - ' . get_post_meta($order->id, 'billing_crm_uf', true) . '<br>';
+    echo '<strong>' . __('Área de atuação') . ':</strong> ' . get_post_meta($order->id, 'billing_area_atuacao', true) . '<br>';
+    echo '<strong>' . __('Especialidade Médica') . ':</strong> ' . get_post_meta($order->id, 'billing_espec_medica', true) . '<br>';
+    echo '<strong>' . __('Termo de responsabilidade') . ': </strong> ' . $termo . '<br>';
+    echo '<strong>' . __('Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad') . ': </strong> ' . $termo2 . '<br>';
+    echo '<strong>' . __('Como ficou sabendo?') . '</strong> ' . get_post_meta($order->id, 'billing_sabendo', true) . '</p>';
 }
+
 
 //-----------------------------------------------------------
 //---------------------  ADICIONAR CAMPOS -------------------
@@ -594,7 +593,7 @@ function global_woo_phrase()
 		$order_data = $order->get_data();
 		
 		array_push($arr, (object)[
-			'id_pedido' =>  $order_data['id'],
+			'id' =>  $order_data['id'],
 			'nome' => $order_data['billing']['first_name'] . " " . $order_data['billing']['last_name'],
 			'email' => $order_data['billing']['email'],
 			'uf' => $order_data['billing']['state'],
