@@ -584,7 +584,11 @@ function global_woo()
 function global_woo_phrase()
 {
 	
-	$orders = wc_get_orders( $args );
+	header("Access-Control-Allow-Origin: *");
+	
+	$param = array( 'limit' => -1, 'status' => array('pending', 'processing', 'on-hold', 'cancelled', 'refunded', 'failed') );
+	
+	$orders = wc_get_orders($param);
 
 	$arr = [];
 	
