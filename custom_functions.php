@@ -24,12 +24,12 @@ function global_phrase()
 
 	if ($_POST["action"] == 'login_ajax') {
 
-		$check = wp_authenticate_username_password(NULL, $_POST["username"], $_POST["password"]);
+		$check = wp_authenticate_email_password(NULL, $_POST["username"], $_POST["password"]);
 
 		if (is_wp_error($check)) {
 			$arr = array('message' => 'não autorizado');
 		} else {
-			$user = get_user_by('login', $_POST["username"]);
+			$user = get_user_by('email', $_POST["username"]);
 			$id = $user->ID;
 			$live = get_option('evento_global');
 			$nome = $user->first_name;
