@@ -173,14 +173,14 @@ function global_categoria_markup()
 
             $('#categoria_global').on('change', function() {
 
-                if ($(this).val() == "2") {
+                if ($(this).val() == "2" || $(this).val() == "3") {
                     $("#wpbody .form-table tbody tr:first-child + tr").show();
                 } else {
                     $("#wpbody .form-table tbody tr:first-child + tr").hide();
                 }
             });
 
-            if ($('#categoria_global').val() == "2") {
+            if ($('#categoria_global').val() == "2" || $('#categoria_global').val() == "3") {
                 $("#wpbody .form-table tbody tr:first-child + tr").show();
             } else {
                 $("#wpbody .form-table tbody tr:first-child + tr").hide();
@@ -220,6 +220,8 @@ function global_categoria_markup()
         <option value="2" <?php if (get_option('categoria_global') == "2") {
                                 echo 'selected';
                             } ?>>Evento</option>
+        <option value="3" <?php if (get_option('categoria_global') == "3") { echo 'selected';}?>>PEC com código</option>
+    </select>
     </select>
 <?php
 }

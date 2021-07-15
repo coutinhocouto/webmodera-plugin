@@ -395,7 +395,7 @@ function global_cadastra_form()
 
             <input type="hidden" value="<?php echo get_option('evento_global'); ?>" name="evento" />
 
-            <?php if (get_option('categoria_global') == "2") { ?>
+            <?php if (get_option('categoria_global') == "2" || get_option('categoria_global') == "3") { ?>
 
                 <script>
                     jQuery(document).ready(function($) {
