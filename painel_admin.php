@@ -222,7 +222,6 @@ function global_categoria_markup()
                             } ?>>Evento</option>
         <option value="3" <?php if (get_option('categoria_global') == "3") { echo 'selected';}?>>PEC com código</option>
     </select>
-    </select>
 <?php
 }
 
