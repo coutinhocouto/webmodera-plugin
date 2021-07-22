@@ -180,7 +180,8 @@ function global_cadastra_form()
             #cadastramento .md1,
             #cadastramento .md2,
             #cadastramento .nmd,
-            #cadastramento .staff {
+            #cadastramento .staff,
+            #cadastramento .staff2 {
                 display: none;
             }
 
