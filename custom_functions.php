@@ -98,7 +98,7 @@ function global_cadastra_vip_form()
             'user_email' => $email,
             'first_name' => $nome,
             'show_admin_bar_front' => false,
-            'role' => "staff",
+            'role' => "vip",
         );
 
         //print_r($userdata);
