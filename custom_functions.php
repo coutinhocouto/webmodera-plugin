@@ -336,3 +336,43 @@ function global_cadastra_vip_form()
 }
 
 add_shortcode('cadastro_vip', 'global_cadastra_vip_form');
+
+
+//------------------------------------------------------------------
+//---------------------- API ALTERAR SENHA -------------------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_reset_password');
+
+function global_reset_password()
+{
+	register_rest_route(
+		'global-login',
+		'global-reset',
+		array(
+			'methods' => 'POST',
+			'callback' => 'global_reset_phrase'
+		)
+	);
+}
+
+function global_reset_phrase()
+{
+
+	if ($_POST["action"] == 'change_pass') {
+
+		$userdata = get_user_by( 'email', $_POST["email"] );
+ 
+        if ( ! $userdata ) {
+            $arr = array('message' => 'Não existe nenhum usuário cadastrado com este e-mail!', 'code' => 0);
+        } else if ( !$_POST["password"] ) {
+            $arr = array('message' => 'É necessário informar uma senha!', 'code' => 0);
+        } else {
+            wp_set_password( $_POST["password"], $userdata->ID );
+            $arr = array('message' => 'A senha do usuário foi atualizada', 'code' => 1);
+
+        }
+
+		echo json_encode($arr);
+	}
+};
