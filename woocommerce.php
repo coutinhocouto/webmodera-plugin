@@ -604,6 +604,7 @@ function global_woo_phrase()
 			'cidade' => $order_data['billing']['city'],
 			'crm' => get_post_meta($order_data['id'], 'billing_crm', true),
 			'cpf' => get_post_meta($order_data['id'], '_billing_cpf', true),
+            'telefone' => get_post_meta($order_data['id'], '_billing_phone', true),
 			'area_atuacao' => get_post_meta($order_data['id'], 'billing_area_atuacao', true),
 			'status' => $order_data['status'],
 			'valor' => $order_data['total'],
