@@ -664,17 +664,19 @@ function global_cadastra_form()
                 <input type="text" name="telefone" required />
             </div>
 
-            <div class="wb-100 md2 nmd">
-                <label form="sabendo">Como ficou sabendo? *</label>
-                <select name="sabendo" required>
-                    <option></option>
-                    <option value="E-mail marketing">E-mail marketing</option>
-                    <option value="Redes sociais">Redes sociais</option>
-                    <option value="Sociedade Médica">Sociedade Médica</option>
-                    <option value="Representante">Representante</option>
-                    <option value="Outros">Outros</option>
-                </select>
-            </div>
+            <?php if(get_option('mostra_sabendo_global') == "1") { ?>
+                <div class="wb-100 md2 nmd">
+                    <label form="sabendo">Como ficou sabendo? *</label>
+                    <select name="sabendo">
+                        <option></option>
+                        <option value="E-mail marketing">E-mail marketing</option>
+                        <option value="Redes sociais">Redes sociais</option>
+                        <option value="Sociedade Médica">Sociedade Médica</option>
+                        <option value="Representante">Representante</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+            <?php } ?>
 
             <div class="wb-100 staff2">
                 <label form="nome">Cargo</label>

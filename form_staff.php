@@ -19,7 +19,7 @@ function global_cadastra_staff_form()
         $pagante = "0";
         $produto = "";
         $valor = "";
-        $sabendo = $_POST["sabendo"];
+        $sabendo = "";
         $termo = $_POST["termo"];
         $senha = $_POST["password"];
         $cargo = $_POST["cargo"];
@@ -358,21 +358,9 @@ function global_cadastra_staff_form()
                 </select>
             </div>
 
-            <div class="wb-100 p1">
+            <div class="wb-50 p1">
                 <label form="nome">Telefone (com ddd) *</label>
                 <input type="text" name="telefone" required />
-            </div>
-
-            <div class="wb-50 p1">
-                <label form="sabendo">Como ficou sabendo? *</label>
-                <select name="sabendo" required>
-                    <option></option>
-                    <option value="E-mail marketing">E-mail marketing</option>
-                    <option value="Redes sociais">Redes sociais</option>
-                    <option value="Sociedade Médica">Sociedade Médica</option>
-                    <option value="Representante">Representante</option>
-                    <option value="Outros">Outros</option>
-                </select>
             </div>
 
             <div class="wb-50 p1">
