@@ -142,14 +142,6 @@ function my_settings_init()
         'global_page_setting_section'
     );
 
-    add_settings_field(
-        'mostra_sabendo_global',
-        'Exibir campo "como ficou sabendo?"',
-        'global_mostra_sabendo_markup',
-        'global-page',
-        'global_page_setting_section'
-    );
-
     register_setting('global-page', 'evento_global');
     register_setting('global-page', 'aovivo_global');
     register_setting('global-page', 'inscrito_global');
@@ -161,7 +153,7 @@ function my_settings_init()
     register_setting('global-page', 'tem_medico_global');
     register_setting('global-page', 'tem_nao_medico_global');
     register_setting('global-page', 'nao_medico_atuacao_global');
-    register_setting('global-page', 'mostra_sabendo_global');
+    
 }
 
 function global_categoria_markup()
@@ -310,15 +302,6 @@ function global_nao_medico_atuacao_markup()
     <textarea rows="5" class="global_field" id="nao_medico_atuacao_global" name="nao_medico_atuacao_global"><?php echo get_option('nao_medico_atuacao_global'); ?></textarea>
 <?php
 }
-
-function global_mostra_sabendo_markup()
-{
-?>
-    <input type="checkbox" id="mostra_sabendo_global" name="mostra_sabendo_global" value="1" <?php if (get_option('mostra_sabendo_global') == "1") { echo "checked";} ?>>
-
-<?php
-}
-
 
 
 /*******************************************************************************************/
