@@ -51,7 +51,16 @@ function extra_settings_init()
         'global_extra_page_setting_section'
     );
 
+    add_settings_field(
+        'sabendo_obr_global',
+        'O campo "como ficou sabendo?" é obrigatório?',
+        'global_sabendo_obr_markup',
+        'global-extra-page',
+        'global_extra_page_setting_section'
+    );
+
     register_setting('global-extra-page', 'mostra_sabendo_global');
+    register_setting('global-extra-page', 'sabendo_obr_global');
 }
 
 function global_mostra_sabendo_markup()
@@ -59,5 +68,12 @@ function global_mostra_sabendo_markup()
 ?>
     <input type="checkbox" id="mostra_sabendo_global" name="mostra_sabendo_global" value="1" <?php if (get_option('mostra_sabendo_global') == "1") { echo "checked";} ?>>
 
+<?php
+}
+
+function global_sabendo_obr_markup()
+{
+?>
+    <input type="checkbox" id="sabendo_obr_global" name="sabendo_obr_global" value="1" <?php if (get_option('sabendo_obr_global') == "1") { echo "checked";} ?>>
 <?php
 }

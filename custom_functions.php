@@ -161,6 +161,15 @@ function global_cadastra_vip_form()
                 'remember'      => true
             );
             $user = wp_signon($creds, false);
+
+            $to = $email;
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+            if(get_option('assunto_vip_global')){
+                $subject = get_option('assunto_vip_global');
+                $body = get_option('body_vip_global');
+                wp_mail( $to, $subject, $body, $headers );
+            }
+
             echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
         }
     } else {
