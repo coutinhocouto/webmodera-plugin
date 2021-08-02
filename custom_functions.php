@@ -72,7 +72,7 @@ function global_cadastra_vip_form()
         $area_atuacao = "";
         $evento = $_POST["evento"];
         $nome = $_POST["nome"];
-        $email = $_POST["email"];
+        $email = strtolower($_POST["email"]);
         $uf = "";
         $cidade = "";
         $telefone = "";

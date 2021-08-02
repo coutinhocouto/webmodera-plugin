@@ -351,7 +351,7 @@ function global_documentacao_page()
 
         <h3>Shortcode Acesso Gravado</h3>
 
-        <code>[acesso_gravado live=1 data="2021-30-01 12:00"]</code>
+        <code>[acesso_gravado live=1 data="2021-01-30 12:00"]</code>
 
         <br><hr />
 
@@ -389,12 +389,12 @@ function global_documentacao_page()
             wp-json/global-login/woocommerce
         </code>
 
+        <h3>Shortcode para cadastro VIP</h3>
+
+        <code>[cadastro_vip]</code>
+
+
     </div>
 <?php
 
 }
-
-
-/*******************************************************************************************/
-/************************************ EMAILS ***********************************************/
-/*******************************************************************************************/

@@ -7,7 +7,7 @@ function global_cadastra_form()
         $area_atuacao = $_POST["area_atuacao"];
         $evento = $_POST["evento"];
         $nome = $_POST["nome"];
-        $email = $_POST["email"];
+        $email = strtolower($_POST["email"]);
         $uf = $_POST["uf"];
         $cidade = $_POST["cidade"];
         $telefone = $_POST["telefone"];

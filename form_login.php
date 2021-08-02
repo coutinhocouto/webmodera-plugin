@@ -21,24 +21,14 @@ Olá, <?php echo $current_user->user_firstname . " " . $current_user->user_lastn
 	#loginform input[type=password], #loginform input[type=text], #loginform input[type=submit] {width: 100%; margin-bottom: 20px}
 </style>
 
-<form name="loginform" id="loginform" action="<?php echo site_url( '/wp-login.php' ); ?>" method="post">
-	
-<label>E-mail</label>
-<input id="user_login" type="text" size="20" value="" name="log">
-	
-<label>Senha</label>
-<input id="user_pass" type="password" size="20" value="" name="pwd">
-<input id="rememberme" type="checkbox" value="forever" name="rememberme"> Lembrar?
-
-<input id="wp-submit" type="submit" value="Acessar" name="wp-submit">
-
-<input type="hidden" value="<?php echo esc_attr( $redirect_to ); ?>" name="redirect_to">
-<input type="hidden" value="1" name="testcookie">
-<br>
+<?php
+$args = array(
+    'redirect' => get_option('login_global'),
+	'label_username' => __( 'E-mail' ),
+   ) 
+;?>
+<?php wp_login_form($args); ?>
 <a href="<?php echo wp_lostpassword_url(); ?>">Esqueceu sua senha?</a>
-
-</form>
-
 
 <?php
 	

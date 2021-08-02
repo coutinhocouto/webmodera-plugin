@@ -510,9 +510,7 @@ function billing_termo_2_checkbox_warning()
     }
 }
 
-
 //* Update the order meta with field value
-
 add_action('woocommerce_checkout_update_order_meta', 'billing_termo_2_update_order_meta');
 function billing_termo_2_update_order_meta($order_id)
 {
@@ -586,7 +584,7 @@ function global_woo_phrase()
 	
 	header("Access-Control-Allow-Origin: *");
 	
-	$param = array( 'limit' => -1, 'status' => array('pending', 'processing', 'on-hold', 'cancelled', 'refunded', 'failed') );
+	$param = array( 'limit' => -1 );
 	
 	$orders = wc_get_orders($param);
 
@@ -615,4 +613,44 @@ function global_woo_phrase()
 	
 	echo json_encode($arr);
 	
+};
+
+//------------------------------------------------------------------
+//---------------------- API PEDIDO LIXO ---------------------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_order_trash_func');
+
+function global_order_trash_func()
+{
+	register_rest_route(
+		'global-login',
+		'order-trash',
+		array(
+			'methods' => 'POST',
+			'callback' => 'global_order_trash'
+		)
+	);
+}
+
+function global_order_trash()
+{
+
+	if ($_POST["action"] == 'order_trash') {
+
+        $post_id = $_POST["order"];
+
+        wp_update_post(array(
+            'ID'    =>  $post_id,
+            'post_status'   =>  'trash'
+        ));
+
+        if (is_wp_error($post_id)) {
+            $arr = array('message' => $post_id->get_error_messages(), 'code' => 0);
+        } else {
+            $arr = array('message' => 'O pedido foi movido para a lixeira', 'code' => 1);
+        }
+
+		echo json_encode($arr);
+	}
 };
