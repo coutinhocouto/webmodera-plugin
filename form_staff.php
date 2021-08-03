@@ -7,7 +7,7 @@ function global_cadastra_staff_form()
         $area_atuacao = "";
         $evento = $_POST["evento"];
         $nome = $_POST["nome"];
-        $email = $_POST["email"];
+        $email = strtolower($_POST["email"]);
         $uf = $_POST["uf"];
         $cidade = $_POST["cidade"];
         $telefone = $_POST["telefone"];
@@ -19,9 +19,11 @@ function global_cadastra_staff_form()
         $pagante = "0";
         $produto = "";
         $valor = "";
-        $sabendo = $_POST["sabendo"];
+        $sabendo = "";
         $termo = $_POST["termo"];
         $senha = $_POST["password"];
+        $cargo = $_POST["cargo"];
+        $status = "1";
 
         $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
 
@@ -67,7 +69,9 @@ function global_cadastra_staff_form()
                 "termo" => $termo,
                 "produto" => $produto,
                 "valor" => $valor,
-                "profissao" => $area_atuacao
+                "profissao" => $area_atuacao,
+                "status" => $status,
+                "cargo" => $cargo
             );
 
             $postdata = json_encode($data);
@@ -92,6 +96,15 @@ function global_cadastra_staff_form()
                 'remember'      => true
             );
             $user = wp_signon($creds, false);
+
+			$to = $email;
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+            if(get_option('assunto_staff_global')){
+                $subject = get_option('assunto_staff_global');
+                $body = get_option('body_staff_global');
+                wp_mail( $to, $subject, $body, $headers );
+            }
+
             echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
         }
     } else {
@@ -354,21 +367,14 @@ function global_cadastra_staff_form()
                 </select>
             </div>
 
-            <div class="wb-100 p1">
+            <div class="wb-50 p1">
                 <label form="nome">Telefone (com ddd) *</label>
                 <input type="text" name="telefone" required />
             </div>
 
-            <div class="wb-100 p1">
-                <label form="sabendo">Como ficou sabendo? *</label>
-                <select name="sabendo" required>
-                    <option></option>
-                    <option value="E-mail marketing">E-mail marketing</option>
-                    <option value="Redes sociais">Redes sociais</option>
-                    <option value="Sociedade Médica">Sociedade Médica</option>
-                    <option value="Representante">Representante</option>
-                    <option value="Outros">Outros</option>
-                </select>
+            <div class="wb-50 p1">
+                <label form="nome">Cargo</label>
+                <input type="text" name="cargo" id="cargo" required />
             </div>
 
             <div class="wb-100 p1">

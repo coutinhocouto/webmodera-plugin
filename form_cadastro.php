@@ -7,7 +7,7 @@ function global_cadastra_form()
         $area_atuacao = $_POST["area_atuacao"];
         $evento = $_POST["evento"];
         $nome = $_POST["nome"];
-        $email = $_POST["email"];
+        $email = strtolower($_POST["email"]);
         $uf = $_POST["uf"];
         $cidade = $_POST["cidade"];
         $telefone = $_POST["telefone"];
@@ -22,13 +22,17 @@ function global_cadastra_form()
         $sabendo = $_POST["sabendo"];
         $termo = $_POST["termo"];
         $senha = $_POST["password"];
+        $cargo = $_POST["cargo"];
 
         if ($area_atuacao == "Medicina") {
             $role = "medicos";
+            $status = "0";
         } else if ($area_atuacao == "Staff") {
             $role = "staff";
+            $status = "1";
         } else {
             $role = "nao_medicos";
+            $status = "0";
         }
 
         $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
@@ -80,7 +84,9 @@ function global_cadastra_form()
                 "termo" => $termo,
                 "produto" => $produto,
                 "valor" => $valor,
-                "profissao" => $area_atuacao
+                "profissao" => $area_atuacao,
+                "status" => $status,
+                "cargo" => $cargo
             );
 
             $postdata = json_encode($data);
@@ -107,6 +113,34 @@ function global_cadastra_form()
             );
             $user = wp_signon($creds, false);
             echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
+			
+			//--------------------------
+			//------- ENVIA E-MAIL -----
+			//--------------------------
+			
+			$to = $email;
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+
+			if ($area_atuacao == "Medicina") {
+				if(get_option('assunto_convidado_global')){
+					$subject = get_option('assunto_convidado_global');
+					$body = get_option('body_convidado_global');
+					wp_mail( $to, $subject, $body, $headers );
+				}
+			} else if ($area_atuacao == "Staff") {
+				if(get_option('assunto_staff_global')){
+					$subject = get_option('assunto_staff_global');
+					$body = get_option('body_staff_global');
+					wp_mail( $to, $subject, $body, $headers );
+				}
+			} else {
+				if(get_option('assunto_convidado_global')){
+					$subject = get_option('assunto_convidado_global');
+					$body = get_option('body_convidado_global');
+					wp_mail( $to, $subject, $body, $headers );
+				}
+			}
+			
         }
     } else {
 
@@ -174,7 +208,8 @@ function global_cadastra_form()
             #cadastramento .md1,
             #cadastramento .md2,
             #cadastramento .nmd,
-            #cadastramento .staff {
+            #cadastramento .staff,
+            #cadastramento .staff2 {
                 display: none;
             }
 
@@ -657,16 +692,23 @@ function global_cadastra_form()
                 <input type="text" name="telefone" required />
             </div>
 
-            <div class="wb-100 md2 nmd">
-                <label form="sabendo">Como ficou sabendo? *</label>
-                <select name="sabendo" required>
-                    <option></option>
-                    <option value="E-mail marketing">E-mail marketing</option>
-                    <option value="Redes sociais">Redes sociais</option>
-                    <option value="Sociedade Médica">Sociedade Médica</option>
-                    <option value="Representante">Representante</option>
-                    <option value="Outros">Outros</option>
-                </select>
+            <?php if(get_option('mostra_sabendo_global') == "1") { ?>
+                <div class="wb-100 md2 nmd">
+                    <label form="sabendo">Como ficou sabendo? <?php if(get_option('sabendo_obr_global') == "1") { echo '*'; }?></label>
+                    <select name="sabendo" <?php if(get_option('sabendo_obr_global') == "1") { echo 'required'; }?>>
+                        <option></option>
+                        <option value="E-mail marketing">E-mail marketing</option>
+                        <option value="Redes sociais">Redes sociais</option>
+                        <option value="Sociedade Médica">Sociedade Médica</option>
+                        <option value="Representante">Representante</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+            <?php } ?>
+
+            <div class="wb-100 staff2">
+                <label form="nome">Cargo</label>
+                <input type="text" name="cargo" id="cargo" required />
             </div>
 
             <div class="wb-100 md2 nmd staff2">

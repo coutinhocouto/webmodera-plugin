@@ -153,6 +153,7 @@ function my_settings_init()
     register_setting('global-page', 'tem_medico_global');
     register_setting('global-page', 'tem_nao_medico_global');
     register_setting('global-page', 'nao_medico_atuacao_global');
+    
 }
 
 function global_categoria_markup()
@@ -301,6 +302,11 @@ function global_nao_medico_atuacao_markup()
 <?php
 }
 
+
+/*******************************************************************************************/
+/****************************** DOCUMENTAÇÃO ***********************************************/
+/*******************************************************************************************/
+
 function global_documentacao_page()
 { ?>
     <div class="wrap">
@@ -344,7 +350,7 @@ function global_documentacao_page()
 
         <h3>Shortcode Acesso Gravado</h3>
 
-        <code>[acesso_gravado live=1 data="2021-30-01 12:00"]</code>
+        <code>[acesso_gravado live=1 data="2021-01-30 12:00"]</code>
 
         <br><hr />
 
@@ -381,6 +387,11 @@ function global_documentacao_page()
         <code>
             wp-json/global-login/woocommerce
         </code>
+
+        <h3>Shortcode para cadastro VIP</h3>
+
+        <code>[cadastro_vip]</code>
+
 
     </div>
 <?php
