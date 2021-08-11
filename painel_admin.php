@@ -392,6 +392,9 @@ function global_documentacao_page()
 
         <code>[cadastro_vip]</code>
 
+        <h3>Shortcode para página de logout </h3>
+
+        <code>[sair]</code>
 
     </div>
 <?php

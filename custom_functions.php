@@ -385,3 +385,43 @@ function global_reset_phrase()
 		echo json_encode($arr);
 	}
 };
+
+//------------------------------------------------------------------
+//---------------------- PÁGINA PARA SAIR --------------------------
+//------------------------------------------------------------------
+
+function sair_shortcode() {
+    
+    echo '<script>window.location.replace("' . home_url() . '");</script>';
+
+    if(is_user_logged_in()) {
+		wp_logout();
+	}
+}
+
+add_shortcode( 'sair', 'sair_shortcode' );
+
+//------------------------------------------------------------------
+//------------------- EXIBE NOME NO TEMA ASTRA ---------------------
+//------------------------------------------------------------------
+
+add_action('wp_head', 'global_nome_head');
+function global_nome_head(){
+
+    $user_info = get_userdata(get_current_user_id());
+    $first_name = $user_info->first_name;	
+
+    if(is_user_logged_in()) {
+        ?>
+            
+            <script>
+                jQuery(document).ready(function($) {
+                    
+                    $('#ast-desktop-header ul').append('<li><span style="color: #fff; padding: 6px 0 5px; display: block;">Olá, <?php echo $first_name;?></span></li>');
+                    
+                })
+            </script>
+
+        <?php
+    }
+};
