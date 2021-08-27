@@ -33,9 +33,9 @@ function global_admin_page()
 
         <form method="POST" action="options.php">
             <?php
-            settings_fields('global-page');
-            do_settings_sections('global-page');
-            submit_button();
+                settings_fields('global-page');
+                do_settings_sections('global-page');
+                submit_button();
             ?>
         </form>
     </div>
@@ -142,6 +142,22 @@ function my_settings_init()
         'global_page_setting_section'
     );
 
+    add_settings_field(
+        'tem_publico_global',
+        'Evento para público em geral?',
+        'global_tem_publico_markup',
+        'global-page',
+        'global_page_setting_section'
+    );
+
+    add_settings_field(
+        'publico_atuacao_global',
+        'Áreas de atuação do público geral?',
+        'global_publico_atuacao_markup',
+        'global-page',
+        'global_page_setting_section'
+    );
+
     register_setting('global-page', 'evento_global');
     register_setting('global-page', 'aovivo_global');
     register_setting('global-page', 'inscrito_global');
@@ -153,6 +169,8 @@ function my_settings_init()
     register_setting('global-page', 'tem_medico_global');
     register_setting('global-page', 'tem_nao_medico_global');
     register_setting('global-page', 'nao_medico_atuacao_global');
+    register_setting('global-page', 'tem_publico_global');
+    register_setting('global-page', 'publico_atuacao_global');
     
 }
 
@@ -187,17 +205,35 @@ function global_categoria_markup()
                 $("#wpbody .form-table tbody tr:first-child + tr").hide();
             }
 
+            //---------------------------------
+
             if ($('#tem_nao_medico_global:checked').length > 0) {
                 $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
             } else {
                 $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
             }
 
+            if ($('#tem_publico_global:checked').length > 0) {
+                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr+ tr + tr").show();
+            } else {
+                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr+ tr + tr").hide();
+            }
+
+            //--------------------------------
+
             $('#tem_nao_medico_global').click(function() {
                 if ($('#tem_nao_medico_global:checked').length > 0) {
                     $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
                 } else {
                     $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
+                }
+            })
+
+            $('#tem_publico_global').click(function() {
+                if ($('#tem_publico_global:checked').length > 0) {
+                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
+                } else {
+                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
                 }
             })
 
@@ -215,13 +251,9 @@ function global_categoria_markup()
     </style>
 
     <select id="categoria_global" name="categoria_global" class="global_field">
-        <option value="1" <?php if (get_option('categoria_global') == "1") {
-                                echo 'selected';
-                            } ?>>PEC / Curso</option>
-        <option value="2" <?php if (get_option('categoria_global') == "2") {
-                                echo 'selected';
-                            } ?>>Evento</option>
-        <option value="3" <?php if (get_option('categoria_global') == "3") { echo 'selected';}?>>PEC com código</option>
+        <option value="1" <?php if (get_option('categoria_global') == "1") { echo 'selected'; } ?>>PEC / Curso</option>
+        <option value="2" <?php if (get_option('categoria_global') == "2") { echo 'selected'; } ?>>Evento</option>
+        <option value="3" <?php if (get_option('categoria_global') == "3") { echo 'selected'; } ?>>PEC com código</option>
     </select>
 <?php
 }
@@ -289,9 +321,7 @@ function global_tem_medico_markup()
 function global_tem_nao_medico_markup()
 {
 ?>
-    <input type="checkbox" id="tem_nao_medico_global" name="tem_nao_medico_global" value="1" <?php if (get_option('tem_nao_medico_global') == "1") {
-                                                                                                    echo "checked";
-                                                                                                } ?>>
+    <input type="checkbox" id="tem_nao_medico_global" name="tem_nao_medico_global" value="1" <?php if (get_option('tem_nao_medico_global') == "1") { echo "checked"; } ?>>
 <?php
 }
 
@@ -299,6 +329,20 @@ function global_nao_medico_atuacao_markup()
 {
 ?>
     <textarea rows="5" class="global_field" id="nao_medico_atuacao_global" name="nao_medico_atuacao_global"><?php echo get_option('nao_medico_atuacao_global'); ?></textarea>
+<?php
+}
+
+function global_tem_publico_markup()
+{
+?>
+    <input type="checkbox" id="tem_publico_global" name="tem_publico_global" value="1" <?php if (get_option('tem_publico_global') == "1") { echo "checked";} ?>>
+<?php
+}
+
+function global_publico_atuacao_markup()
+{
+?>
+    <textarea rows="5" class="global_field" id="publico_atuacao_global" name="publico_atuacao_global"><?php echo get_option('publico_atuacao_global'); ?></textarea>
 <?php
 }
 

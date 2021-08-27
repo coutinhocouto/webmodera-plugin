@@ -35,6 +35,16 @@ function global_cadastra_form()
             $status = "0";
         }
 
+        
+        if (get_option('ativa_perfil_1_global') == '1') {
+            
+            if (str_contains(get_option('cods_perfil_1_global'), $_POST["codigo"])) {
+                $role = get_option('role_perfil_1_global');
+            }
+            
+        }
+                
+
         $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
 
         $userdata = array(
@@ -254,21 +264,38 @@ function global_cadastra_form()
                 $('select[name=area_atuacao]').on('change', function() {
 
                     if ($(this).val() == "Medicina") {
-                        $(".nmd, .staff").hide();
+                        $(".nmd, .staff, .staff2").hide();
                         $('label[for=crm_uf]').html('Estado do CRM *');
                         $('label[for=crm]').html('CRM (somente números) *');
                         $(".md1").css('display', 'inline-block');
+
+                    <?php
+                        if (get_option('tem_publico_global') == '1') {
+
+                            $areas = explode(",", get_option('publico_atuacao_global'));
+                            foreach ($areas as $area) {
+
+                                echo '} else if ($(this).val() == "' . ltrim($area) . '") {';
+                                echo '$(".nmd, .md1, .md2, .staff2").hide();';
+                                echo '$(".staff, .staff2").css("display", "inline-block");';
+                                echo '$("#valida-email").hide();';
+
+                            }
+
+                        }
+                    ?>
+
                     } else if ($(this).val() == "Staff") {
-                        $(".nmd, .md1, .md2").hide();
+                        $(".nmd, .md1, .md2, .staff2").hide();
                         $(".staff").css('display', 'inline-block');
                     } else if ($(this).val() == "Outros") {
-                        $(".nmd, .md1, .md2").hide();
+                        $(".nmd, .md1, .md2, .staff2").hide();
                         $(".staff, .staff2").css('display', 'inline-block');
                         $("#valida-email").hide();
                     } else if ($(this).val() == "") {
-                        $(".md, .staff, .md1, .md2").hide();
+                        $(".md, .staff, .md1, .md2, .staff2").hide();
                     } else {
-                        $(".md1, .md2, .staff").hide();
+                        $(".md1, .md2, .staff, .staff2").hide();
                         $('label[for=crm_uf]').html('Estado do conselho *');
                         $('label[for=crm]').html('Número do conselho (somente números) *');
                         $(".nmd").css('display', 'inline-block');
@@ -485,24 +512,35 @@ function global_cadastra_form()
                     <option></option>
 
                     <?php
-                    if (get_option('tem_medico_global') == '1') {
-                        echo '<option value="Medicina">Medicina</option>';
-                    }
-                    ?>
-
-                    <?php
-                    if (get_option('tem_nao_medico_global') == '1') {
-                        $areas = explode(",", get_option('nao_medico_atuacao_global'));
-                        foreach ($areas as $area) {
-                            echo '<option value="' . ltrim($area) . '">' . ltrim($area) . '</option>';
+                        if (get_option('tem_medico_global') == '1') {
+                            echo '<option value="Medicina">Medicina</option>';
                         }
-                    }
                     ?>
 
                     <?php
-                    if (get_option('categoria_global') == '1') {
-                        echo '<option value="Staff">Staff</option>';
-                    }
+                        if (get_option('tem_nao_medico_global') == '1') {
+
+                            $areas = explode(",", get_option('nao_medico_atuacao_global'));
+                            foreach ($areas as $area) {
+                                echo '<option value="' . ltrim($area) . '">' . ltrim($area) . '</option>';
+                            }
+                        }
+                    ?>
+
+                    <?php
+                        if (get_option('categoria_global') == '1') {
+                            echo '<option value="Staff">Staff</option>';
+                        }
+                    ?>
+
+                    <?php
+                        if (get_option('tem_publico_global') == '1') {
+
+                            $areas = explode(",", get_option('publico_atuacao_global'));
+                            foreach ($areas as $area) {
+                                echo '<option value="' . ltrim($area) . '">' . ltrim($area) . '</option>';
+                            }
+                        }
                     ?>
 
                 </select>
