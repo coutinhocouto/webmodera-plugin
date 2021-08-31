@@ -133,7 +133,7 @@ function perfil_settings_init() {
         'global_perfil_page_setting_section'
     );
 
-    register_setting('global-perfil-page', 'cods_perfil_1_global');
+    register_setting('global-perfil-page', 'cods_perfil_3_global');
 
     //------------------------------------
 

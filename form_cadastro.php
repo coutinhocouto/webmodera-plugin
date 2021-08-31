@@ -38,8 +38,40 @@ function global_cadastra_form()
         
         if (get_option('ativa_perfil_1_global') == '1') {
             
-            if (str_contains(get_option('cods_perfil_1_global'), $_POST["codigo"])) {
+            if (strpos(get_option('cods_perfil_1_global'), $_POST["codigo"]) !== false) {
                 $role = get_option('role_perfil_1_global');
+            }
+            
+        }
+
+        if (get_option('ativa_perfil_2_global') == '1') {
+            
+            if (strpos(get_option('cods_perfil_2_global'), $_POST["codigo"]) !== false) {
+                $role = get_option('role_perfil_2_global');
+            }
+            
+        }
+
+        if (get_option('ativa_perfil_3_global') == '1') {
+            
+            if (strpos(get_option('cods_perfil_3_global'), $_POST["codigo"]) !== false) {
+                $role = get_option('role_perfil_3_global');
+            }
+            
+        }
+
+        if (get_option('ativa_perfil_4_global') == '1') {
+            
+            if (strpos(get_option('cods_perfil_4_global'), $_POST["codigo"]) !== false) {
+                $role = get_option('role_perfil_4_global');
+            }
+            
+        }
+
+        if (get_option('ativa_perfil_5_global') == '1') {
+            
+            if (strpos(get_option('cods_perfil_5_global'), $_POST["codigo"]) !== false) {
+                $role = get_option('role_perfil_5_global');
             }
             
         }
