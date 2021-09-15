@@ -148,15 +148,7 @@ function global_cadastra_form()
 
             //print_r($result);
 
-            $creds = array(
-                'user_login'    => $email,
-                'user_password' => $senha,
-                'remember'      => true
-            );
-            $user = wp_signon($creds, false);
-            echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
-			
-			//--------------------------
+            //--------------------------
 			//------- ENVIA E-MAIL -----
 			//--------------------------
 			
@@ -182,6 +174,15 @@ function global_cadastra_form()
 					wp_mail( $to, $subject, $body, $headers );
 				}
 			}
+
+
+            //$user = get_userdatabylogin( $email );
+            //$user_id = $user->ID;
+            //wp_set_current_user( $user_id, $user_login );
+            //wp_set_auth_cookie( $user_id );
+            //do_action( 'wp_login', $user_login );
+
+            echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
 			
         }
     } else {
