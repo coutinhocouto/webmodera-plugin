@@ -25,7 +25,7 @@ function my_function($order_id)
     $cpf = get_user_meta($user_id, 'billing_cpf');
     $crm = get_post_meta($order->id, 'billing_crm', true);
     $crm_uf = get_post_meta($order->id, 'billing_crm_uf', true);
-    $especialidade = get_post_meta($order->id, 'billing_area_atuacao', true);
+    $especialidade = get_post_meta($order->id, 'billing_espec_medica', true);
 	$termo = get_post_meta($order->id, 'billing_termo', true);
 	$sabendo = get_post_meta($order->id, 'billing_sabendo', true);
     $sexo = get_user_meta($user_id, 'sexo');
