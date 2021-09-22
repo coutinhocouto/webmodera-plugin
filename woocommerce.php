@@ -616,7 +616,7 @@ function global_woo_phrase()
 };
 
 //------------------------------------------------------------------
-//---------------------- API PEDIDO LIXO ---------------------------
+//----------------- API MOVER PEDIDO PARA LIXO ---------------------
 //------------------------------------------------------------------
 
 add_action('rest_api_init', 'global_order_trash_func');
@@ -649,6 +649,47 @@ function global_order_trash()
             $arr = array('message' => $post_id->get_error_messages(), 'code' => 0);
         } else {
             $arr = array('message' => 'O pedido foi movido para a lixeira', 'code' => 1);
+        }
+
+		echo json_encode($arr);
+	}
+};
+
+//------------------------------------------------------------------
+//----------------- API PEDIDO MUDAR STATUS ------------------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_order_edit_func');
+
+function global_order_edit_func()
+{
+	register_rest_route(
+		'global-login',
+		'order-edit',
+		array(
+			'methods' => 'POST',
+			'callback' => 'global_order_edit'
+		)
+	);
+}
+
+function global_order_edit()
+{
+
+	if ($_POST["action"] == 'order_change') {
+
+        $post_id = $_POST["order"];
+		$post_status = $_POST["status"];
+
+		$order = wc_get_order( $post_id );
+		
+		if (!$post_id) {
+            $arr = array('message' => "É preciso informar o id do pedido", 'code' => 0);
+		} else if (!$post_status){
+			$arr = array('message' => "É preciso informar o status do pedido", 'code' => 0);
+        } else {
+			$order->update_status( $post_status );
+            $arr = array('message' => 'O pedido foi atualizado', 'code' => 1);
         }
 
 		echo json_encode($arr);
