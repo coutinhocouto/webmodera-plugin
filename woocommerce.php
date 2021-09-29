@@ -607,8 +607,7 @@ function global_woo_phrase()
 			'status' => $order_data['status'],
 			'valor' => $order_data['total'],
 			'data' =>  $order_data['date_created']->date('Y-m-d H:i:s'),
-			'endereco' => get_post_meta($order_data['id'], '_billing_address_1', true) . " - " . get_post_meta($order_data['id'], '_billing_neighborhood', true)
-			. ", " . get_post_meta($order_data['id'], '_billing_city', true) . " / " . get_post_meta($order_data['id'], '_billing_state', true) . " - CEP: " . get_post_meta($order_data['id'], '_billing_postcode', true)
+			'endereco' => get_post_meta($order_data['id'], '_billing_address_1', true) . ", "  . get_post_meta($order_data['id'], '_billing_number', true) . " "  . get_post_meta($order_data['id'], '_billing_neighborhood', true) . " - CEP: " . get_post_meta($order_data['id'], '_billing_postcode', true)
 		]);
 		
 	}
