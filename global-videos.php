@@ -20,7 +20,7 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 $myUpdateChecker->setBranch('main');
 
 //Optional: If you're using a private repository, specify the access token like this:
-$myUpdateChecker->setAuthentication('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');
+//$myUpdateChecker->setAuthentication('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');
 
 add_role('medicos', 'Médicos', array('read' => true));
 add_role('nao_medicos', 'Não Médicos', array('read' => true));
