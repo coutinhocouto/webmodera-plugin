@@ -439,6 +439,10 @@ function global_documentacao_page()
         <h3>Shortcode para página de logout </h3>
 
         <code>[sair]</code>
+		
+		<h3>Classe para esconder elementos para logados</h3>
+
+        <code>esconde-para-logado</code>
 
     </div>
 <?php
