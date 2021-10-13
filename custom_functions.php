@@ -454,3 +454,12 @@ function redirect_non_admin_user(){
     }
 }
 add_action( 'admin_init', 'redirect_non_admin_user' );
+
+//------------------------------------------------------------------
+//------------------------ CSS GLOBAL ------------------------------
+//------------------------------------------------------------------
+
+add_action( 'wp_enqueue_scripts', 'custom_global_css' );
+function custom_global_css() {
+    wp_register_style( 'global', plugin_dir_url( __FILE__ ). 'styles/global.css', array(), '100');
+}
