@@ -5,6 +5,16 @@
 //---------------------- API PARA LOGIN AOVIVO ---------------------
 //------------------------------------------------------------------
 
+if( !function_exists('get_user_role_name') ){
+    function get_user_role_name($user_ID){
+        global $wp_roles;
+
+        $user_data = get_userdata($user_ID);
+        $user_role_slug = $user_data->roles[0];
+        return translate_user_role($wp_roles->roles[$user_role_slug]['name']);
+    }
+}
+
 add_action('rest_api_init', 'global_login');
 
 function global_login()
@@ -36,11 +46,13 @@ function global_phrase()
 			$cidade = get_user_meta($id, 'billing_city', true);
 			$uf = get_user_meta($id, 'billing_state', true);
 			$email = $_POST["username"];
+			$role = get_user_role_name($id);
 			$arr = array(
 				'nome' => $nome,
 				'cidade' => $cidade,
 				'uf' => $uf,
-				'email' => $email
+				'email' => $email,
+				'role' => $role
 			);
 		}
 
