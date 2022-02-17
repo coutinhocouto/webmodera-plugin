@@ -45,17 +45,25 @@ password = ""
 
 > [contador live=1 data="2021/01/01 12:00"]
 
+---
+
 ### Shortcode Login
 
 > [form_login]
+
+---
 
 ### Shortcode para monitorar acessos
 
 > [acessos]
 
+---
+
 ### Shortcode para cadastro do Staff
 
 > [cadastro_staff]
+
+---
 
 ### Shortcode para conteudos bloqueados (somente usuários logados podem ver)
 

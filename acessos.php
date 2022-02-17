@@ -16,8 +16,6 @@ function global_acessos()
 		
         var dataString='{"evento": <?php echo $evento; ?>, "email":"<?php echo $email; ?>" , "link":"<?php echo $link; ?>","tipo": 1}';
 
-        console.log(dataString);
-
         $.post({
             url:"https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/acessos",
             data: dataString,
@@ -40,8 +38,6 @@ function global_acessos()
 	window.addEventListener("beforeunload", function (e) {        
       
 		var dataString='{"evento": <?php echo $evento; ?>, "email":"<?php echo $email; ?>" , "link":"<?php echo $link; ?>","tipo": 2}';
-
-        console.log(dataString);
 
         jQuery.post({
             url:"https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/acessos",
