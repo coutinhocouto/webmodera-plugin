@@ -782,15 +782,43 @@ function global_cadastra_form()
                 <input type="text" name="cargo" id="cargo" required />
             </div>
 
-            <div class="wb-100 md2 nmd staff2">
-                <input type="checkbox" name="termo" value="1">
-                <label form="termo">Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad</label>
-            </div>
+			<?php if(get_site_url() == "https://www.diabetesnoalvo.com.br") { ?>
+			
+                <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">Confira nossa Política de Privacidade</a>
 
-            <div class="wb-100 md2 nmd">
-                <input type="checkbox" name="termo2" value="1" required>
-                <label form="termo2">Estou ciente de que este site é restrito ao público prescritor e assumo completa responsabilidade pela veracidade das informações acima *</label>
-            </div>
+				<div class="wb-100 md2 nmd">
+					<input type="checkbox" name="termo2" value="1" required>
+					<label form="termo2">Confirmo que tenho mais de 18 anos e aceito a <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">política de privacidade</a> de dados e os <a href="https://www.diabetesnoalvo.com.br/termos-de-uso/" target="_blank">termos de uso</a> *</label>
+				</div>
+
+				<div class="wb-100 md2 nmd">
+					<input type="checkbox" name="termo3" value="1" required>
+					<label form="termo2">Li e concordo com o uso e acesso pela Abbott dos meus dados pessoais, bem como o compartilhamento destes dados pela Abbott aos seus parceiros indicados na <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">Política de privacidade de dados.</a> *</label>
+				</div>
+
+				<div class="wb-100 md2 nmd">
+					<input type="checkbox" name="termo4" value="1" required>
+					<label form="termo2">Concordo com a transferência internacional dos meus dados pessoais, conforme estipulado na  <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">Política de privacidade de dados.</a>. *</label>
+				</div>
+
+				<div class="wb-100 md2 nmd staff2">
+					<input type="checkbox" name="termo" value="1">
+					<label form="termo">Aceito receber e-mails e mensagens de texto com conteúdo informativo, questionários de pesquisa e promoções da Abbott e Clannad.</label>
+				</div>
+			
+			<?php } else { ?> 
+            
+				<div class="wb-100 md2 nmd staff2">
+					<input type="checkbox" name="termo" value="1">
+					<label form="termo">Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad</label>
+				</div>
+
+				<div class="wb-100 md2 nmd">
+					<input type="checkbox" name="termo2" value="1" required>
+					<label form="termo2">Estou ciente de que este site é restrito ao público prescritor e assumo completa responsabilidade pela veracidade das informações acima *</label>
+				</div>
+
+			<?php } ?>
 
             <div class="wb-50 md2 nmd staff2">
                 <label form="nome">Senha</label>
