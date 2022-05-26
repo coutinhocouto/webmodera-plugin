@@ -23,6 +23,10 @@ function global_cadastra_form()
         $termo = $_POST["termo"];
         $senha = $_POST["password"];
         $cargo = $_POST["cargo"];
+		$extra1 = $_POST["extra1"];
+		$extra2 = $_POST["extra2"];
+		$extra3 = $_POST["extra3"];
+		$extra4 = $_POST["extra4"];
 
         if ($area_atuacao == "Medicina") {
             $role = "medicos";
@@ -108,6 +112,10 @@ function global_cadastra_form()
             update_user_meta($user_id, 'billing_pagante', $pagante);
             update_user_meta($user_id, 'billing_sabendo', $sabendo);
             update_user_meta($user_id, 'billing_termo', $termo);
+			update_user_meta($user_id, 'billing_extra1', $extra1);
+			update_user_meta($user_id, 'billing_extra2', $extra2);
+			update_user_meta($user_id, 'billing_extra3', $extra3);
+			update_user_meta($user_id, 'billing_extra4', $extra4);
 
             $data = array(
                 "evento" => $evento,
@@ -128,7 +136,11 @@ function global_cadastra_form()
                 "valor" => $valor,
                 "profissao" => $area_atuacao,
                 "status" => $status,
-                "cargo" => $cargo
+                "cargo" => $cargo,
+				"extra1" => $extra1,
+				"extra2" => $extra2,
+				"extra3" => $extra3,
+				"extra4" => $extra4
             );
 
             $postdata = json_encode($data);
@@ -801,7 +813,7 @@ function global_cadastra_form()
 					<label form="termo2">Concordo com a transferência internacional dos meus dados pessoais, conforme estipulado na  <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">Política de privacidade de dados.</a>. *</label>
 				</div>
 
-				<div class="wb-100 md2 nmd staff2">
+				<div class="wb-100 md2 nmd">
 					<input type="checkbox" name="termo" value="1">
 					<label form="termo">Aceito receber e-mails e mensagens de texto com conteúdo informativo, questionários de pesquisa e promoções da Abbott e Clannad.</label>
 				</div>
