@@ -793,7 +793,7 @@ function global_cadastra_form()
                 <label form="nome">Cargo</label>
                 <input type="text" name="cargo" id="cargo" required />
             </div>
-
+			
 			<?php if(get_site_url() == "https://www.diabetesnoalvo.com.br") { ?>
 			
                 <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">Confira nossa Política de Privacidade</a>
@@ -816,6 +816,23 @@ function global_cadastra_form()
 				<div class="wb-100 md2 nmd">
 					<input type="checkbox" name="termo" value="1">
 					<label form="termo">Aceito receber e-mails e mensagens de texto com conteúdo informativo, questionários de pesquisa e promoções da Abbott e Clannad.</label>
+				</div>
+			
+			<?php } else if(get_site_url() == "https://www.educacaoamryt.com.br") { ?>
+			
+                <div class="wb-100 md2 nmd">
+					<input type="checkbox" name="termo2" value="1" required>
+					<label form="termo2">Estou ciente de que este site é restrito ao público prescritor e assumo completa responsabilidade pela veracidade das informações acima *</label>
+				</div>
+
+				<div class="wb-100 md2 nmd">
+					<input type="checkbox" name="extra1" value="1" required>
+					<label form="termo2">Aceito receber e-mails com comunicados da Amryt</label>
+				</div>
+
+				<div class="wb-100 md2 nmd">
+					<input type="checkbox" name="extra2" value="1" required>
+					<label form="termo2">Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad</label>
 				</div>
 			
 			<?php } else { ?> 
