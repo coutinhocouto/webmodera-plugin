@@ -22,6 +22,7 @@ function global_cadastra_form()
         $sabendo = $_POST["sabendo"];
         $termo = $_POST["termo"];
         $senha = $_POST["password"];
+        $instituicao = $_POST["instituicao"];
         $cargo = $_POST["cargo"];
 		$extra1 = $_POST["extra1"];
 		$extra2 = $_POST["extra2"];
@@ -136,6 +137,7 @@ function global_cadastra_form()
                 "valor" => $valor,
                 "profissao" => $area_atuacao,
                 "status" => $status,
+                "instituicao" => $instituicao,
                 "cargo" => $cargo,
 				"extra1" => $extra1,
 				"extra2" => $extra2,
@@ -789,31 +791,38 @@ function global_cadastra_form()
                 </div>
             <?php } ?>
 
-            <div class="wb-100 staff2">
+            <div class="wb-50 staff2">
+                <label form="nome">Instituição</label>
+                <input type="text" name="instituicao" id="instituicao" required />
+            </div>
+
+            <div class="wb-50 staff2">
                 <label form="nome">Cargo</label>
                 <input type="text" name="cargo" id="cargo" required />
             </div>
 			
 			<?php if(get_site_url() == "https://www.diabetesnoalvo.com.br") { ?>
 			
-                <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">Confira nossa Política de Privacidade</a>
+                <div class="wb-100 md2 nmd staff2">
+                    <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">Confira nossa Política de Privacidade</a>
+                </div>
 
-				<div class="wb-100 md2 nmd">
+				<div class="wb-100 md2 nmd staff2">
 					<input type="checkbox" name="termo2" value="1" required>
 					<label form="termo2">Confirmo que tenho mais de 18 anos e aceito a <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">política de privacidade</a> de dados e os <a href="https://www.diabetesnoalvo.com.br/termos-de-uso/" target="_blank">termos de uso</a> *</label>
 				</div>
 
-				<div class="wb-100 md2 nmd">
+				<div class="wb-100 md2 nmd staff2">
 					<input type="checkbox" name="termo3" value="1" required>
 					<label form="termo2">Li e concordo com o uso e acesso pela Abbott dos meus dados pessoais, bem como o compartilhamento destes dados pela Abbott aos seus parceiros indicados na <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">Política de privacidade de dados.</a> *</label>
 				</div>
 
-				<div class="wb-100 md2 nmd">
+				<div class="wb-100 md2 nmd staff2">
 					<input type="checkbox" name="termo4" value="1" required>
 					<label form="termo2">Concordo com a transferência internacional dos meus dados pessoais, conforme estipulado na  <a href="https://www.diabetesnoalvo.com.br/politica-de-privacidade/" target="_blank">Política de privacidade de dados.</a>. *</label>
 				</div>
 
-				<div class="wb-100 md2 nmd">
+				<div class="wb-100 md2 nmd staff2">
 					<input type="checkbox" name="termo" value="1">
 					<label form="termo">Aceito receber e-mails e mensagens de texto com conteúdo informativo, questionários de pesquisa e promoções da Abbott e Clannad.</label>
 				</div>
@@ -848,6 +857,13 @@ function global_cadastra_form()
 				</div>
 
 			<?php } ?>
+
+            <div class="wb-100 md2 nmd staff2">
+                <strong>
+                    Para a segurança dos seus dados, a plataforma Diabetes no Alvo recomenda o uso de senhas fortes. 
+                    Utilize caracteres em caixa alta, em caixa baixa, letras, números e símbolos.
+				</strong>
+            </div>
 
             <div class="wb-50 md2 nmd staff2">
                 <label form="nome">Senha</label>
