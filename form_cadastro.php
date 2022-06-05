@@ -304,6 +304,7 @@ function global_cadastra_form()
 
         <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src='https://www.google.com/recaptcha/api.js' async defer></script>
 
         <script>
             jQuery(document).ready(function($) {
@@ -347,7 +348,6 @@ function global_cadastra_form()
                         $('label[for=crm]').html('Número do conselho (somente números) *');
                         $(".nmd").css('display', 'inline-block');
                     }
-                    console.log($(this).val());
 
                     $('input[name=nome]').attr("readonly", false);
                     $('input[type=text]:not([name=codigo]), input[type=email], input[type=password]').val('');
@@ -367,6 +367,7 @@ function global_cadastra_form()
                 });
 
                 $("#cadastramento").validate({
+					ignore: ".ignore",
                     rules: {
                         password: {
                             minlength: 5
@@ -374,8 +375,20 @@ function global_cadastra_form()
                         cpassword: {
                             minlength: 5,
                             equalTo: "#password"
+                        },
+                        hiddenRecaptcha: {
+                            required: function () {
+                                if (grecaptcha.getResponse() == '') {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
                         }
-                    }
+                    },
+					submitHandler: function(form) {
+						form.submit();
+  					}
                 });
 
                 jQuery.extend(jQuery.validator.messages, {
@@ -403,8 +416,6 @@ function global_cadastra_form()
                     var uf = $('select[name=crm_uf]').val();
                     var crm = $('input[name=crm]').val();
                     var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/check-crm/" + uf + "/" + crm;
-
-                    console.log(url)
 
                     $.getJSON(url, function(result) {
 
@@ -496,6 +507,11 @@ function global_cadastra_form()
                     return false;
 
                 });
+				
+				$("#cadastro-submit").click(function () {
+					console.log('click');
+					if (!$("#cadastramento").valid()) return false;
+				});
 
             });
         </script>
@@ -860,8 +876,7 @@ function global_cadastra_form()
 
             <div class="wb-100 md2 nmd staff2">
                 <strong>
-                    Para a segurança dos seus dados, a plataforma Diabetes no Alvo recomenda o uso de senhas fortes. 
-                    Utilize caracteres em caixa alta, em caixa baixa, letras, números e símbolos.
+                    Para a segurança dos seus dados, recomenda-se o uso de senhas fortes. Utilize caracteres em caixa alta, em caixa baixa, letras, números e símbolos.
 				</strong>
             </div>
 
@@ -874,9 +889,12 @@ function global_cadastra_form()
                 <label form="nome">Confirme sua senha</label>
                 <input type="password" name="cpassword" required />
             </div>
+            
+            <div class="g-recaptcha wb-100 md2 nmd staff2" data-sitekey="6LfngUEgAAAAAOVYtKUXYixRb-YXSskLO3ArHOIB"></div>
+            <input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">
 
             <div class="wb-100 md2 nmd staff2">
-                <input type="submit" value="Cadastre-se" />
+                <input type="submit" id="cadastro-submit" value="Cadastre-se" />
             </div>
         </form>
 
