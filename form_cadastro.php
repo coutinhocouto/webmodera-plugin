@@ -369,7 +369,6 @@ function global_cadastra_form()
                 });
 
                 $("#cadastramento").validate({
-					ignore: ".ignore",
                     rules: {
                         password: {
                             minlength: 5
@@ -387,10 +386,7 @@ function global_cadastra_form()
                                 }
                             }
                         }
-                    },
-					submitHandler: function(form) {
-						form.submit();
-  					}
+                    }
                 });
 
                 jQuery.extend(jQuery.validator.messages, {
@@ -881,7 +877,7 @@ function global_cadastra_form()
             </div>
             
             <div class="g-recaptcha wb-100 md2 nmd staff2" data-sitekey="6LfngUEgAAAAAOVYtKUXYixRb-YXSskLO3ArHOIB"></div>
-            <input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">
+            <input type="text" style="visibility: hidden;" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">
 
             <div class="wb-100 md2 nmd staff2">
                 <input type="submit" id="cadastro-submit" value="Cadastre-se" />
