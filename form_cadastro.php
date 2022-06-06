@@ -266,7 +266,8 @@ function global_cadastra_form()
             #cadastramento .md2,
             #cadastramento .nmd,
             #cadastramento .staff,
-            #cadastramento .staff2 {
+            #cadastramento .staff2,
+            #cadastramento .publico {
                 display: none;
             }
 
@@ -325,7 +326,7 @@ function global_cadastra_form()
 
                                 echo '} else if ($(this).val() == "' . ltrim($area) . '") {';
                                 echo '$(".nmd, .md1, .md2, .staff2").hide();';
-                                echo '$(".staff, .staff2").css("display", "inline-block");';
+                                echo '$(".staff, .staff2, .publico").css("display", "inline-block");';
                                 echo '$("#valida-email").hide();';
 
                             }
@@ -333,17 +334,18 @@ function global_cadastra_form()
                         }
                     ?>
 
+
                     } else if ($(this).val() == "Staff") {
-                        $(".nmd, .md1, .md2, .staff2").hide();
+                        $(".nmd, .md1, .md2, .staff2, .publico").hide();
                         $(".staff").css('display', 'inline-block');
                     } else if ($(this).val() == "Outros") {
-                        $(".nmd, .md1, .md2, .staff2").hide();
+                        $(".nmd, .md1, .md2, .staff2, .publico").hide();
                         $(".staff, .staff2").css('display', 'inline-block');
                         $("#valida-email").hide();
                     } else if ($(this).val() == "") {
-                        $(".md, .staff, .md1, .md2, .staff2").hide();
+                        $(".md, .staff, .md1, .md2, .staff2, .publico").hide();
                     } else {
-                        $(".md1, .md2, .staff, .staff2").hide();
+                        $(".md1, .md2, .staff, .staff2, .publico").hide();
                         $('label[for=crm_uf]').html('Estado do conselho *');
                         $('label[for=crm]').html('Número do conselho (somente números) *');
                         $(".nmd").css('display', 'inline-block');
@@ -457,19 +459,12 @@ function global_cadastra_form()
                     $("select[name=cidade]").append(new Option("", ""));
 
                     $.getJSON(url, function(result) {
-
                         if (result.length) {
-
                             $.each(result, function(i, field) {
-
                                 $("select[name=cidade]").append(new Option(field.cidade, field.cidade));
-
                             });
-
                         } else {
-
                             console.log('ERRO!!')
-
                         }
 
                     });
@@ -507,11 +502,6 @@ function global_cadastra_form()
                     return false;
 
                 });
-				
-				$("#cadastro-submit").click(function () {
-					console.log('click');
-					if (!$("#cadastramento").valid()) return false;
-				});
 
             });
         </script>
@@ -807,7 +797,7 @@ function global_cadastra_form()
                 </div>
             <?php } ?>
 
-            <div class="wb-50 staff2">
+            <div class="wb-50 publico nmd">
                 <label form="nome">Instituição</label>
                 <input type="text" name="instituicao" id="instituicao" required />
             </div>
