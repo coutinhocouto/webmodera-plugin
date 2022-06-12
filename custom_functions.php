@@ -1,6 +1,5 @@
 <?php
 
-
 //------------------------------------------------------------------
 //---------------------- API PARA LOGIN AOVIVO ---------------------
 //------------------------------------------------------------------
@@ -475,3 +474,125 @@ function global_custom_css() {
     echo "<link href='" . plugin_dir_url( __FILE__ ). "styles/global.css' rel='stylesheet' type='text/css'>";
 }
 add_action( 'wp_head', 'global_custom_css' );
+
+//------------------------------------------------------------------
+//------------------------ API PARA CADASTRO -----------------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_login');
+
+function global_login()
+{
+	register_rest_route(
+		'global-cadastro',
+		'global-cadastro',
+		array(
+			'methods' => 'POST',
+			'callback' => 'global_cadastro_api'
+		)
+	);
+}
+
+function global_cadastro_api()
+{
+
+	if ($_POST["action"] == 'cadastro_global') {
+
+        $area_atuacao = $_POST["area_atuacao"];
+        $evento = $_POST["evento"];
+        $nome = $_POST["nome"];
+        $email = strtolower($_POST["email"]);
+        $uf = $_POST["uf"];
+        $cidade = $_POST["cidade"];
+        $telefone = $_POST["telefone"];
+        $crm = $_POST["crm"];
+        $crm_uf = $_POST["crm_uf"];
+        $especialidade = $_POST["especialidade"];
+        $codigo = $_POST["codigo"];
+        $pagante = "0";
+        $sabendo = $_POST["sabendo"];
+        $termo = $_POST["termo"];
+        $senha = $_POST["password"];
+        $instituicao = $_POST["instituicao"];
+        $cargo = $_POST["cargo"];
+
+        if ($area_atuacao == "Medicina") {
+            $role = "medicos";
+        } else if ($area_atuacao == "Staff") {
+            $role = "staff";
+        } else {
+            $role = "nao_medicos";
+        }
+
+        if (get_option('ativa_perfil_1_global') == '1') {
+
+            if (strpos(get_option('cods_perfil_1_global'), $_POST["codigo"]) !== false) {
+                $role = get_option('role_perfil_1_global');
+            }
+            
+        }
+
+        if (get_option('ativa_perfil_2_global') == '1') {
+            
+            if (strpos(get_option('cods_perfil_2_global'), $_POST["codigo"]) !== false) {
+                $role = get_option('role_perfil_2_global');
+            }
+            
+        }
+
+        if (get_option('ativa_perfil_3_global') == '1') {
+            
+            if (strpos(get_option('cods_perfil_3_global'), $_POST["codigo"]) !== false) {
+                $role = get_option('role_perfil_3_global');
+            }
+            
+        }
+
+        if (get_option('ativa_perfil_4_global') == '1') {
+            
+            if (strpos(get_option('cods_perfil_4_global'), $_POST["codigo"]) !== false) {
+                $role = get_option('role_perfil_4_global');
+            }
+            
+        }
+
+        if (get_option('ativa_perfil_5_global') == '1') {
+            
+            if (strpos(get_option('cods_perfil_5_global'), $_POST["codigo"]) !== false) {
+                $role = get_option('role_perfil_5_global');
+            }
+            
+        }
+
+        $userdata = array(
+            'user_login' => $email,
+            'user_pass' => $senha,
+            'user_email' => $email,
+            'first_name' => $nome,
+            'show_admin_bar_front' => false,
+            'role' => $role,
+        );
+
+        if (is_wp_error($user_id)) {
+            echo json_encode(array('message' => 'Erro no cadastramento!'));
+        } else { 
+
+            update_user_meta($user_id, 'billing_area_atuacao', $area_atuacao);
+            update_user_meta($user_id, 'billing_state', $uf);
+            update_user_meta($user_id, 'billing_city', $cidade);
+            update_user_meta($user_id, 'billing_phone', $telefone);
+            update_user_meta($user_id, 'billing_crm', $crm);
+            update_user_meta($user_id, 'billing_crm_uf', $crm_uf);
+            update_user_meta($user_id, 'billing_espec_medica', $especialidade);
+            update_user_meta($user_id, 'billing_codigo', $codigo);
+            update_user_meta($user_id, 'billing_pagante', $pagante);
+            update_user_meta($user_id, 'billing_sabendo', $sabendo);
+            update_user_meta($user_id, 'billing_termo', $termo);
+            update_user_meta($user_id, 'billing_instituicao', $instituicao);
+
+        }
+
+	} else {
+        echo json_encode(array('message' => 'Não autorizado'));
+    }
+};

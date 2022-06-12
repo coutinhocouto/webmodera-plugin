@@ -113,6 +113,7 @@ function global_cadastra_form()
             update_user_meta($user_id, 'billing_pagante', $pagante);
             update_user_meta($user_id, 'billing_sabendo', $sabendo);
             update_user_meta($user_id, 'billing_termo', $termo);
+            update_user_meta($user_id, 'billing_instituicao', $instituicao);
 			update_user_meta($user_id, 'billing_extra1', $extra1);
 			update_user_meta($user_id, 'billing_extra2', $extra2);
 			update_user_meta($user_id, 'billing_extra3', $extra3);
