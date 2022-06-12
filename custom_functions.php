@@ -479,9 +479,9 @@ add_action( 'wp_head', 'global_custom_css' );
 //------------------------ API PARA CADASTRO -----------------------
 //------------------------------------------------------------------
 
-add_action('rest_api_init', 'global_login');
+add_action('rest_api_init', 'global_cadastro');
 
-function global_login()
+function global_cadastro()
 {
 	register_rest_route(
 		'global-cadastro',
