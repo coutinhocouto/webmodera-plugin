@@ -80,8 +80,15 @@ function global_cadastra_form()
             }
             
         }
-                
 
+        $codigos_arr = json_decode(get_option('codigos_global_new'), true);
+        foreach($codigos_arr as &$a){
+            if($a['codigo'] == $_POST["codigo"]){
+                $a['usados'] = $a['usados'] + 1;
+            }
+        }
+        $codigos_new = json_encode($codigos_arr);
+        
         $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
 
         $userdata = array(
@@ -118,6 +125,8 @@ function global_cadastra_form()
 			update_user_meta($user_id, 'billing_extra2', $extra2);
 			update_user_meta($user_id, 'billing_extra3', $extra3);
 			update_user_meta($user_id, 'billing_extra4', $extra4);
+            
+            update_option('codigos_global_new', $codigos_new);
 
             $data = array(
                 "evento" => $evento,
@@ -508,34 +517,31 @@ function global_cadastra_form()
             <input type="hidden" value="<?php echo get_option('evento_global'); ?>" name="evento" />
 
             <?php if (get_option('categoria_global') == "2" || get_option('categoria_global') == "3") { ?>
-
+				<textarea style="display: none" id="codigos_new"><?php echo get_option('codigos_global_new'); ?></textarea>
                 <script>
                     jQuery(document).ready(function($) {
 
                         $("#area_atuacao").hide();
-                        var codigos = [];
-
-                        <?php
-
-                        $areas = explode(",", get_option('codigos_global'));
-
-                        foreach ($areas as $area) {
-                            echo 'codigos.push("' . ltrim($area) . '");';
-                        }
-
-                        ?>
+                        var codigos = $('#codigos_new').val();
 
                         $('#valida-codigo button').click(function() {
-
-                            if ($.inArray($('input[name=codigo]').val().toUpperCase(), codigos) >= 0) {
-                                $("#area_atuacao").show();
-                                $("#codigo_errado").remove();
-                                $('input[name=codigo]').attr("readonly", true);
-                            } else {
-                                $("#area_atuacao").hide();
-                                $("#codigo_errado").remove();
-                                $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Este código não é válido!</span>").insertAfter("#valida-codigo");
-                            }
+							var js = JSON.parse(codigos);
+								
+							for (var index = 0; index < js.length; ++index) {
+								var codigo = js[index];
+								var limit = codigo.qtd - codigo.usados;
+									
+								if(codigo.codigo == $('input[name=codigo]').val().toUpperCase() && limit !== 0){
+									$("#area_atuacao").show();
+									$("#codigo_errado").remove();
+									$('input[name=codigo]').attr("readonly", true);
+									break;
+								} else {
+									$("#area_atuacao").hide();
+									$("#codigo_errado").remove();
+									$("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Este código não é válido ou está com limite de usos exedido!</span>").insertAfter("#valida-codigo");
+								}
+							}
 
                             return false;
 
