@@ -63,14 +63,6 @@ function my_settings_init()
     );
 
     add_settings_field(
-        'codigos_global',
-        'Códigos dos convidados',
-        'global_codigos_markup',
-        'global-page',
-        'global_page_setting_section'
-    );
-
-    add_settings_field(
         'dominios_staff_global',
         'Domínios dos staffs',
         'global_dominios_staff_markup',
@@ -164,7 +156,6 @@ function my_settings_init()
     register_setting('global-page', 'login_global');
     register_setting('global-page', 'bloqueio_global');
     register_setting('global-page', 'categoria_global');
-    register_setting('global-page', 'codigos_global');
     register_setting('global-page', 'dominios_staff_global');
     register_setting('global-page', 'tem_medico_global');
     register_setting('global-page', 'tem_nao_medico_global');
@@ -264,13 +255,6 @@ function global_evento_markup()
     <select id="evento_global" name="evento_global" class="global_field">
     </select>
     <input type="hidden" id="evento_global_val" value="<?php echo get_option('evento_global'); ?>" />
-<?php
-}
-
-function global_codigos_markup()
-{
-?>
-    <input type="text" class="global_field" id="codigos_global" name="codigos_global" value="<?php echo get_option('codigos_global'); ?>">
 <?php
 }
 
