@@ -844,12 +844,12 @@ function global_cadastra_form()
 				</div>
 
 				<div class="wb-100 md2 nmd">
-					<input type="checkbox" name="extra1" value="1" required>
+					<input type="checkbox" name="extra1" value="1">
 					<label form="termo2">Aceito receber e-mails com comunicados da Amryt</label>
 				</div>
 
 				<div class="wb-100 md2 nmd">
-					<input type="checkbox" name="extra2" value="1" required>
+					<input type="checkbox" name="extra2" value="1">
 					<label form="termo2">Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad</label>
 				</div>
 			
