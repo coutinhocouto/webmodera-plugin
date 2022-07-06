@@ -100,115 +100,138 @@ function global_cadastra_form()
             'role' => $role,
         );
 
-        //print_r($userdata);
+        //----
+        
+		global $wpdb;
+		$result = $wpdb->get_results ( "
+			SELECT count(umeta_id) as qtd
+			FROM " . $wpdb->prefix . "usermeta
+			WHERE `meta_key` LIKE 'billing_codigo' AND `meta_value` LIKE '" . $codigo . "'
+		");
+		$limit = $result[0]->qtd;
+		
+		$str = get_option('codigos_global_new');
+		$arr = json_decode($str);
 
-        $user_id = wp_insert_user($userdata);
-
-        if (is_wp_error($user_id)) {
-
-            echo '<label class="error" for="email">' . $user_id->get_error_message() . '</label>';
-        } else { 
-
-            update_user_meta($user_id, 'billing_area_atuacao', $area_atuacao);
-            update_user_meta($user_id, 'billing_state', $uf);
-            update_user_meta($user_id, 'billing_city', $cidade);
-            update_user_meta($user_id, 'billing_phone', $telefone);
-            update_user_meta($user_id, 'billing_crm', $crm);
-            update_user_meta($user_id, 'billing_crm_uf', $crm_uf);
-            update_user_meta($user_id, 'billing_espec_medica', $especialidade);
-            update_user_meta($user_id, 'billing_codigo', $codigo);
-            update_user_meta($user_id, 'billing_pagante', $pagante);
-            update_user_meta($user_id, 'billing_sabendo', $sabendo);
-            update_user_meta($user_id, 'billing_termo', $termo);
-            update_user_meta($user_id, 'billing_instituicao', $instituicao);
-			update_user_meta($user_id, 'billing_extra1', $extra1);
-			update_user_meta($user_id, 'billing_extra2', $extra2);
-			update_user_meta($user_id, 'billing_extra3', $extra3);
-			update_user_meta($user_id, 'billing_extra4', $extra4);
-            
-            update_option('codigos_global_new', $codigos_new);
-
-            $data = array(
-                "evento" => $evento,
-                "email" => $email,
-                "nome" => $nome,
-                "uf" => $uf,
-                "cidade" => $cidade,
-                "telefone" => $telefone,
-                "cpf" => $cpf,
-                "crm" => $crm,
-                "crm_uf" => $crm_uf,
-                "codigo" => $codigo,
-                "especialidade" => $especialidade,
-                "pagante" => $pagante,
-                "sabendo" => $sabendo,
-                "termo" => $termo,
-                "produto" => $produto,
-                "valor" => $valor,
-                "profissao" => $area_atuacao,
-                "status" => $status,
-                "instituicao" => $instituicao,
-                "cargo" => $cargo,
-				"extra1" => $extra1,
-				"extra2" => $extra2,
-				"extra3" => $extra3,
-				"extra4" => $extra4
-            );
-
-            $postdata = json_encode($data);
-
-            //print_r($data);
-
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            $result = curl_exec($ch);
-            curl_close($ch);
-
-            //print_r($result);
-
-            //--------------------------
-			//------- ENVIA E-MAIL -----
-			//--------------------------
-			
-			$to = $email;
-			$headers = array('Content-Type: text/html; charset=UTF-8');
-
-			if ($area_atuacao == "Medicina") {
-				if(get_option('assunto_convidado_global')){
-					$subject = get_option('assunto_convidado_global');
-					$body = get_option('body_convidado_global');
-					wp_mail( $to, $subject, $body, $headers );
-				}
-			} else if ($area_atuacao == "Staff") {
-				if(get_option('assunto_staff_global')){
-					$subject = get_option('assunto_staff_global');
-					$body = get_option('body_staff_global');
-					wp_mail( $to, $subject, $body, $headers );
-				}
-			} else {
-				if(get_option('assunto_convidado_global')){
-					$subject = get_option('assunto_convidado_global');
-					$body = get_option('body_convidado_global');
-					wp_mail( $to, $subject, $body, $headers );
-				}
+		foreach ( $arr as $obj ){
+			if ( $obj->codigo == $codigo ) {
+				$qtd = $obj->qtd;
 			}
+		}
+		$total = $qtd - $limit;
+		
+		if($total <= 0) { 
+			echo '<label class="error" for="email">O limite de usos deste cupom foi alcançado, tente usar outro cupom para concluir seu cadastro.</label>';
+		} else{
+			$user_id = wp_insert_user($userdata);
+
+			if (is_wp_error($user_id)) {
+				echo '<label class="error" for="email">' . $user_id->get_error_message() . '</label>';
+			} else {
+
+				update_user_meta($user_id, 'billing_area_atuacao', $area_atuacao);
+				update_user_meta($user_id, 'billing_state', $uf);
+				update_user_meta($user_id, 'billing_city', $cidade);
+				update_user_meta($user_id, 'billing_phone', $telefone);
+				update_user_meta($user_id, 'billing_crm', $crm);
+				update_user_meta($user_id, 'billing_crm_uf', $crm_uf);
+				update_user_meta($user_id, 'billing_espec_medica', $especialidade);
+				update_user_meta($user_id, 'billing_codigo', $codigo);
+				update_user_meta($user_id, 'billing_pagante', $pagante);
+				update_user_meta($user_id, 'billing_sabendo', $sabendo);
+				update_user_meta($user_id, 'billing_termo', $termo);
+				update_user_meta($user_id, 'billing_instituicao', $instituicao);
+				update_user_meta($user_id, 'billing_extra1', $extra1);
+				update_user_meta($user_id, 'billing_extra2', $extra2);
+				update_user_meta($user_id, 'billing_extra3', $extra3);
+				update_user_meta($user_id, 'billing_extra4', $extra4);
+
+				update_option('codigos_global_new', $codigos_new);
+
+				$data = array(
+					"evento" => $evento,
+					"email" => $email,
+					"nome" => $nome,
+					"uf" => $uf,
+					"cidade" => $cidade,
+					"telefone" => $telefone,
+					"cpf" => $cpf,
+					"crm" => $crm,
+					"crm_uf" => $crm_uf,
+					"codigo" => $codigo,
+					"especialidade" => $especialidade,
+					"pagante" => $pagante,
+					"sabendo" => $sabendo,
+					"termo" => $termo,
+					"produto" => $produto,
+					"valor" => $valor,
+					"profissao" => $area_atuacao,
+					"status" => $status,
+					"instituicao" => $instituicao,
+					"cargo" => $cargo,
+					"extra1" => $extra1,
+					"extra2" => $extra2,
+					"extra3" => $extra3,
+					"extra4" => $extra4
+				);
+
+				$postdata = json_encode($data);
+
+				//print_r($data);
+
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+				$result = curl_exec($ch);
+				curl_close($ch);
+
+				//print_r($result);
+
+				//--------------------------
+				//------- ENVIA E-MAIL -----
+				//--------------------------
+
+				$to = $email;
+				$headers = array('Content-Type: text/html; charset=UTF-8');
+
+				if ($area_atuacao == "Medicina") {
+					if(get_option('assunto_convidado_global')){
+						$subject = get_option('assunto_convidado_global');
+						$body = get_option('body_convidado_global');
+						wp_mail( $to, $subject, $body, $headers );
+					}
+				} else if ($area_atuacao == "Staff") {
+					if(get_option('assunto_staff_global')){
+						$subject = get_option('assunto_staff_global');
+						$body = get_option('body_staff_global');
+						wp_mail( $to, $subject, $body, $headers );
+					}
+				} else {
+					if(get_option('assunto_convidado_global')){
+						$subject = get_option('assunto_convidado_global');
+						$body = get_option('body_convidado_global');
+						wp_mail( $to, $subject, $body, $headers );
+					}
+				}
 
 
-            //$user = get_userdatabylogin( $email );
-            //$user_id = $user->ID;
-            //wp_set_current_user( $user_id, $user_login );
-            //wp_set_auth_cookie( $user_id );
-            //do_action( 'wp_login', $user_login );
+				//$user = get_userdatabylogin( $email );
+				//$user_id = $user->ID;
+				//wp_set_current_user( $user_id, $user_login );
+				//wp_set_auth_cookie( $user_id );
+				//do_action( 'wp_login', $user_login );
 
-            echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
-			
-        }
+				echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
+
+			}
+			//----
+		}
+		
     } else {
 
 ?>
@@ -525,24 +548,25 @@ function global_cadastra_form()
                         var codigos = $('#codigos_new').val();
 
                         $('#valida-codigo button').click(function() {
-							var js = JSON.parse(codigos);
-								
-							for (var index = 0; index < js.length; ++index) {
-								var codigo = js[index];
-								var limit = codigo.qtd - codigo.usados;
-									
-								if(codigo.codigo == $('input[name=codigo]').val().toUpperCase() && limit !== 0){
+							
+							var url = "<?php echo get_site_url() ?>" + "/wp-json/codigos/codigo?cod=" + $('input[name=codigo]').val().toUpperCase();
+							var cod = $('input[name=codigo]').val().toUpperCase();
+							var codigo = JSON.parse(codigos).filter(({codigo}) => codigo === cod);
+							var qtd = codigo[0].qtd;
+							
+							$.get(url, function(data, status){
+								var limit = qtd - data.usos;
+								if(limit > 0) {
 									$("#area_atuacao").show();
 									$("#codigo_errado").remove();
 									$('input[name=codigo]').attr("readonly", true);
-									break;
 								} else {
 									$("#area_atuacao").hide();
 									$("#codigo_errado").remove();
 									$("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Este código não é válido ou está com limite de usos exedido!</span>").insertAfter("#valida-codigo");
 								}
-							}
-
+							});
+							
                             return false;
 
                         });

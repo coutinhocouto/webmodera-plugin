@@ -69,7 +69,6 @@ function global_cogidos_markup() { ?>
                 $('#codigos_holder').append('<div class="cod_separator"></div>');
                 $('#codigos_holder > div:last-child').append('<input type="text" class="codigo" placeholder="Código" />');
                 $('#codigos_holder > div:last-child').append('<input type="number" class="qtd" placeholder="Qtd" />');
-				$('#codigos_holder > div:last-child').append('<input type="number" class="usados" disabled placeholder="Usos" />');
                 $('#codigos_holder > div:last-child').append('<input type="button" class="button button-primary" onClick="removeCod(this)" value="Remover">');
             });
 			$('.wrap form').submit(function(e){
@@ -78,9 +77,7 @@ function global_cogidos_markup() { ?>
 				$("#codigos_holder > div").each(function() {
 					var codigo = $( this ).find($('.codigo')).val();
 					var qtd = $( this ).find($('.qtd')).val();
-					var usados = $( this ).find($('.usados')).val();
-					if(usados === "") usados = 0;
-					codigos.push({codigo: codigo, qtd: qtd, usados: usados});
+					codigos.push({codigo: codigo, qtd: qtd});
 				});
 				
 				$('#codigos_global_new').html(JSON.stringify(codigos));
@@ -90,11 +87,14 @@ function global_cogidos_markup() { ?>
 			if(codigo){
 				var values = JSON.parse(codigo);
 				$(values).each(function (i, val) {
-					$('#codigos_holder').append('<div class="cod_separator"></div>');
-					$('#codigos_holder > div:last-child').append('<input type="text" class="codigo" value="' + val.codigo + '" placeholder="Código" />');
-					$('#codigos_holder > div:last-child').append('<input type="number" class="qtd" value="' + val.qtd + '" placeholder="Qtd" />');
-					$('#codigos_holder > div:last-child').append('<input type="number" class="usados" disabled value="' + val.usados + '" placeholder="Usos" />');
-					$('#codigos_holder > div:last-child').append('<input type="button" class="button button-primary" onClick="removeCod(this)" value="Remover">');
+					var url = "<?php echo get_site_url() ?>" + "/wp-json/codigos/codigo?cod=" + val.codigo;
+					$.get(url, function(data, status){
+						$('#codigos_holder').append('<div class="cod_separator"></div>');
+						$('#codigos_holder > div:last-child').append('<input type="text" class="codigo" value="' + val.codigo + '" placeholder="Código" />');
+						$('#codigos_holder > div:last-child').append('<input type="number" class="qtd" value="' + val.qtd + '" placeholder="Qtd" />');
+						$('#codigos_holder > div:last-child').append('<input type="number" class="usados" disabled value="' + data.usos + '" placeholder="Usos" />');
+						$('#codigos_holder > div:last-child').append('<input type="button" class="button button-primary" onClick="removeCod(this)" value="Remover">');
+					});
 				});
 			}
         });

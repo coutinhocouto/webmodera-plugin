@@ -596,3 +596,34 @@ function global_cadastro_api()
         echo json_encode(array('message' => 'Não autorizado'));
     }
 };
+
+//------------------------------------------------------------------
+//------------------------ API PARA CADASTRO -----------------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_codigos_api');
+function global_codigos_api()
+{
+	register_rest_route( 
+		'codigos', 
+		'codigo', 
+		array(
+        'methods' => 'GET',
+        'callback' => 'global_cadastro_api_func',
+    ) );
+}
+
+function global_cadastro_api_func($data)
+{
+	global $wpdb;
+	$cod = $data->get_param( 'cod' );
+	
+	$result = $wpdb->get_results ( "
+		SELECT count(umeta_id) as qtd
+		FROM " . $wpdb->prefix . "usermeta
+		WHERE `meta_key` LIKE 'billing_codigo' AND `meta_value` LIKE '" . $cod . "'
+	");
+
+	
+	echo json_encode(array('usos' => $result[0]->qtd ));
+}
