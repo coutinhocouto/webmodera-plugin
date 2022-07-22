@@ -119,6 +119,10 @@ function global_cadastra_form()
 			}
 		}
 		$total = $qtd - $limit;
+
+        if(get_option('categoria_global') == "1") {
+            $total = 1;
+        }
 		
 		if($total <= 0) { 
 			echo '<label class="error" for="email">O limite de usos deste cupom foi alcançado, tente usar outro cupom para concluir seu cadastro.</label>';
