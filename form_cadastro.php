@@ -125,7 +125,7 @@ function global_cadastra_form()
         }
 		
 		if($total <= 0) { 
-			echo '<label class="error" for="email">O limite de usos deste cupom foi alcançado, tente usar outro cupom para concluir seu cadastro.</label>';
+			echo '<label class="error" for="email">Este código não é válido ou está com o seu limite de uso excedido!</label>';
 		} else{
 			$user_id = wp_insert_user($userdata);
 
