@@ -42,5 +42,7 @@ include( plugin_dir_path( __FILE__ ) . 'custom_functions.php');
 include( plugin_dir_path( __FILE__ ) . 'campos_extras.php');
 include( plugin_dir_path( __FILE__ ) . 'emails.php');
 include( plugin_dir_path( __FILE__ ) . 'users.php');
-include( plugin_dir_path( __FILE__ ) . 'codigos.php');
+if(get_option('categoria_global') == '2' || get_option('categoria_global') == '3') {
+	include( plugin_dir_path( __FILE__ ) . 'codigos.php');
+}
 
