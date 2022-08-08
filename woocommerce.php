@@ -246,13 +246,20 @@ function billing_area_atuacao_field($checkout)
             $('#billing_espec_medica_field').hide();
 
             $('#billing_area_atuacao').on('change', function() {
-
-                console.log($(this).val());
+                var nMedicos = "<?php echo get_option('nao_medico_atuacao_global'); ?>".replace(/\s+/g, '').split(',');
 
                 if ($(this).val() == "Medicina") {
                     $('#billing_espec_medica_field').show();
+                    $('#billing_crm_field').show();
+                    $('#billing_crm_uf_field').show();
+                } else if (nMedicos.includes($(this).val()) && nMedicos.length > 0) {
+                    $('#billing_espec_medica_field').hide();
+                    $('#billing_crm_field').show();
+                    $('#billing_crm_uf_field').show();
                 } else {
                     $('#billing_espec_medica_field').hide();
+                    $('#billing_crm_field').hide();
+                    $('#billing_crm_uf_field').hide();
                 }
 
             });

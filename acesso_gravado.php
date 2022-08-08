@@ -23,7 +23,6 @@ function global_acesso_gravado($atts)
     jQuery(document).ready(function( $ ){
 
         var dataString='{"live": <?php echo $live; ?>, "email":"<?php echo $email; ?>","tipo": 2}';
-        console.log(dataString);
 		
 		var TodayDate = new Date();
 		var endDate= new Date('<?php echo $data; ?>');
@@ -42,7 +41,6 @@ function global_acesso_gravado($atts)
 					console.log(errorThrown);
 				},
 				success: function() {
-					console.log("enviou")
 				}
 			});
 		}
