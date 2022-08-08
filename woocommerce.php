@@ -257,7 +257,8 @@ function billing_area_atuacao_field($checkout)
             $('#billing_espec_medica_field').hide();
 
             $('#billing_area_atuacao').on('change', function() {
-                var nMedicos = "<?php echo get_option('nao_medico_atuacao_global'); ?>".replace(/\s+/g, '').split(',');
+                var nMedicos = "<?php echo get_option('nao_medico_atuacao_global'); ?>".replace(/\s*,\s*/g, ",").split(',');
+                console.log(nMedicos)
 
                 if ($(this).val() == "Medicina") {
                     $('#billing_espec_medica_field').show();
