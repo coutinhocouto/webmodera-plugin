@@ -227,20 +227,31 @@ function billing_area_atuacao_field($checkout)
         jQuery(document).ready(function($) {
 
             <?php
-            if (get_option('tem_medico_global') == '1') {
-                echo '$("#billing_area_atuacao").append(new Option("Medicina", "Medicina"));';
-            }
+                if (get_option('tem_medico_global') == '1') {
+                    echo '$("#billing_area_atuacao").append(new Option("Medicina", "Medicina"));';
+                }
             ?>
 
             <?php
-            if (get_option('tem_nao_medico_global') == '1') {
+                if (get_option('tem_nao_medico_global') == '1') {
 
-                $areas = explode(",", get_option('nao_medico_atuacao_global'));
+                    $areas = explode(",", get_option('nao_medico_atuacao_global'));
 
-                foreach ($areas as $area) {
-                    echo '$("#billing_area_atuacao").append(new Option("' . ltrim($area) . '", "' . ltrim($area) . '"));';
+                    foreach ($areas as $area) {
+                        echo '$("#billing_area_atuacao").append(new Option("' . ltrim($area) . '", "' . ltrim($area) . '"));';
+                    }
                 }
-            }
+            ?>
+
+            <?php
+                if (get_option('tem_publico_global') == '1') {
+
+                    $areas = explode(",", get_option('publico_atuacao_global'));
+
+                    foreach ($areas as $area) {
+                        echo '$("#billing_area_atuacao").append(new Option("' . ltrim($area) . '", "' . ltrim($area) . '"));';
+                    }
+                }
             ?>
 
             $('#billing_espec_medica_field').hide();
