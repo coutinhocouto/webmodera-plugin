@@ -478,7 +478,7 @@ function billing_termo_field($checkout)
     $checkout = WC()->checkout;
 
     $termo = "Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad";
-    if(if(get_site_url() == "https://www.educacaoamryt.com.br")) {
+    if(get_site_url() == "https://www.educacaoamryt.com.br") {
         $termo = "Eu assumo completa responsabilidade pela veracidade das informações acima *";
     }
 
@@ -513,7 +513,7 @@ function billing_termo_2_field($checkout)
     $checkout = WC()->checkout;
 
     $termo = "Estou ciente de que este site é restrito ao público prescritor e assumo completa responsabilidade pela veracidade das informações acima";
-    if(if(get_site_url() == "https://www.educacaoamryt.com.br")) {
+    if(get_site_url() == "https://www.educacaoamryt.com.br") {
         $termo = "Aceito receber e-mails sobre programas do Lar de Frei Luiz";
     }
 
