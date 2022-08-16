@@ -181,50 +181,35 @@ function global_categoria_markup()
                 });
             });
 
-            $('#categoria_global').on('change', function() {
-
-                if ($(this).val() == "2" || $(this).val() == "3") {
-                    $("#wpbody .form-table tbody tr:first-child + tr").show();
-                } else {
-                    $("#wpbody .form-table tbody tr:first-child + tr").hide();
-                }
-            });
-
-            if ($('#categoria_global').val() == "2" || $('#categoria_global').val() == "3") {
-                $("#wpbody .form-table tbody tr:first-child + tr").show();
-            } else {
-                $("#wpbody .form-table tbody tr:first-child + tr").hide();
-            }
-
             //---------------------------------
 
             if ($('#tem_nao_medico_global:checked').length > 0) {
-                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
+                $("#wpbody .form-table tbody tr:nth-child(12n)").show();
             } else {
-                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
+                $("#wpbody .form-table tbody tr:nth-child(10n)").hide();
             }
 
             if ($('#tem_publico_global:checked').length > 0) {
-                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr+ tr").show();
+                $("#wpbody .form-table tbody tr:nth-child(12n)").show();
             } else {
-                $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr+ tr").hide();
+                $("#wpbody .form-table tbody tr:nth-child(12n)").hide();
             }
 
             //--------------------------------
 
             $('#tem_nao_medico_global').click(function() {
                 if ($('#tem_nao_medico_global:checked').length > 0) {
-                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
+                    $("#wpbody .form-table tbody tr:nth-child(10n)").show();
                 } else {
-                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
+                    $("#wpbody .form-table tbody tr:nth-child(10n)").hide()
                 }
             })
 
             $('#tem_publico_global').click(function() {
                 if ($('#tem_publico_global:checked').length > 0) {
-                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").show();
+                    $("#wpbody .form-table tbody tr:nth-child(12n)").show();
                 } else {
-                    $("#wpbody .form-table tbody tr:first-child + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr + tr").hide();
+                    $("#wpbody .form-table tbody tr:nth-child(12n)").hide();
                 }
             })
 
