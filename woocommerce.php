@@ -476,12 +476,18 @@ function billing_termo_field($checkout)
 {
 
     $checkout = WC()->checkout;
+
+    $termo = "Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad";
+    if(if(get_site_url() == "https://www.educacaoamryt.com.br")) {
+        $termo = "Eu assumo completa responsabilidade pela veracidade das informações acima *";
+    }
+
     woocommerce_form_field(
         'billing_termo',
         array(
             'type'          => 'checkbox',
             'class'         => array('form-row-wide'),
-            'label'         => 'Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad',
+            'label'         => $termo,
             'required'      => false, // or false
         ),
         $checkout->get_value('billing_termo')
@@ -505,12 +511,18 @@ function billing_termo_2_field($checkout)
 {
 
     $checkout = WC()->checkout;
+
+    $termo = "Estou ciente de que este site é restrito ao público prescritor e assumo completa responsabilidade pela veracidade das informações acima";
+    if(if(get_site_url() == "https://www.educacaoamryt.com.br")) {
+        $termo = "Aceito receber e-mails sobre programas do Lar de Frei Luiz";
+    }
+
     woocommerce_form_field(
         'billing_termo_2',
         array(
             'type'          => 'checkbox',
             'class'         => array('form-row-wide'),
-            'label'         => 'Estou ciente de que este site é restrito ao público prescritor e assumo completa responsabilidade pela veracidade das informações acima',
+            'label'         => $termo,
             'required'      => true, // or false
         ),
         $checkout->get_value('billing_termo_2')
