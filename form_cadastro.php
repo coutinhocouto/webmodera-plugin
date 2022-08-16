@@ -881,7 +881,19 @@ function global_cadastra_form()
 					<label form="termo2">Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad</label>
 				</div>
 			
-			<?php } else { ?> 
+            <?php } else if(get_site_url() == "https://www.forumespirita.com.br") { ?>
+			
+                <div class="wb-100 md2 nmd staff2">
+                    <input type="checkbox" name="termo2" value="1" required>
+                    <label form="termo2">Eu assumo completa responsabilidade pela veracidade das informações acima *</label>
+                </div>
+
+                <div class="wb-100 md2 nmd staff2">
+                    <input type="checkbox" name="extra2" value="1">
+                    <label form="termo2">Aceito receber e-mails sobre programas do Lar de Frei Luiz</label>
+                </div>
+        
+            <?php } else { ?> 
             
 				<div class="wb-100 md2 nmd staff2">
 					<input type="checkbox" name="termo" value="1">
