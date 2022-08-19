@@ -414,15 +414,6 @@ function global_cadastra_form()
                             minlength: 5,
                             equalTo: "#password"
                         },
-                        hiddenRecaptcha: {
-                            required: function () {
-                                if (grecaptcha.getResponse() == '') {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
                     }
                 });
 
@@ -922,9 +913,6 @@ function global_cadastra_form()
                 <label form="nome">Confirme sua senha</label>
                 <input type="password" name="cpassword" required />
             </div>
-            
-            <div class="g-recaptcha wb-100 md2 nmd staff2" data-sitekey="6LfngUEgAAAAAOVYtKUXYixRb-YXSskLO3ArHOIB"></div>
-            <input type="text" style="visibility: hidden;" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">
 
             <div class="wb-100 md2 nmd staff2">
                 <input type="submit" id="cadastro-submit" value="Cadastre-se" />
