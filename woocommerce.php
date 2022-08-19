@@ -254,7 +254,7 @@ function billing_area_atuacao_field($checkout)
                 }
             ?>
 
-            $('#billing_espec_medica_field').hide();
+            $('#billing_espec_medica_field, #billing_crm_field, #billing_crm_uf_field').hide();
 
             $('#billing_area_atuacao').on('change', function() {
                 var nMedicos = "<?php echo get_option('nao_medico_atuacao_global'); ?>".replace(/\s*,\s*/g, ",").split(',');
