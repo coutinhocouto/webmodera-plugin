@@ -97,35 +97,37 @@ function billing_css()
 //---------------------  CRM --------------------------------
 //-----------------------------------------------------------
 
-function billing_crm_details()
-{
-    $checkout = WC()->checkout;
+if(get_option('nao_clannad') != '1') {
+    function billing_crm_details()
+    {
+        $checkout = WC()->checkout;
 
-    woocommerce_form_field('billing_crm', array(
-        'type'          => 'text',
-        'label'         => 'Número do conselho',
-        'placeholder'   => '',
-        'class'         => array('form-row-first'),
-        'required'      => true, // or false
-    ), $checkout->get_value('billing_crm'));
-}
+        woocommerce_form_field('billing_crm', array(
+            'type'          => 'text',
+            'label'         => 'Número do conselho',
+            'placeholder'   => '',
+            'class'         => array('form-row-first'),
+            'required'      => true, // or false
+        ), $checkout->get_value('billing_crm'));
+    }
 
-// Custom checkout fields validation
-add_action('woocommerce_checkout_process', 'billing_crm_field_process');
-function billing_crm_field_process()
-{
-    if (isset($_POST['billing_crm']) && empty($_POST['billing_crm']))
-        wc_add_notice(__('CRM é obrigatório!'), 'error');
-}
+    // Custom checkout fields validation
+    add_action('woocommerce_checkout_process', 'billing_crm_field_process');
+    function billing_crm_field_process()
+    {
+        if (isset($_POST['billing_crm']) && empty($_POST['billing_crm']))
+            wc_add_notice(__('CRM é obrigatório!'), 'error');
+    }
 
-// Save custom checkout fields the data to the order
-add_action('woocommerce_checkout_create_order', 'billing_crm_field_update_meta', 10, 2);
-function billing_crm_field_update_meta($order, $data)
-{
-    if (isset($_POST['billing_crm']) && !empty($_POST['billing_crm'])){
-        
-        $order->update_meta_data('billing_crm', sanitize_text_field($_POST['billing_crm']));
+    // Save custom checkout fields the data to the order
+    add_action('woocommerce_checkout_create_order', 'billing_crm_field_update_meta', 10, 2);
+    function billing_crm_field_update_meta($order, $data)
+    {
+        if (isset($_POST['billing_crm']) && !empty($_POST['billing_crm'])){
+            
+            $order->update_meta_data('billing_crm', sanitize_text_field($_POST['billing_crm']));
 
+        }
     }
 }
 
@@ -133,339 +135,355 @@ function billing_crm_field_update_meta($order, $data)
 //---------------------  CRM UF -----------------------------
 //-----------------------------------------------------------
 
-function billing_crm_uf_field($checkout)
-{
+if(get_option('nao_clannad') != '1') {
 
-    $checkout = WC()->checkout;
-    woocommerce_form_field(
-        'billing_crm_uf',
-        array(
-            'type'          => 'select',
-            'class'         => array('form-row-last'),
-            'label'         => 'Selecione o estado conselho',
-            'required'      => true, // or false
-            'options'       => array(
-                'blank' =>  "Selecione um estado",
-                "AC"    =>  "AC",
-                "AL"    =>  "AL",
-                "AP"    =>  "AP",
-                "AM"    =>  "AM",
-                "BA"    =>  "BA",
-                "CE"    =>  "CE",
-                "DF"    =>  "DF",
-                "ES"    =>  "ES",
-                "GO"    =>  "GO",
-                "MA"    =>  "MA",
-                "MT"    =>  "MT",
-                "MS"    =>  "MS",
-                "MG"    =>  "MG",
-                "PA"    =>  "PA",
-                "PB"    =>  "PB",
-                "PR"    =>  "PR",
-                "PE"    =>  "PE",
-                "PI"    =>  "PI",
-                "RJ"    =>  "RJ",
-                "RN"    =>  "RN",
-                "RS"    =>  "RS",
-                "RO"    =>  "RO",
-                "RR"    =>  "RR",
-                "SC"    =>  "SC",
-                "SP"    =>  "SP",
-                "SE"    =>  "SE",
-                "TO"    =>  "TO"
-            )
+    function billing_crm_uf_field($checkout)
+    {
 
-        ),
-        $checkout->get_value('billing_crm_uf')
-    );
-}
-//* Process the checkout
+        $checkout = WC()->checkout;
+        woocommerce_form_field(
+            'billing_crm_uf',
+            array(
+                'type'          => 'select',
+                'class'         => array('form-row-last'),
+                'label'         => 'Selecione o estado conselho',
+                'required'      => true, // or false
+                'options'       => array(
+                    'blank' =>  "Selecione um estado",
+                    "AC"    =>  "AC",
+                    "AL"    =>  "AL",
+                    "AP"    =>  "AP",
+                    "AM"    =>  "AM",
+                    "BA"    =>  "BA",
+                    "CE"    =>  "CE",
+                    "DF"    =>  "DF",
+                    "ES"    =>  "ES",
+                    "GO"    =>  "GO",
+                    "MA"    =>  "MA",
+                    "MT"    =>  "MT",
+                    "MS"    =>  "MS",
+                    "MG"    =>  "MG",
+                    "PA"    =>  "PA",
+                    "PB"    =>  "PB",
+                    "PR"    =>  "PR",
+                    "PE"    =>  "PE",
+                    "PI"    =>  "PI",
+                    "RJ"    =>  "RJ",
+                    "RN"    =>  "RN",
+                    "RS"    =>  "RS",
+                    "RO"    =>  "RO",
+                    "RR"    =>  "RR",
+                    "SC"    =>  "SC",
+                    "SP"    =>  "SP",
+                    "SE"    =>  "SE",
+                    "TO"    =>  "TO"
+                )
 
-add_action('woocommerce_checkout_process', 'billing_crm_uf_field_process');
-function billing_crm_uf_field_process()
-{
-    global $woocommerce;
-    // Check if set, if its not set add an error.
-    if ($_POST['billing_crm_uf'] == "blank")
-        wc_add_notice('<strong>É necessário informar o estado do conselho!</strong>', 'error');
-}
-
-//* Update the order meta with field value
-
-add_action('woocommerce_checkout_update_order_meta', 'billing_crm_uf_update_order_meta');
-function billing_crm_uf_update_order_meta($order_id)
-{
-    if ($_POST['billing_crm_uf']) {
-        update_post_meta($order_id, 'billing_crm_uf', esc_attr($_POST['billing_crm_uf']));
+            ),
+            $checkout->get_value('billing_crm_uf')
+        );
     }
+    //* Process the checkout
+
+    add_action('woocommerce_checkout_process', 'billing_crm_uf_field_process');
+    function billing_crm_uf_field_process()
+    {
+        global $woocommerce;
+        // Check if set, if its not set add an error.
+        if ($_POST['billing_crm_uf'] == "blank")
+            wc_add_notice('<strong>É necessário informar o estado do conselho!</strong>', 'error');
+    }
+
+    //* Update the order meta with field value
+
+    add_action('woocommerce_checkout_update_order_meta', 'billing_crm_uf_update_order_meta');
+    function billing_crm_uf_update_order_meta($order_id)
+    {
+        if ($_POST['billing_crm_uf']) {
+            update_post_meta($order_id, 'billing_crm_uf', esc_attr($_POST['billing_crm_uf']));
+        }
+    }
+
 }
 
 //-----------------------------------------------------------
 //---------------------  ÁREA DE ATUAÇÃO --------------------
 //-----------------------------------------------------------
 
-function billing_area_atuacao_field($checkout)
-{
-    $checkout = WC()->checkout;
-    woocommerce_form_field(
-        'billing_area_atuacao',
-        array(
-            'type'          => 'select',
-            'class'         => array('form-row-wide'),
-            'label'         => 'Área de atuação',
-            'required'      => true, // or false
-            'options'       => array(
-                'blank' =>  "Selecione uma área de atuação",
-            )
-        ),
-        $checkout->get_value('billing_area_atuacao')
-    );
+if(get_option('nao_clannad') != '1') {
 
-?>
+    function billing_area_atuacao_field($checkout)
+    {
+        $checkout = WC()->checkout;
+        woocommerce_form_field(
+            'billing_area_atuacao',
+            array(
+                'type'          => 'select',
+                'class'         => array('form-row-wide'),
+                'label'         => 'Área de atuação',
+                'required'      => true, // or false
+                'options'       => array(
+                    'blank' =>  "Selecione uma área de atuação",
+                )
+            ),
+            $checkout->get_value('billing_area_atuacao')
+        );
 
-    <script>
-        jQuery(document).ready(function($) {
+    ?>
 
-            <?php
-                if (get_option('tem_medico_global') == '1') {
-                    echo '$("#billing_area_atuacao").append(new Option("Medicina", "Medicina"));';
-                }
-            ?>
+        <script>
+            jQuery(document).ready(function($) {
 
-            <?php
-                if (get_option('tem_nao_medico_global') == '1') {
-
-                    $areas = explode(",", get_option('nao_medico_atuacao_global'));
-
-                    foreach ($areas as $area) {
-                        echo '$("#billing_area_atuacao").append(new Option("' . ltrim($area) . '", "' . ltrim($area) . '"));';
+                <?php
+                    if (get_option('tem_medico_global') == '1') {
+                        echo '$("#billing_area_atuacao").append(new Option("Medicina", "Medicina"));';
                     }
-                }
-            ?>
+                ?>
 
-            <?php
-                if (get_option('tem_publico_global') == '1') {
+                <?php
+                    if (get_option('tem_nao_medico_global') == '1') {
 
-                    $areas = explode(",", get_option('publico_atuacao_global'));
+                        $areas = explode(",", get_option('nao_medico_atuacao_global'));
 
-                    foreach ($areas as $area) {
-                        echo '$("#billing_area_atuacao").append(new Option("' . ltrim($area) . '", "' . ltrim($area) . '"));';
+                        foreach ($areas as $area) {
+                            echo '$("#billing_area_atuacao").append(new Option("' . ltrim($area) . '", "' . ltrim($area) . '"));';
+                        }
                     }
-                }
-            ?>
+                ?>
 
-            $('#billing_espec_medica_field, #billing_crm_field, #billing_crm_uf_field').hide();
+                <?php
+                    if (get_option('tem_publico_global') == '1') {
 
-            $('#billing_area_atuacao').on('change', function() {
-                var nMedicos = "<?php echo get_option('nao_medico_atuacao_global'); ?>".replace(/\s*,\s*/g, ",").split(',');
-                console.log(nMedicos)
+                        $areas = explode(",", get_option('publico_atuacao_global'));
 
-                if ($(this).val() == "Medicina") {
-                    $('#billing_espec_medica_field').show();
-                    $('#billing_crm_field').show();
-                    $('#billing_crm_uf_field').show();
-                } else if (nMedicos.includes($(this).val()) && nMedicos.length > 0) {
-                    $('#billing_espec_medica_field').hide();
-                    $('#billing_crm_field').show();
-                    $('#billing_crm_uf_field').show();
-                } else {
-                    $('#billing_espec_medica_field').hide();
-                    $('#billing_crm_field').hide();
-                    $('#billing_crm_uf_field').hide();
-                }
+                        foreach ($areas as $area) {
+                            echo '$("#billing_area_atuacao").append(new Option("' . ltrim($area) . '", "' . ltrim($area) . '"));';
+                        }
+                    }
+                ?>
+
+                $('#billing_espec_medica_field, #billing_crm_field, #billing_crm_uf_field').hide();
+
+                $('#billing_area_atuacao').on('change', function() {
+                    var nMedicos = "<?php echo get_option('nao_medico_atuacao_global'); ?>".replace(/\s*,\s*/g, ",").split(',');
+                    console.log(nMedicos)
+
+                    if ($(this).val() == "Medicina") {
+                        $('#billing_espec_medica_field').show();
+                        $('#billing_crm_field').show();
+                        $('#billing_crm_uf_field').show();
+                    } else if (nMedicos.includes($(this).val()) && nMedicos.length > 0) {
+                        $('#billing_espec_medica_field').hide();
+                        $('#billing_crm_field').show();
+                        $('#billing_crm_uf_field').show();
+                    } else {
+                        $('#billing_espec_medica_field').hide();
+                        $('#billing_crm_field').hide();
+                        $('#billing_crm_uf_field').hide();
+                    }
+
+                });
 
             });
+        </script>
 
-        });
-    </script>
-
-<?php
-}
-//* Process the checkout
-
-add_action('woocommerce_checkout_process', 'billing_area_atuacao_field_process');
-function billing_area_atuacao_field_process()
-{
-    global $woocommerce;
-    // Check if set, if its not set add an error.
-    if ($_POST['billing_area_atuacao'] == "blank")
-        wc_add_notice('<strong>É necessário informar a área de atuação!</strong>', 'error');
-}
-
-//* Update the order meta with field value
-
-add_action('woocommerce_checkout_update_order_meta', 'billing_area_atuacao_update_order_meta');
-function billing_area_atuacao_update_order_meta($order_id)
-{
-    if ($_POST['billing_area_atuacao']){
-        update_post_meta($order_id, 'billing_area_atuacao', esc_attr($_POST['billing_area_atuacao']));
+    <?php
     }
+    //* Process the checkout
+
+    add_action('woocommerce_checkout_process', 'billing_area_atuacao_field_process');
+    function billing_area_atuacao_field_process()
+    {
+        global $woocommerce;
+        // Check if set, if its not set add an error.
+        if ($_POST['billing_area_atuacao'] == "blank")
+            wc_add_notice('<strong>É necessário informar a área de atuação!</strong>', 'error');
+    }
+
+    //* Update the order meta with field value
+
+    add_action('woocommerce_checkout_update_order_meta', 'billing_area_atuacao_update_order_meta');
+    function billing_area_atuacao_update_order_meta($order_id)
+    {
+        if ($_POST['billing_area_atuacao']){
+            update_post_meta($order_id, 'billing_area_atuacao', esc_attr($_POST['billing_area_atuacao']));
+        }
+    }
+
 }
 
 //-----------------------------------------------------------
 //---------------------  ESPECIALIDADE ----------------------
 //-----------------------------------------------------------
 
-function billing_espec_medica_field($checkout)
-{
+if(get_option('nao_clannad') != '1') {
 
-    $checkout = WC()->checkout;
-    woocommerce_form_field(
-        'billing_espec_medica',
-        array(
-            'type'          => 'select',
-            'class'         => array('form-row-wide'),
-            'label'         => 'Especialidade médica',
-            'required'      => true, // or false
-            'options'       => array(
-                'blank' =>  "Selecione uma especialidade médica",
-                "Acupuntura"    =>  "Acupuntura",
-                "Alergia e imunologia"    =>  "Alergia e imunologia",
-                "Alergia e imunologia pediátrica"    =>  "Alergia e imunologia pediátrica",
-                "Anestesiologia"    =>  "Anestesiologia",
-                "Angiologia"    =>  "Angiologia",
-                "Cardiologia"    =>  "Cardiologia",
-                "Cardiologia pediátrica"    =>  "Cardiologia pediátrica",
-                "Cirurgia bariátrica"    =>  "Cirurgia bariátrica",
-                "Cirurgia cardiovascular"    =>  "Cirurgia cardiovascular",
-                "Cirurgia da mão"    =>  "Cirurgia da mão",
-                "Cirurgia de cabeça e pescoço"    =>  "Cirurgia de cabeça e pescoço",
-                "Cirurgia do aparelho digestivo"    =>  "Cirurgia do aparelho digestivo",
-                "Cirurgia geral"    =>  "Cirurgia geral",
-                "Cirurgia oncológica"    =>  "Cirurgia oncológica",
-                "Cirurgia pediátrica"    =>  "Cirurgia pediátrica",
-                "Cirurgia plástica"    =>  "Cirurgia plástica",
-                "Cirurgia torácica"    =>  "Cirurgia torácica",
-                "Cirurgia vascular"    =>  "Cirurgia vascular",
-                "Clínica médica"    =>  "Clínica médica",
-                "Coloproctologia"    =>  "Coloproctologia",
-                "Dermatologia"    =>  "Dermatologia",
-                "Dor"    =>  "Dor",
-                "Endocrinologia e metabologia"    =>  "Endocrinologia e metabologia",
-                "Endocrinologia pediátrica"    =>  "Endocrinologia pediátrica",
-                "Endoscopia"    =>  "Endoscopia",
-                "Gastroenterologia"    =>  "Gastroenterologia",
-                "Gastroenterologia pediátrica"    =>  "Gastroenterologia pediátrica",
-                "Genética médica"    =>  "Genética médica",
-                "Geriatria"    =>  "Geriatria",
-                "Ginecologia e obstetrícia"    =>  "Ginecologia e obstetrícia",
-                "Hematologia e hemoterapia"    =>  "Hematologia e hemoterapia",
-                "Hematologia e hemoterapia pediátrica"    =>  "Hematologia e hemoterapia pediátrica",
-                "Hepatologia"    =>  "Hepatologia",
-                "Homeopatia"    =>  "Homeopatia",
-                "Infectologia"    =>  "Infectologia",
-                "Infectologia pediátrica"    =>  "Infectologia pediátrica",
-                "Mastologia"    =>  "Mastologia",
-                "Medicina de emergência"    =>  "Medicina de emergência",
-                "Medicina de família e comunidade"    =>  "Medicina de família e comunidade",
-                "Medicina de tráfego"    =>  "Medicina de tráfego",
-                "Medicina do trabalho"    =>  "Medicina do trabalho",
-                "Medicina esportiva"    =>  "Medicina esportiva",
-                "Medicina física e reabilitação"    =>  "Medicina física e reabilitação",
-                "Medicina intensiva"    =>  "Medicina intensiva",
-                "Medicina intensiva pediátrica"    =>  "Medicina intensiva pediátrica",
-                "Medicina legal e perícia médica"    =>  "Medicina legal e perícia médica",
-                "Medicina nuclear"    =>  "Medicina nuclear",
-                "Medicina preventiva e social"    =>  "Medicina preventiva e social",
-                "Nefrologia"    =>  "Nefrologia",
-                "Nefrologia pediátrica"    =>  "Nefrologia pediátrica",
-                "Neurocirurgia"    =>  "Neurocirurgia",
-                "Neurologia"    =>  "Neurologia",
-                "Neurologia pediátrica"    =>  "Neurologia pediátrica",
-                "Nutrologia"    =>  "Nutrologia",
-                "Oftalmologia"    =>  "Oftalmologia",
-                "Oncologia clínica"    =>  "Oncologia clínica",
-                "Oncologia pediátrica"    =>  "Oncologia pediátrica",
-                "Ortopedia e traumatologia"    =>  "Ortopedia e traumatologia",
-                "Otorrinolaringologia"    =>  "Otorrinolaringologia",
-                "Patologia"    =>  "Patologia",
-                "Patologia clínica/medicina laboratorial"    =>  "Patologia clínica/medicina laboratorial",
-                "Pediatria"    =>  "Pediatria",
-                "Pneumologia"    =>  "Pneumologia",
-                "Pneumologia pediátrica"    =>  "Pneumologia pediátrica",
-                "Psiquiatria"    =>  "Psiquiatria",
-                "Radiologia e diagnóstico por imagem"    =>  "Radiologia e diagnóstico por imagem",
-                "Radioterapia"    =>  "Radioterapia",
-                "Reumatologia"    =>  "Reumatologia",
-                "Reumatologia pediátrica"    =>  "Reumatologia pediátrica",
-                "Urologia"    =>  "Urologia"
-            )
+    function billing_espec_medica_field($checkout)
+    {
 
-        ),
-        $checkout->get_value('billing_espec_medica')
-    );
+        $checkout = WC()->checkout;
+        woocommerce_form_field(
+            'billing_espec_medica',
+            array(
+                'type'          => 'select',
+                'class'         => array('form-row-wide'),
+                'label'         => 'Especialidade médica',
+                'required'      => true, // or false
+                'options'       => array(
+                    'blank' =>  "Selecione uma especialidade médica",
+                    "Acupuntura"    =>  "Acupuntura",
+                    "Alergia e imunologia"    =>  "Alergia e imunologia",
+                    "Alergia e imunologia pediátrica"    =>  "Alergia e imunologia pediátrica",
+                    "Anestesiologia"    =>  "Anestesiologia",
+                    "Angiologia"    =>  "Angiologia",
+                    "Cardiologia"    =>  "Cardiologia",
+                    "Cardiologia pediátrica"    =>  "Cardiologia pediátrica",
+                    "Cirurgia bariátrica"    =>  "Cirurgia bariátrica",
+                    "Cirurgia cardiovascular"    =>  "Cirurgia cardiovascular",
+                    "Cirurgia da mão"    =>  "Cirurgia da mão",
+                    "Cirurgia de cabeça e pescoço"    =>  "Cirurgia de cabeça e pescoço",
+                    "Cirurgia do aparelho digestivo"    =>  "Cirurgia do aparelho digestivo",
+                    "Cirurgia geral"    =>  "Cirurgia geral",
+                    "Cirurgia oncológica"    =>  "Cirurgia oncológica",
+                    "Cirurgia pediátrica"    =>  "Cirurgia pediátrica",
+                    "Cirurgia plástica"    =>  "Cirurgia plástica",
+                    "Cirurgia torácica"    =>  "Cirurgia torácica",
+                    "Cirurgia vascular"    =>  "Cirurgia vascular",
+                    "Clínica médica"    =>  "Clínica médica",
+                    "Coloproctologia"    =>  "Coloproctologia",
+                    "Dermatologia"    =>  "Dermatologia",
+                    "Dor"    =>  "Dor",
+                    "Endocrinologia e metabologia"    =>  "Endocrinologia e metabologia",
+                    "Endocrinologia pediátrica"    =>  "Endocrinologia pediátrica",
+                    "Endoscopia"    =>  "Endoscopia",
+                    "Gastroenterologia"    =>  "Gastroenterologia",
+                    "Gastroenterologia pediátrica"    =>  "Gastroenterologia pediátrica",
+                    "Genética médica"    =>  "Genética médica",
+                    "Geriatria"    =>  "Geriatria",
+                    "Ginecologia e obstetrícia"    =>  "Ginecologia e obstetrícia",
+                    "Hematologia e hemoterapia"    =>  "Hematologia e hemoterapia",
+                    "Hematologia e hemoterapia pediátrica"    =>  "Hematologia e hemoterapia pediátrica",
+                    "Hepatologia"    =>  "Hepatologia",
+                    "Homeopatia"    =>  "Homeopatia",
+                    "Infectologia"    =>  "Infectologia",
+                    "Infectologia pediátrica"    =>  "Infectologia pediátrica",
+                    "Mastologia"    =>  "Mastologia",
+                    "Medicina de emergência"    =>  "Medicina de emergência",
+                    "Medicina de família e comunidade"    =>  "Medicina de família e comunidade",
+                    "Medicina de tráfego"    =>  "Medicina de tráfego",
+                    "Medicina do trabalho"    =>  "Medicina do trabalho",
+                    "Medicina esportiva"    =>  "Medicina esportiva",
+                    "Medicina física e reabilitação"    =>  "Medicina física e reabilitação",
+                    "Medicina intensiva"    =>  "Medicina intensiva",
+                    "Medicina intensiva pediátrica"    =>  "Medicina intensiva pediátrica",
+                    "Medicina legal e perícia médica"    =>  "Medicina legal e perícia médica",
+                    "Medicina nuclear"    =>  "Medicina nuclear",
+                    "Medicina preventiva e social"    =>  "Medicina preventiva e social",
+                    "Nefrologia"    =>  "Nefrologia",
+                    "Nefrologia pediátrica"    =>  "Nefrologia pediátrica",
+                    "Neurocirurgia"    =>  "Neurocirurgia",
+                    "Neurologia"    =>  "Neurologia",
+                    "Neurologia pediátrica"    =>  "Neurologia pediátrica",
+                    "Nutrologia"    =>  "Nutrologia",
+                    "Oftalmologia"    =>  "Oftalmologia",
+                    "Oncologia clínica"    =>  "Oncologia clínica",
+                    "Oncologia pediátrica"    =>  "Oncologia pediátrica",
+                    "Ortopedia e traumatologia"    =>  "Ortopedia e traumatologia",
+                    "Otorrinolaringologia"    =>  "Otorrinolaringologia",
+                    "Patologia"    =>  "Patologia",
+                    "Patologia clínica/medicina laboratorial"    =>  "Patologia clínica/medicina laboratorial",
+                    "Pediatria"    =>  "Pediatria",
+                    "Pneumologia"    =>  "Pneumologia",
+                    "Pneumologia pediátrica"    =>  "Pneumologia pediátrica",
+                    "Psiquiatria"    =>  "Psiquiatria",
+                    "Radiologia e diagnóstico por imagem"    =>  "Radiologia e diagnóstico por imagem",
+                    "Radioterapia"    =>  "Radioterapia",
+                    "Reumatologia"    =>  "Reumatologia",
+                    "Reumatologia pediátrica"    =>  "Reumatologia pediátrica",
+                    "Urologia"    =>  "Urologia"
+                )
 
-}
-//* Process the checkout
+            ),
+            $checkout->get_value('billing_espec_medica')
+        );
 
-add_action('woocommerce_checkout_process', 'billing_espec_medica_field_process');
-function billing_espec_medica_field_process()
-{
-    global $woocommerce;
-    // Check if set, if its not set add an error.
-    if ($_POST['billing_area_atuacao'] == "Medicina") {
-        if ($_POST['billing_espec_medica'] == "blank")
-            wc_add_notice('<strong>É necessário sua especialidade médica!</strong>', 'error');
     }
-}
+    //* Process the checkout
 
-//* Update the order meta with field value
-
-add_action('woocommerce_checkout_update_order_meta', 'billing_espec_medica_update_order_meta');
-function billing_espec_medica_update_order_meta($order_id)
-{
-    if ($_POST['billing_espec_medica']) {
-        update_post_meta($order_id, 'billing_espec_medica', esc_attr($_POST['billing_espec_medica']));
+    add_action('woocommerce_checkout_process', 'billing_espec_medica_field_process');
+    function billing_espec_medica_field_process()
+    {
+        global $woocommerce;
+        // Check if set, if its not set add an error.
+        if ($_POST['billing_area_atuacao'] == "Medicina") {
+            if ($_POST['billing_espec_medica'] == "blank")
+                wc_add_notice('<strong>É necessário sua especialidade médica!</strong>', 'error');
+        }
     }
+
+    //* Update the order meta with field value
+
+    add_action('woocommerce_checkout_update_order_meta', 'billing_espec_medica_update_order_meta');
+    function billing_espec_medica_update_order_meta($order_id)
+    {
+        if ($_POST['billing_espec_medica']) {
+            update_post_meta($order_id, 'billing_espec_medica', esc_attr($_POST['billing_espec_medica']));
+        }
+    }
+
 }
 
 //-----------------------------------------------------------
 //---------------------  SABENDO ----------------------------
 //-----------------------------------------------------------
 
-function billing_sabendo_field($checkout)
-{
+if(get_option('nao_clannad') != '1') {
+    
+    function billing_sabendo_field($checkout)
+    {
 
-    $checkout = WC()->checkout;
-    woocommerce_form_field(
-        'billing_sabendo',
-        array(
-            'type'          => 'select',
-            'class'         => array('form-row-wide'),
-            'label'         => 'Como ficou sabendo?',
-            'required'      => true, // or false
-            'options'       => array(
-                'blank' =>  "Selecione",
-                'E-mail marketing'      =>  "E-mail marketing",
-                'Redes sociais'      =>  "Redes sociais",
-                'Sociedade Médica'      =>  "Sociedade Médica",
-                'Representante'      =>  "Representante",
-                'Outros'      =>  "Outros"
-            )
+        $checkout = WC()->checkout;
+        woocommerce_form_field(
+            'billing_sabendo',
+            array(
+                'type'          => 'select',
+                'class'         => array('form-row-wide'),
+                'label'         => 'Como ficou sabendo?',
+                'required'      => true, // or false
+                'options'       => array(
+                    'blank' =>  "Selecione",
+                    'E-mail marketing'      =>  "E-mail marketing",
+                    'Redes sociais'      =>  "Redes sociais",
+                    'Sociedade Médica'      =>  "Sociedade Médica",
+                    'Representante'      =>  "Representante",
+                    'Outros'      =>  "Outros"
+                )
 
-        ),
-        $checkout->get_value('billing_sabendo')
-    );
-}
-//* Process the checkout
-
-add_action('woocommerce_checkout_process', 'billing_sabendo_field_process');
-function billing_sabendo_field_process()
-{
-    global $woocommerce;
-    // Check if set, if its not set add an error.
-    if ($_POST['billing_sabendo'] == "blank")
-        wc_add_notice('<strong>É necessário informar como ficou sabendo!</strong>', 'error');
-}
-
-//* Update the order meta with field value
-
-add_action('woocommerce_checkout_update_order_meta', 'billing_sabendo_update_order_meta');
-function billing_sabendo_update_order_meta($order_id)
-{
-    if ($_POST['billing_sabendo']) {
-        update_post_meta($order_id, 'billing_sabendo', esc_attr($_POST['billing_sabendo']));
+            ),
+            $checkout->get_value('billing_sabendo')
+        );
     }
+    //* Process the checkout
+
+    add_action('woocommerce_checkout_process', 'billing_sabendo_field_process');
+    function billing_sabendo_field_process()
+    {
+        global $woocommerce;
+        // Check if set, if its not set add an error.
+        if ($_POST['billing_sabendo'] == "blank")
+            wc_add_notice('<strong>É necessário informar como ficou sabendo!</strong>', 'error');
+    }
+
+    //* Update the order meta with field value
+
+    add_action('woocommerce_checkout_update_order_meta', 'billing_sabendo_update_order_meta');
+    function billing_sabendo_update_order_meta($order_id)
+    {
+        if ($_POST['billing_sabendo']) {
+            update_post_meta($order_id, 'billing_sabendo', esc_attr($_POST['billing_sabendo']));
+        }
+    }
+
 }
 
 //-----------------------------------------------------------
@@ -554,26 +572,30 @@ function billing_termo_2_update_order_meta($order_id)
 //--------------  CAMPOS NA EDIÇÃO DOS PEDIDOS --------------
 //----------------------------------------------------------- 
 
-add_action('woocommerce_admin_order_data_after_billing_address', 'billing_display_admin_order_meta', 10, 1);
-function billing_display_admin_order_meta($order)
-{
-    $termo = 'Não';
-    if(get_post_meta($order->id, 'billing_termo_2', true) == '1'){
-        $termo = 'Ok';
-    }
+if(get_option('nao_clannad') != '1') {
 
-    $termo2 = 'Não aceito';
-    if(get_post_meta($order->id, 'billing_termo', true) == '1'){
-        $termo2 = 'Aceito';
-    }
+    add_action('woocommerce_admin_order_data_after_billing_address', 'billing_display_admin_order_meta', 10, 1);
+    function billing_display_admin_order_meta($order)
+    {
+        $termo = 'Não';
+        if(get_post_meta($order->id, 'billing_termo_2', true) == '1'){
+            $termo = 'Ok';
+        }
 
-    echo '<h3>Dados Adicionais</h3>';
-    echo '<p><strong>' . __('CRM') . ':</strong> ' . get_post_meta($order->id, 'billing_crm', true) . ' - ' . get_post_meta($order->id, 'billing_crm_uf', true) . '<br>';
-    echo '<strong>' . __('Área de atuação') . ':</strong> ' . get_post_meta($order->id, 'billing_area_atuacao', true) . '<br>';
-    echo '<strong>' . __('Especialidade Médica') . ':</strong> ' . get_post_meta($order->id, 'billing_espec_medica', true) . '<br>';
-    echo '<strong>' . __('Termo de responsabilidade') . ': </strong> ' . $termo . '<br>';
-    echo '<strong>' . __('Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad') . ': </strong> ' . $termo2 . '<br>';
-    echo '<strong>' . __('Como ficou sabendo?') . '</strong> ' . get_post_meta($order->id, 'billing_sabendo', true) . '</p>';
+        $termo2 = 'Não aceito';
+        if(get_post_meta($order->id, 'billing_termo', true) == '1'){
+            $termo2 = 'Aceito';
+        }
+
+        echo '<h3>Dados Adicionais</h3>';
+        echo '<p><strong>' . __('CRM') . ':</strong> ' . get_post_meta($order->id, 'billing_crm', true) . ' - ' . get_post_meta($order->id, 'billing_crm_uf', true) . '<br>';
+        echo '<strong>' . __('Área de atuação') . ':</strong> ' . get_post_meta($order->id, 'billing_area_atuacao', true) . '<br>';
+        echo '<strong>' . __('Especialidade Médica') . ':</strong> ' . get_post_meta($order->id, 'billing_espec_medica', true) . '<br>';
+        echo '<strong>' . __('Termo de responsabilidade') . ': </strong> ' . $termo . '<br>';
+        echo '<strong>' . __('Aceito receber e-mails sobre programas de educação continuada, via Editora Clannad') . ': </strong> ' . $termo2 . '<br>';
+        echo '<strong>' . __('Como ficou sabendo?') . '</strong> ' . get_post_meta($order->id, 'billing_sabendo', true) . '</p>';
+    }
+    
 }
 
 

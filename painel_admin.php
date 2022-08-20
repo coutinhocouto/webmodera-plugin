@@ -150,6 +150,14 @@ function my_settings_init()
         'global_page_setting_section'
     );
 
+    add_settings_field(
+        'nao_clannad',
+        'Não é um evento da clannad?',
+        'global_nao_clannad_markup',
+        'global-page',
+        'global_page_setting_section'
+    );
+
     register_setting('global-page', 'evento_global');
     register_setting('global-page', 'aovivo_global');
     register_setting('global-page', 'inscrito_global');
@@ -162,6 +170,7 @@ function my_settings_init()
     register_setting('global-page', 'nao_medico_atuacao_global');
     register_setting('global-page', 'tem_publico_global');
     register_setting('global-page', 'publico_atuacao_global');
+    register_setting('global-page', 'nao_clannad');
     
 }
 
@@ -315,6 +324,12 @@ function global_publico_atuacao_markup()
 <?php
 }
 
+function global_nao_clannad_markup()
+{
+?>
+    <input type="checkbox" id="nao_clannad" name="nao_clannad" value="1" <?php if (get_option('nao_clannad') == "1") { echo "checked";} ?>>
+<?php
+}
 
 /*******************************************************************************************/
 /****************************** DOCUMENTAÇÃO ***********************************************/

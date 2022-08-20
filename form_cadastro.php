@@ -552,9 +552,15 @@ function global_cadastra_form()
 							$.get(url, function(data, status){
 								var limit = qtd - data.usos;
 								if(limit > 0) {
-									$("#area_atuacao").show();
-									$("#codigo_errado").remove();
-									$('input[name=codigo]').attr("readonly", true);
+                                    <?php if(get_option('nao_clannad') != '1') {
+                                        echo '$("#area_atuacao").show();
+                                        $("#codigo_errado").remove();
+                                        $("input[name=codigo]").attr("readonly", true);';
+                                    } else {
+                                        echo '$(".md, .staff, .md1, .md2, .staff2, .publico").css("display", "inline-block");
+                                        $("#codigo_errado").remove();
+                                        $("input[name=codigo]").attr("readonly", true);';
+                                    } ?>
 								} else {
 									$("#area_atuacao").hide();
 									$("#codigo_errado").remove();
@@ -580,89 +586,91 @@ function global_cadastra_form()
 
             <?php } ?>
 
-            <div class="wb-100" id="area_atuacao">
-                <label for="area_atuacao">Área de atuação *</label>
+            <?php if(get_option('nao_clannad') != '1') { ?>
+                <div class="wb-100" id="area_atuacao">
+                    <label for="area_atuacao">Área de atuação *</label>
 
-                <select name="area_atuacao" required>
-                    <option></option>
+                    <select name="area_atuacao" required>
+                        <option></option>
 
-                    <?php
-                        if (get_option('tem_medico_global') == '1') {
-                            echo '<option value="Medicina">Medicina</option>';
-                        }
-                    ?>
-
-                    <?php
-                        if (get_option('tem_nao_medico_global') == '1') {
-
-                            $areas = explode(",", get_option('nao_medico_atuacao_global'));
-                            foreach ($areas as $area) {
-                                echo '<option value="' . ltrim($area) . '">' . ltrim($area) . '</option>';
+                        <?php
+                            if (get_option('tem_medico_global') == '1') {
+                                echo '<option value="Medicina">Medicina</option>';
                             }
-                        }
-                    ?>
+                        ?>
 
-                    <?php
-                        if (get_option('categoria_global') == '1') {
-                            echo '<option value="Staff">Staff</option>';
-                        }
-                    ?>
+                        <?php
+                            if (get_option('tem_nao_medico_global') == '1') {
 
-                    <?php
-                        if (get_option('tem_publico_global') == '1') {
-
-                            $areas = explode(",", get_option('publico_atuacao_global'));
-                            foreach ($areas as $area) {
-                                echo '<option value="' . ltrim($area) . '">' . ltrim($area) . '</option>';
+                                $areas = explode(",", get_option('nao_medico_atuacao_global'));
+                                foreach ($areas as $area) {
+                                    echo '<option value="' . ltrim($area) . '">' . ltrim($area) . '</option>';
+                                }
                             }
-                        }
-                    ?>
+                        ?>
 
-                </select>
-            </div>
+                        <?php
+                            if (get_option('categoria_global') == '1') {
+                                echo '<option value="Staff">Staff</option>';
+                            }
+                        ?>
 
-            <div class="wb-33 md1 nmd crm_uf">
-                <label for="crm_uf">Estado do CRM *</label>
-                <select name="crm_uf" required>
-                    <option></option>
-                    <option value="AC">AC</option>
-                    <option value="AL">AL</option>
-                    <option value="AP">AP</option>
-                    <option value="AM">AM</option>
-                    <option value="BA">BA</option>
-                    <option value="CE">CE</option>
-                    <option value="DF">DF</option>
-                    <option value="ES">ES</option>
-                    <option value="GO">GO</option>
-                    <option value="MA">MA</option>
-                    <option value="MT">MT</option>
-                    <option value="MS">MS</option>
-                    <option value="MG">MG</option>
-                    <option value="PA">PA</option>
-                    <option value="PB">PB</option>
-                    <option value="PR">PR</option>
-                    <option value="PE">PE</option>
-                    <option value="PI">PI</option>
-                    <option value="RJ">RJ</option>
-                    <option value="RN">RN</option>
-                    <option value="RS">RS</option>
-                    <option value="RO">RO</option>
-                    <option value="RR">RR</option>
-                    <option value="SC">SC</option>
-                    <option value="SP">SP</option>
-                    <option value="SE">SE</option>
-                    <option value="TO">TO</option>
-                </select>
-            </div>
+                        <?php
+                            if (get_option('tem_publico_global') == '1') {
 
-            <div class="wb-33 md1 nmd crm">
-                <label for="crm">CRM (somente números) *</label>
-                <input type="text" name="crm" id="crm_num" required />
-            </div>
+                                $areas = explode(",", get_option('publico_atuacao_global'));
+                                foreach ($areas as $area) {
+                                    echo '<option value="' . ltrim($area) . '">' . ltrim($area) . '</option>';
+                                }
+                            }
+                        ?>
 
-            <div class="wb-33 md1">
-                <button id="valida_crm">Validar CRM</button>
-            </div>
+                    </select>
+                </div>
+
+                <div class="wb-33 md1 nmd crm_uf">
+                    <label for="crm_uf">Estado do CRM *</label>
+                    <select name="crm_uf" required>
+                        <option></option>
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AP">AP</option>
+                        <option value="AM">AM</option>
+                        <option value="BA">BA</option>
+                        <option value="CE">CE</option>
+                        <option value="DF">DF</option>
+                        <option value="ES">ES</option>
+                        <option value="GO">GO</option>
+                        <option value="MA">MA</option>
+                        <option value="MT">MT</option>
+                        <option value="MS">MS</option>
+                        <option value="MG">MG</option>
+                        <option value="PA">PA</option>
+                        <option value="PB">PB</option>
+                        <option value="PR">PR</option>
+                        <option value="PE">PE</option>
+                        <option value="PI">PI</option>
+                        <option value="RJ">RJ</option>
+                        <option value="RN">RN</option>
+                        <option value="RS">RS</option>
+                        <option value="RO">RO</option>
+                        <option value="RR">RR</option>
+                        <option value="SC">SC</option>
+                        <option value="SP">SP</option>
+                        <option value="SE">SE</option>
+                        <option value="TO">TO</option>
+                    </select>
+                </div>
+
+                <div class="wb-33 md1 nmd crm">
+                    <label for="crm">CRM (somente números) *</label>
+                    <input type="text" name="crm" id="crm_num" required />
+                </div>
+
+                <div class="wb-33 md1">
+                    <button id="valida_crm">Validar CRM</button>
+                </div>
+            <?php } ?>
 
             <div class="wb-100" id="crm_error">
 
