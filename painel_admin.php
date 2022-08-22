@@ -152,7 +152,7 @@ function my_settings_init()
 
     add_settings_field(
         'nao_clannad',
-        'Não é um evento da clannad?',
+        'Não é um evento médico?',
         'global_nao_clannad_markup',
         'global-page',
         'global_page_setting_section'
