@@ -598,7 +598,7 @@ function global_cadastro_api()
 };
 
 //------------------------------------------------------------------
-//------------------------ API PARA CADASTRO -----------------------
+//----------------- API PEGAR OS CÓDIGOS USADOS --------------------
 //------------------------------------------------------------------
 
 add_action('rest_api_init', 'global_codigos_api');
@@ -626,4 +626,40 @@ function global_cadastro_api_func($data)
 
 	
 	echo json_encode(array('usos' => $result[0]->qtd ));
+}
+
+//------------------------------------------------------------------
+//---------------- API CÓDIGOS PASSAPORTE CLANNAD ------------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_pass_api');
+function global_pass_api()
+{
+	register_rest_route( 
+		'pass-codigos', 
+		'pass-codigos', 
+		array(
+        'methods' => 'GET',
+        'callback' => 'global_codigos_pass',
+    ) );
+}
+
+function global_codigos_pass($data)
+{
+	global $wpdb;
+	
+	$codigos = json_decode(get_option('codigos_global_new'));
+
+	foreach ($codigos as $item) {
+		$index = array_search($item, $codigos);
+		$result = $wpdb->get_results ( "
+			SELECT count(umeta_id) as qtd
+			FROM " . $wpdb->prefix . "usermeta
+			WHERE `meta_key` LIKE 'billing_codigo' AND `meta_value` LIKE '" . $item->codigo . "'
+		");
+		$codigos[$index]->usos = intval($result[0]->qtd);
+		$item->qtd = intval($item->qtd);
+	}
+	
+	echo json_encode($codigos);
 }

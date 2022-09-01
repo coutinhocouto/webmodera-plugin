@@ -1,0 +1,97 @@
+#cadastramento label {
+    margin-bottom: 10px;
+}
+
+#cadastramento input,
+#cadastramento select,
+#cadastramento button {
+    display: block;
+    width: 100%;
+    border-radius: 3px;
+}
+
+#cadastramento input[type=checkbox] {
+    display: inline-block;
+    width: auto;
+}
+
+#cadastramento .wb-100,
+#cadastramento .wb-50,
+#cadastramento .wb-33,
+#cadastramento .wb-70,
+#cadastramento .wb-30 {
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+#cadastramento .wb-100 {
+    width: 100%;
+}
+
+#cadastramento .wb-70 {
+    width: 69%;
+}
+
+#cadastramento .wb-50 {
+    width: 49.4%;
+}
+
+#cadastramento .wb-30 {
+    width: 30%;
+}
+
+#cadastramento .wb-33 {
+    width: 32.7%;
+}
+
+#cadastramento input[type=submit],
+#cadastramento button {
+    background: #17a2b8;
+    color: #fff;
+    border: none;
+}
+
+#cadastramento input[type=submit]:hover,
+#cadastramento button:hover {
+    background: #000;
+}
+
+#cadastramento .md1,
+#cadastramento .md2,
+#cadastramento .nmd,
+#cadastramento .staff,
+#cadastramento .staff2,
+#cadastramento .publico {
+    display: none;
+}
+
+.validation_error {
+    padding: 10px;
+    background: #f00;
+    color: #fff;
+    border-radius: 3px;
+}
+
+#cadastramento small {
+    display: block;
+    color: #f00;
+}
+
+label.error {
+    background: #f00;
+    color: #fff;
+    padding: 5px;
+    display: block;
+    margin-top: 5px;
+    border-radius: 3px;
+}
+
+@media only screen and (max-width: 800px) {
+
+    #cadastramento .wb-70,
+    #cadastramento .wb-50,
+    #cadastramento .wb-33,
+    #cadastramento .wb-30 {
+        width: 100%;
+    }
+}
