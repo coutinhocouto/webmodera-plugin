@@ -121,7 +121,7 @@ function global_cadastra_form()
 				update_user_meta($user_id, 'billing_extra2', $extra2);
 				update_user_meta($user_id, 'billing_extra3', $extra3);
 				update_user_meta($user_id, 'billing_extra4', $extra4);
-\
+                
                 $table_name = $wpdb->prefix . 'global_codigos';
                 $wpdb->insert($table_name, array(
                     'user_id' => $user_id,
