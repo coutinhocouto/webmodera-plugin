@@ -41,30 +41,6 @@ function global_cadastra_form()
             $role = "nao_medicos";
             $status = "0";
         }
-        
-        $limit = 0;
-        $qtd = 0;
-
-		$result = $wpdb->get_results ( "
-			SELECT count(umeta_id) as qtd
-			FROM " . $wpdb->prefix . "usermeta
-			WHERE `meta_key` LIKE 'billing_codigo' AND `meta_value` LIKE '" . $codigo . "'
-		");
-		$limit = $result[0]->qtd;
-		
-		$str = get_option('codigos_global_new');
-		$arr = json_decode($str);
-
-		foreach ( $arr as $obj ){
-			if ( $obj->codigo == $codigo ) {
-				$qtd = $obj->qtd;
-			}
-		}
-		$total = $qtd - $limit;
-
-        if(get_option('categoria_global') == "1") {
-            $total = 1;
-        }
 
         
         if (get_option('ativa_perfil_1_global') == '1') {
@@ -107,30 +83,11 @@ function global_cadastra_form()
             
         }
 
-        $codigos_arr = json_decode(get_option('codigos_global_new'), true);
-        foreach($codigos_arr as &$a){
-            if($a['codigo'] == $_POST["codigo"]){
-                $a['usados'] = $a['usados'] + 1;
-            }
-        }
-        $codigos_new = json_encode($codigos_arr);
-        
-        $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
-        $userdata = array(
-            'user_login' => $email,
-            'user_pass' => $senha,
-            'user_email' => $email,
-            'first_name' => $nome,
-            'show_admin_bar_front' => false,
-            'role' => $role,
-        );
-
         //----
-		
-        if($qtd = 0) {
-            echo '<label class="error" for="email">Este código não é válido ou pode ter ocorrido um problema na validação pedimos que tente novamente.</label>';
-        } if($total <= 0) { 
-			echo '<label class="error" for="email">Este código está com o seu limite de uso excedido!</label>';
+		$qtd = global_codigos_checker($codigo); 
+
+        if($qtd <= 0) {
+			echo '<label class="error" for="email">Este código está com o seu limite de uso excedido, tente novamente com outro código!</label>';
 		} else{
 			$user_id = wp_insert_user($userdata);
 
@@ -156,6 +113,12 @@ function global_cadastra_form()
 				update_user_meta($user_id, 'billing_extra4', $extra4);
 
 				update_option('codigos_global_new', $codigos_new);
+
+                $table_name = $wpdb->prefix . 'global_codigos';
+                $wpdb->insert($table_name, array(
+                    'user_id' => $user_id,
+                    'codigo' => $codigo,
+                ));
 
 				$data = array(
 					"evento" => $evento,

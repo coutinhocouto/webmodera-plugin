@@ -1,5 +1,29 @@
 <?php
 
+function global_codigos_checker($codigo) {
+    
+    global $wpdb;
+    $codigos = json_decode(get_option('codigos_global_new'));
+    
+    $result = $wpdb->get_results ( "
+        SELECT count(user_id) as qtd
+        FROM " . $wpdb->prefix . "global_codigos
+        WHERE `codigo` LIKE '" . $codigo . "'
+    ");
+    $qtd = 0;
+    $usos = intval($result[0]->qtd);
+    
+    foreach($codigos as $item){
+        if($item->codigo  === $codigo){
+            $qtd = intval($item->qtd);
+        }
+    }
+
+    $total = $qtd - $usos;
+
+    echo $total;
+}
+
 function global_codigos_menu() {
     add_submenu_page(
         'global-admin',
@@ -82,28 +106,36 @@ function global_cogidos_markup() { ?>
 				
 				$('#codigos_global_new').html(JSON.stringify(codigos));
 			})
-			
-			var codigo = $('#codigos_global_new').val();
-			if(codigo){
-				var values = JSON.parse(codigo);
-				$(values).each(function (i, val) {
-					var url = "<?php echo get_site_url() ?>" + "/wp-json/codigos/codigo?cod=" + val.codigo;
-					$.get(url, function(data, status){
-						$('#codigos_holder').append('<div class="cod_separator"></div>');
-						$('#codigos_holder > div:last-child').append('<input type="text" class="codigo" value="' + val.codigo + '" placeholder="Código" />');
-						$('#codigos_holder > div:last-child').append('<input type="number" class="qtd" value="' + val.qtd + '" placeholder="Qtd" />');
-						$('#codigos_holder > div:last-child').append('<input type="number" class="usados" disabled value="' + data.usos + '" placeholder="Usos" />');
-						$('#codigos_holder > div:last-child').append('<input type="button" class="button button-primary" onClick="removeCod(this)" value="Remover">');
-					});
-				});
-			}
         });
     </script>
 	<textarea id="codigos_global_new" name="codigos_global_new" style="width: 100%;">
 		<?php echo get_option('codigos_global_new'); ?>
 	</textarea>
     <input type="button" name="add" id="add" class="button button-primary" value="Adicionar Código">
-    <div id="codigos_holder"></div>
+
+    <div id="codigos_holder">
+        <?php 
+            global $wpdb;
+            $codigos = json_decode(get_option('codigos_global_new'));
+            foreach ($codigos as $item) {
+                $index = array_search($item, $codigos);
+                $result = $wpdb->get_results ( "
+                    SELECT count(user_id) as qtd
+                    FROM " . $wpdb->prefix . "global_codigos
+                    WHERE `codigo` LIKE '" . $item->codigo . "'
+                ");
+                $codigos[$index]->usos = intval($result[0]->qtd);
+                $item->qtd = intval($item->qtd);
+
+                echo '<div class="cod_separator">';
+                    echo '<input type="text" class="codigo" value="' . $item->codigo . '" placeholder="Código" />';
+                    echo '<input type="number" class="qtd" value="' . $item->qtd . '" placeholder="Qtd" />';
+                    echo '<input type="number" class="usados" disabled value="' . $item->usos . '" placeholder="Usos" />';
+                    echo '<input type="button" class="button button-primary" onClick="removeCod(this)" value="Remover">';
+                echo '</div>';
+            }
+        ?>
+    </div>
 
 <?php
 }
