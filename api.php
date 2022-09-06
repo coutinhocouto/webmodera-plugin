@@ -221,6 +221,38 @@ function global_cadastro_api()
 };
 
 //------------------------------------------------------------------
+//----------------- API PEGAR OS CÓDIGOS USADOS --------------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_codigos_api');
+function global_codigos_api()
+{
+	register_rest_route( 
+		'codigos', 
+		'codigo', 
+		array(
+        'methods' => 'GET',
+        'callback' => 'global_cadastro_api_func',
+    ) );
+}
+
+function global_cadastro_api_func($data)
+{
+	global $wpdb;
+	$cod = $data->get_param( 'cod' );
+	
+	$result = $wpdb->get_results ( "
+		SELECT count(user_id) as qtd
+		FROM " . $wpdb->prefix . "global_codigos
+		WHERE `codigo` LIKE '" . $cod . "'
+	");
+
+	
+	echo json_encode(array('usos' => $result[0]->qtd ));
+}
+
+
+//------------------------------------------------------------------
 //---------------- API CÓDIGOS PASSAPORTE CLANNAD ------------------
 //------------------------------------------------------------------
 

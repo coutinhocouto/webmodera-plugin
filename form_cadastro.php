@@ -83,10 +83,20 @@ function global_cadastra_form()
             
         }
 
-        //----
-		$qtd = global_codigos_checker($codigo); 
+        $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
+        $userdata = array(
+            'user_login' => $email,
+            'user_pass' => $senha,
+            'user_email' => $email,
+            'first_name' => $nome,
+            'show_admin_bar_front' => false,
+            'role' => $role,
+        );
 
-        if($qtd <= 0) {
+        //----
+		$qtd = intval(global_codigos_checker($codigo));
+
+        if($qtd <= 0 && get_option('categoria_global') != "1") {
 			echo '<label class="error" for="email">Este código está com o seu limite de uso excedido, tente novamente com outro código!</label>';
 		} else{
 			$user_id = wp_insert_user($userdata);
@@ -111,9 +121,7 @@ function global_cadastra_form()
 				update_user_meta($user_id, 'billing_extra2', $extra2);
 				update_user_meta($user_id, 'billing_extra3', $extra3);
 				update_user_meta($user_id, 'billing_extra4', $extra4);
-
-				update_option('codigos_global_new', $codigos_new);
-
+\
                 $table_name = $wpdb->prefix . 'global_codigos';
                 $wpdb->insert($table_name, array(
                     'user_id' => $user_id,

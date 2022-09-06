@@ -21,7 +21,7 @@ function global_codigos_checker($codigo) {
 
     $total = $qtd - $usos;
 
-    echo $total;
+    return $total;
 }
 
 function global_codigos_menu() {
