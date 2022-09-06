@@ -186,8 +186,6 @@ function global_cadastra_form()
 
 				$postdata = json_encode($data);
 
-				//print_r($data);
-
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -198,8 +196,6 @@ function global_cadastra_form()
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 				$result = curl_exec($ch);
 				curl_close($ch);
-
-				//print_r($result);
 
 				//--------------------------
 				//------- ENVIA E-MAIL -----
@@ -227,13 +223,6 @@ function global_cadastra_form()
 						wp_mail( $to, $subject, $body, $headers );
 					}
 				}
-
-
-				//$user = get_userdatabylogin( $email );
-				//$user_id = $user->ID;
-				//wp_set_current_user( $user_id, $user_login );
-				//wp_set_auth_cookie( $user_id );
-				//do_action( 'wp_login', $user_login );
 
 				echo '<script>window.location.replace("' . get_option('inscrito_global') . '");</script>';
 
