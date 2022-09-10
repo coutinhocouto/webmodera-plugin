@@ -94,7 +94,11 @@ function global_cadastra_form()
         );
 
         //----
-		$qtd = intval(global_codigos_checker($codigo));
+        if(get_option('categoria_global') != "1") {
+            $qtd = intval(global_codigos_checker($codigo));
+        } else {
+            $qtd = 1;
+        }
 
         if($qtd <= 0 && get_option('categoria_global') != "1") {
 			echo '<label class="error" for="email">Este código está com o seu limite de uso excedido, tente novamente com outro código!</label>';
