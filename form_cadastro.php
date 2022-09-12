@@ -17,7 +17,7 @@ function global_cadastra_form()
         $crm = $_POST["crm"];
         $crm_uf = $_POST["crm_uf"];
         $especialidade = $_POST["especialidade"];
-        $codigo = $_POST["codigo"];
+        $codigo = strtoupper($_POST["codigo"]);
         $pagante = "0";
         $produto = "";
         $valor = "";
