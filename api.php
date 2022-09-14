@@ -121,8 +121,9 @@ function global_cadastro_api()
 
 	if ($_POST["action"] == 'cadastro_global') {
 
+        global $wpdb;
+        
         $area_atuacao = $_POST["area_atuacao"];
-        $evento = $_POST["evento"];
         $nome = $_POST["nome"];
         $email = strtolower($_POST["email"]);
         $uf = $_POST["uf"];
@@ -136,8 +137,6 @@ function global_cadastro_api()
         $sabendo = $_POST["sabendo"];
         $termo = $_POST["termo"];
         $senha = $_POST["password"];
-        $instituicao = $_POST["instituicao"];
-        $cargo = $_POST["cargo"];
 
         if ($area_atuacao == "Medicina") {
             $role = "medicos";
@@ -195,11 +194,17 @@ function global_cadastro_api()
             'show_admin_bar_front' => false,
             'role' => $role,
         );
+        $user_id = wp_insert_user($userdata);
 
         if (is_wp_error($user_id)) {
             echo json_encode(array('message' => 'Erro no cadastramento!'));
         } else { 
 
+            $table_name = $wpdb->prefix . 'global_codigos';
+            $wpdb->insert($table_name, array(
+                'user_id' => $user_id,
+                'codigo' => $codigo,
+            ));
             update_user_meta($user_id, 'billing_area_atuacao', $area_atuacao);
             update_user_meta($user_id, 'billing_state', $uf);
             update_user_meta($user_id, 'billing_city', $cidade);
@@ -211,7 +216,6 @@ function global_cadastro_api()
             update_user_meta($user_id, 'billing_pagante', $pagante);
             update_user_meta($user_id, 'billing_sabendo', $sabendo);
             update_user_meta($user_id, 'billing_termo', $termo);
-            update_user_meta($user_id, 'billing_instituicao', $instituicao);
 
         }
 
