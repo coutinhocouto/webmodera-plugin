@@ -197,7 +197,7 @@ function global_cadastro_api()
         $user_id = wp_insert_user($userdata);
 
         if (is_wp_error($user_id)) {
-            echo json_encode(array('message' => 'Erro no cadastramento!'));
+            echo json_encode(array('message' => 'Houve um erro no cadastramento, provavelmente este usuário já existe!'));
         } else { 
 
             $table_name = $wpdb->prefix . 'global_codigos';

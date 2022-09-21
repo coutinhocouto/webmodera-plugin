@@ -115,15 +115,17 @@ if(get_option('nao_clannad') != '1') {
     add_action('woocommerce_checkout_process', 'billing_crm_field_process');
     function billing_crm_field_process()
     {
-        if (isset($_POST['billing_crm']) && empty($_POST['billing_crm']))
-            wc_add_notice(__('CRM é obrigatório!'), 'error');
+        $areas = "Medicina," . get_option('nao_medico_atuacao_global');
+
+        if (isset($_POST['billing_crm']) && empty($_POST['billing_crm']) && str_contains($areas, $_POST['billing_area_atuacao']))
+            wc_add_notice('<strong>É necessário informar o número do conselho!</strong>', 'error');
     }
 
     // Save custom checkout fields the data to the order
     add_action('woocommerce_checkout_create_order', 'billing_crm_field_update_meta', 10, 2);
     function billing_crm_field_update_meta($order, $data)
     {
-        if (isset($_POST['billing_crm']) && !empty($_POST['billing_crm'])){
+        if (isset($_POST['billing_crm']) && !empty($_POST['billing_crm']) ){
             
             $order->update_meta_data('billing_crm', sanitize_text_field($_POST['billing_crm']));
 
@@ -189,8 +191,8 @@ if(get_option('nao_clannad') != '1') {
     function billing_crm_uf_field_process()
     {
         global $woocommerce;
-        // Check if set, if its not set add an error.
-        if ($_POST['billing_crm_uf'] == "blank")
+        
+        if ($_POST['billing_crm_uf'] == "blank" && !empty($_POST['billing_crm']))
             wc_add_notice('<strong>É necessário informar o estado do conselho!</strong>', 'error');
     }
 
