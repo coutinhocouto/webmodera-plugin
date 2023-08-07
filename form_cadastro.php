@@ -632,16 +632,11 @@ function global_cadastra_form()
 					<label form="termo">Aceito receber e-mails e mensagens de texto com conteúdo informativo, questionários de pesquisa e promoções da Abbott e Clannad.</label>
 				</div>
 			
-			<?php } else if(get_site_url() == "https://www.educacaoamryt.com.br") { ?>
+			<?php } else if(get_site_url() == "https://www.olharabeso.com.br") { ?>
 			
                 <div class="wb-100 md2 nmd">
 					<input type="checkbox" name="termo2" value="1" required>
-					<label form="termo2">Estou ciente de que este site é restrito ao público prescritor e assumo completa responsabilidade pela veracidade das informações acima *</label>
-				</div>
-
-				<div class="wb-100 md2 nmd">
-					<input type="checkbox" name="extra1" value="1">
-					<label form="termo2">Aceito receber e-mails com comunicados da Amryt</label>
+					<label form="termo2">Estou ciente de que este site é restrito ao público prescritor e profissionais de saúde, e assumo completa responsabilidade pela veracidade das informações acima *</label>
 				</div>
 
 				<div class="wb-100 md2 nmd">
