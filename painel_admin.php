@@ -428,6 +428,10 @@ function global_documentacao_page()
 
         <code>esconde-para-logado</code>
 
+        <h3>Novo shortcode para coutdown</h3>
+
+        <code>[contador_novo live="41" data="08/09/2023" horario="18:34" cor="#bc290a"]</code>
+
     </div>
 <?php
 

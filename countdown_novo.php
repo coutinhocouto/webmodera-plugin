@@ -12,7 +12,10 @@ function global_countdown_novo($atts)
         $atts,
         'global_cadastra_form'
     );
+
+    date_default_timezone_set('America/Sao_Paulo');
     $dateString = $atts['data'] . ' ' . $atts['horario'] . ':00';
+    $now = new DateTime();
     $format = "d/m/Y H:i:s";
 
     $dateTime = DateTime::createFromFormat($format, $dateString);
@@ -22,7 +25,6 @@ function global_countdown_novo($atts)
         $target_date = $dateTime->format('Y-m-d H:i:s');
     }
 
-    date_default_timezone_set('America/Sao_Paulo');
     $current_user = wp_get_current_user();
     $nome = $current_user->user_firstname . " " . $current_user->user_lastname;
     $cidade = get_user_meta($current_user->ID, "billing_city", true);
@@ -128,41 +130,60 @@ function global_countdown_novo($atts)
     </div>
 
     <script>
+        function getCurrentDateFromServer(callback) {
+            var apiUrl = 'https://worldtimeapi.org/api/timezone/America/Sao_Paulo'; // Brazil/Sao_Paulo timezone
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', apiUrl, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    var currentDateTime = new Date(response.utc_datetime);
+                    callback(currentDateTime);
+                }
+            };
+
+            xhr.send();
+        }
+
         function updateCountdown() {
-            var targetDate = new Date("<?php echo $target_date; ?>");
-            var currentDate = new Date('<?= date('Y-m-d H:i:s'); ?>');
-            var timeRemaining = targetDate - currentDate;
+            getCurrentDateFromServer(function(serverDate) {
+                // Set your target date and time (in UTC)
+                var targetDate = new Date("<?php echo $target_date; ?>"); // Adjust to your desired target date and time
+                var currentDate = serverDate; // Use the date obtained from the server
 
-            console.log(currentDate);
+                var timeRemaining = targetDate - currentDate; // Calculate the time remaining in milliseconds
 
-            if (timeRemaining <= 0) {
-                window.location.href = '<?= $url; ?>';
-                document.getElementById("days-label").textContent = "0";
-                document.getElementById("hours-label").textContent = "0";
-                document.getElementById("minutes-label").textContent = "0";
-                document.getElementById("seconds-label").textContent = "0";
-                updateProgress(0, "days");
-                updateProgress(0, "hours");
-                updateProgress(0, "minutes");
-                updateProgress(0, "seconds");
-            } else {
-                var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                if (timeRemaining <= 0) {
+                    document.getElementById("days-label").textContent = "0";
+                    document.getElementById("hours-label").textContent = "0";
+                    document.getElementById("minutes-label").textContent = "0";
+                    document.getElementById("seconds-label").textContent = "0";
+                    updateProgress(0, "days"); // Start with 0% progress
+                    updateProgress(0, "hours");
+                    updateProgress(0, "minutes");
+                    updateProgress(0, "seconds");
+                } else {
+                    var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-                updateProgress((100 * days) / 30, "days");
-                updateProgress((100 * hours) / 24, "hours");
-                updateProgress((100 * minutes) / 60, "minutes");
-                updateProgress((100 * seconds) / 60, "seconds");
+                    // Update progress bars and labels
+                    updateProgress((100 * days) / 30, "days"); // Assuming 30 days for demonstration
+                    updateProgress((100 * hours) / 24, "hours");
+                    updateProgress((100 * minutes) / 60, "minutes");
+                    updateProgress((100 * seconds) / 60, "seconds");
 
-                document.getElementById("days-label").textContent = days;
-                document.getElementById("hours-label").textContent = hours;
-                document.getElementById("minutes-label").textContent = minutes;
-                document.getElementById("seconds-label").textContent = seconds;
+                    document.getElementById("days-label").textContent = days;
+                    document.getElementById("hours-label").textContent = hours;
+                    document.getElementById("minutes-label").textContent = minutes;
+                    document.getElementById("seconds-label").textContent = seconds;
 
-                setTimeout(updateCountdown, 1000);
-            }
+                    setTimeout(updateCountdown, 1000); // Update every 1 second
+                }
+            });
         }
 
         function updateProgress(percentage, unit) {
