@@ -22,6 +22,7 @@ function global_countdown_novo($atts)
         $target_date = $dateTime->format('Y-m-d H:i:s');
     }
 
+    date_default_timezone_set('America/Sao_Paulo');
     $current_user = wp_get_current_user();
     $nome = $current_user->user_firstname . " " . $current_user->user_lastname;
     $cidade = get_user_meta($current_user->ID, "billing_city", true);
@@ -129,8 +130,10 @@ function global_countdown_novo($atts)
     <script>
         function updateCountdown() {
             var targetDate = new Date("<?php echo $target_date; ?>");
-            var currentDate = new Date();
+            var currentDate = new Date('<?= date('Y-m-d H:i:s'); ?>');
             var timeRemaining = targetDate - currentDate;
+
+            console.log(currentDate);
 
             if (timeRemaining <= 0) {
                 window.location.href = '<?= $url; ?>';
