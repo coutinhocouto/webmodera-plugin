@@ -289,3 +289,44 @@ function global_codigos_pass($data)
 	
 	echo json_encode($codigos);
 }
+
+//------------------------------------------------------------------
+//-------------------- DIFERENÇA DE DATAS ---------------------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_countdown_api');
+function global_countdown_api()
+{
+	register_rest_route( 
+		'global', 
+		'countdown', 
+		array(
+        'methods' => 'GET',
+        'callback' => 'global_countdown_api_func',
+    ) );
+}
+
+function global_countdown_api_func($data)
+{	
+    $dateString = $data->get_param( 'data-destino' );
+    $date = new DateTime(date('Y-d-m H:i:s',$dateString));
+    $now = date("Y-m-d H:i:s");
+    $diff = $date->diff(new DateTime($now));
+    $passado = false;
+   
+    if (new DateTime($now) > $date) {
+        $passado = true;
+    }
+
+	echo json_encode(
+        array(
+            'dias' => $diff->d,
+            'horas' => $diff->h,
+            'minutos' => $diff->i,
+            'segundos' => $diff->s,
+            'dataAtual' => date('Y-d-m H:i:s',$dateString),
+            'dataDestino' => $now,
+            'passado' => $passado,
+        )
+    );
+}

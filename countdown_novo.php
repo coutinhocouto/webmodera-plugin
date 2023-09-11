@@ -13,17 +13,7 @@ function global_countdown_novo($atts)
         'global_cadastra_form'
     );
 
-    date_default_timezone_set('America/Sao_Paulo');
     $dateString = $atts['data'] . ' ' . $atts['horario'] . ':00';
-    $now = new DateTime();
-    $format = "d/m/Y H:i:s";
-
-    $dateTime = DateTime::createFromFormat($format, $dateString);
-    $target_date = "";
-
-    if ($dateTime) {
-        $target_date = $dateTime->format('Y-m-d H:i:s');
-    }
 
     $current_user = wp_get_current_user();
     $nome = $current_user->user_firstname . " " . $current_user->user_lastname;
@@ -127,63 +117,63 @@ function global_countdown_novo($atts)
                 <span>segundos</span>
             </div>
         </div>
-    </div>
-
     <script>
-        function getCurrentDateFromServer(callback) {
-            var apiUrl = 'https://worldtimeapi.org/api/timezone/America/Sao_Paulo'; // Brazil/Sao_Paulo timezone
+        function getCurrentDateFromServer() {
+            var apiUrl = 'https://www.educacaosbdpr.com.br/wp-json/global/countdown?data-destino=<?= strtotime($dateString); ?>';
+            console.log(apiUrl);
 
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', apiUrl, true);
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    var currentDateTime = new Date(response.utc_datetime);
-                    callback(currentDateTime);
-                }
-            };
+            xhr.open('GET', apiUrl, false); // Make a synchronous request
 
             xhr.send();
+
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                return response;
+            } else {
+                return null; // Handle errors as needed
+            }
         }
 
         function updateCountdown() {
-            getCurrentDateFromServer(function(serverDate) {
-                // Set your target date and time (in UTC)
-                var targetDate = new Date("<?php echo $target_date; ?>"); // Adjust to your desired target date and time
-                var currentDate = serverDate; // Use the date obtained from the server
 
-                var timeRemaining = targetDate - currentDate; // Calculate the time remaining in milliseconds
+            var serverDiff = getCurrentDateFromServer();
 
-                if (timeRemaining <= 0) {
-                    document.getElementById("days-label").textContent = "0";
-                    document.getElementById("hours-label").textContent = "0";
-                    document.getElementById("minutes-label").textContent = "0";
-                    document.getElementById("seconds-label").textContent = "0";
-                    updateProgress(0, "days"); // Start with 0% progress
-                    updateProgress(0, "hours");
-                    updateProgress(0, "minutes");
-                    updateProgress(0, "seconds");
-                } else {
-                    var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-                    var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                    var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            var daysServer = serverDiff.dias;
+            var hoursServer = serverDiff.horas;
+            var minutesServer = serverDiff.minutos;
+            var secondsServer = serverDiff.segundos;
+            var timeRemaining = serverDiff.passado;
 
-                    // Update progress bars and labels
-                    updateProgress((100 * days) / 30, "days"); // Assuming 30 days for demonstration
-                    updateProgress((100 * hours) / 24, "hours");
-                    updateProgress((100 * minutes) / 60, "minutes");
-                    updateProgress((100 * seconds) / 60, "seconds");
+            if (timeRemaining) {
+                //window.location.href = '<?= $url; ?>';
+                document.getElementById("days-label").textContent = "0";
+                document.getElementById("hours-label").textContent = "0";
+                document.getElementById("minutes-label").textContent = "0";
+                document.getElementById("seconds-label").textContent = "0";
+                updateProgress(0, "days"); // Start with 0% progress
+                updateProgress(0, "hours");
+                updateProgress(0, "minutes");
+                updateProgress(0, "seconds");
+            } else {
+                var days = daysServer;
+                var hours = hoursServer;
+                var minutes = minutesServer;
+                var seconds = secondsServer;
 
-                    document.getElementById("days-label").textContent = days;
-                    document.getElementById("hours-label").textContent = hours;
-                    document.getElementById("minutes-label").textContent = minutes;
-                    document.getElementById("seconds-label").textContent = seconds;
+                // Update progress bars and labels
+                updateProgress((100 * days) / 30, "days"); // Assuming 30 days for demonstration
+                updateProgress((100 * hours) / 24, "hours");
+                updateProgress((100 * minutes) / 60, "minutes");
+                updateProgress((100 * seconds) / 60, "seconds");
 
-                    setTimeout(updateCountdown, 1000); // Update every 1 second
-                }
-            });
+                document.getElementById("days-label").textContent = days;
+                document.getElementById("hours-label").textContent = hours;
+                document.getElementById("minutes-label").textContent = minutes;
+                document.getElementById("seconds-label").textContent = seconds;
+
+                setTimeout(updateCountdown, 1000); // Update every 1 second
+            }
         }
 
         function updateProgress(percentage, unit) {
