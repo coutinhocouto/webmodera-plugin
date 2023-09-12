@@ -117,9 +117,10 @@ function global_countdown_novo($atts)
                 <span>segundos</span>
             </div>
         </div>
+    </div>
     <script>
         function getCurrentDateFromServer() {
-            var apiUrl = 'https://www.educacaosbdpr.com.br/wp-json/global/countdown?data-destino=<?= strtotime($dateString); ?>';
+            var apiUrl = '<?= get_home_url() . '/wp-content/plugins/webmodera-plugin/diff-datas.php?data=' . strtotime($dateString); ?>';
             console.log(apiUrl);
 
             var xhr = new XMLHttpRequest();
@@ -146,7 +147,7 @@ function global_countdown_novo($atts)
             var timeRemaining = serverDiff.passado;
 
             if (timeRemaining) {
-                //window.location.href = '<?= $url; ?>';
+                window.location.href = '<?= $url; ?>';
                 document.getElementById("days-label").textContent = "0";
                 document.getElementById("hours-label").textContent = "0";
                 document.getElementById("minutes-label").textContent = "0";
