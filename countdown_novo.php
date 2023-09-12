@@ -120,7 +120,6 @@ function global_countdown_novo($atts)
             </div>
         </div>
     </div>
-    <?= date('Y-d-m H:i:s', strtotime($dateString));?>
     <script>
         function getCurrentDateFromServer() {
             var apiUrl = '<?= get_home_url() . '/wp-content/plugins/webmodera-plugin/diff-datas.php?data=' . $dtUtcDate; ?>';
