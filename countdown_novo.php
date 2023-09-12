@@ -14,6 +14,8 @@ function global_countdown_novo($atts)
     );
 
     $dateString = $atts['data'] . ' ' . $atts['horario'] . ':00';
+    $timezone = 'America/Sao_Paulo';
+    $dtUtcDate = strtotime($dateString. ' '. $timezone);
 
     $current_user = wp_get_current_user();
     $nome = $current_user->user_firstname . " " . $current_user->user_lastname;
@@ -118,9 +120,10 @@ function global_countdown_novo($atts)
             </div>
         </div>
     </div>
+    <?= date('Y-d-m H:i:s', strtotime($dateString));?>
     <script>
         function getCurrentDateFromServer() {
-            var apiUrl = '<?= get_home_url() . '/wp-content/plugins/webmodera-plugin/diff-datas.php?data=' . strtotime($dateString); ?>';
+            var apiUrl = '<?= get_home_url() . '/wp-content/plugins/webmodera-plugin/diff-datas.php?data=' . $dtUtcDate; ?>';
 
             var xhr = new XMLHttpRequest();
             xhr.open('GET', apiUrl, false); // Make a synchronous request
