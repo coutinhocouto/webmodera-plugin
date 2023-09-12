@@ -121,7 +121,6 @@ function global_countdown_novo($atts)
     <script>
         function getCurrentDateFromServer() {
             var apiUrl = '<?= get_home_url() . '/wp-content/plugins/webmodera-plugin/diff-datas.php?data=' . strtotime($dateString); ?>';
-            console.log(apiUrl);
 
             var xhr = new XMLHttpRequest();
             xhr.open('GET', apiUrl, false); // Make a synchronous request
