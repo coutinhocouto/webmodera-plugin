@@ -13,10 +13,10 @@ function global_countdown_novo($atts)
         'global_cadastra_form'
     );
 
-    $dateString = $atts['data'] . ' ' . $atts['horario'] . ':00';
     $timezone = 'America/Sao_Paulo';
-    $dtUtcDate = strtotime($dateString. ' '. $timezone);
-
+    $dateString = DateTime::createFromFormat('d/m/Y H:i:s', $atts['data'] . ' ' . $atts['horario'] . ':00')->format('Y-m-d H:i:s');
+    $dtUtcDate = strtotime($dateString . ' '. $timezone);
+    
     $current_user = wp_get_current_user();
     $nome = $current_user->user_firstname . " " . $current_user->user_lastname;
     $cidade = get_user_meta($current_user->ID, "billing_city", true);
@@ -120,10 +120,12 @@ function global_countdown_novo($atts)
             </div>
         </div>
     </div>
+
     <script>
         function getCurrentDateFromServer() {
             var apiUrl = '<?= get_home_url() . '/wp-content/plugins/webmodera-plugin/diff-datas.php?data=' . $dtUtcDate; ?>';
 
+            console.log(apiUrl)
             var xhr = new XMLHttpRequest();
             xhr.open('GET', apiUrl, false); // Make a synchronous request
 
