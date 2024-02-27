@@ -3,7 +3,7 @@
 Plugin Name: Global Videos
 Plugin URI: https://www.globalvideos.com.br
 description: Plugins para os sites de eventos
-Version: 1.9.1
+Version: 1.9.2
 Author: Global Videos
 Author URI: https://www.globalvideos.com.br
 License: GPL2
@@ -35,6 +35,7 @@ include( plugin_dir_path( __FILE__ ) . 'custom_functions.php');
 include( plugin_dir_path( __FILE__ ) . 'campos_extras.php');
 include( plugin_dir_path( __FILE__ ) . 'emails.php');
 include( plugin_dir_path( __FILE__ ) . 'users.php');
+include( plugin_dir_path( __FILE__ ) . 'sbem_blocker.php');
 if(get_option('categoria_global') == '2' || get_option('categoria_global') == '3') {
 	include( plugin_dir_path( __FILE__ ) . 'codigos.php');
 }
