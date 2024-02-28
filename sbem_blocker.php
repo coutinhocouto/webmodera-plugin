@@ -37,9 +37,7 @@ function save_sbem_meta_data($post_id)
     if (!current_user_can('edit_post', $post_id)) {
         return;
     }
-    if (isset($_POST['block_sbem'])) {
-        update_post_meta($post_id, 'block_sbem', sanitize_text_field($_POST['block_sbem']));
-    }
+    update_post_meta($post_id, 'block_sbem', sanitize_text_field($_POST['block_sbem']));
 }
 
 add_shortcode('sbem_block', 'sbem_block_function');
@@ -47,7 +45,6 @@ function sbem_block_function()
 {
     ob_start();
 ?>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.0.4/js.cookie.min.js" integrity="sha512-Nonc2AqL1+VEN+97F3n4YxucBOAL5BgqNwEVc2uUjdKOWAmzwj5ChdJQvN2KldAxkCxE4OenuJ/RL18bWxGGzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         #sbem_login {
@@ -63,7 +60,6 @@ function sbem_block_function()
             display: none;
         }
     </style>
-
     <script>
         jQuery(document).ready(function($) {
             "use strict";
@@ -211,7 +207,6 @@ function sbem_block_function()
         <input type="password" placeholder="Senha SBEM" />
         <input type="submit" value="entrar" id="Entrar" />
     </fieldset>
-
 <?php
     return ob_get_clean();
 }
