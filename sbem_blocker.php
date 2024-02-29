@@ -73,6 +73,7 @@ function sbem_block_function()
 
                 var emails = $('#sbem_login input[type=text]').val();
                 var pwds = $('#sbem_login input[type=password]').val();
+				jQuery("#loader").show();
 
                 $.ajax({
                     data: {
@@ -84,9 +85,10 @@ function sbem_block_function()
 
                     //-------------------- DATA -----------------------------
                     success: function(data) {
+						jQuery("#loader").hide();
                         if (data.data.logado == false) {
                             $("#sbem_login input").show();
-                            $('.response').html('<span style="color: red; margin-bottom: 20px; display: block">Usuário ou senha incorretos!<span>');
+                            $('.response').html('<span style="color: red; display: block">Usuário ou senha SBEM incorretos!<span>');
                         } else {
                             $('.response').html('');
 
@@ -192,17 +194,11 @@ function sbem_block_function()
             });
 
         });
-        jQuery(document).ajaxStart(function() {
-            jQuery("#loader").show();
-            jQuery("#sbem_login input").hide();
-        });
-        jQuery(document).ajaxStop(function() {
-            jQuery("#loader").hide();
-        });
     </script>
     <fieldset id="sbem_login">
         <span class="response"></span>
-        <img src="https://s3.amazonaws.com/www.sieexsbem.com.br/wp-content/uploads/2024/02/27124748/loader.gif" style="width: 100px; height: 100px; margin: 0 auto; display: none;" id="loader" />
+        <img src="https://s3.amazonaws.com/www.sieexsbem.com.br/wp-content/uploads/2024/02/27124748/loader.gif" style="width: 100px; height: 100px; margin: 0 auto; display: none;" id="loader" /><br>
+		<strong style="margin-bottom: 20px; display: block;">Para acessar esta página é necessário entrar com seu login e senha SBEM</strong>
         <input type="text" placeholder="Login SBEM" />
         <input type="password" placeholder="Senha SBEM" />
         <input type="submit" value="entrar" id="Entrar" />
