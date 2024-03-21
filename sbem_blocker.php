@@ -106,60 +106,6 @@ function sbem_block_function()
                                         //------------------ DATA 3 ------------------------------
                                         success: function(data3) {
 
-                                            $.ajax({
-                                                type: "GET",
-                                                url: "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/check-sbem/<?php echo get_option('evento_global') ?>/" + data3.data[0].cpf,
-
-                                                //------------------DATA 2 ------------------------------
-                                                success: function(data4) {
-                                                    if (data4.length == 0) {
-                                                        //------------- API CADASTRO ------------------------------
-
-                                                        var evento = '"evento": <?php echo get_option('evento_global') ?>,';
-                                                        var email = '"email":"' + data3.data[0].email + '",';
-                                                        var nome = '"nome":"' + data.data.nome + '",';
-                                                        var uf = '"uf":"' + data2.data[0].uf + '",';
-                                                        var cidade = '"cidade":"' + data2.data[0].municipio + '",';
-                                                        var telefone = '"telefone":"",';
-                                                        var cpf = '"cpf":"' + data3.data[0].cpf + '",';
-                                                        var crm = '"crm":"' + data3.data[0].crm + '",';
-                                                        var crm_uf = '"crm_uf":"",';
-                                                        var especialidade = '"especialidade":"Endocrinologia e Metabologia",';
-                                                        var codigo = '"codigo":"",';
-                                                        var produto = '"produto":"",';
-                                                        var valor = '"valor":"",';
-                                                        var pagante = '"pagante":"0",';
-                                                        var termo = '"termo":"1",';
-                                                        var sabendo = '"sabendo":"",';
-                                                        var profissao = '"profissao":"Medicina",';
-                                                        var cargo = '"cargo":"",';
-                                                        var status = '"status":"0"';
-
-                                                        var dataString = '{' + evento + email + nome + uf + cidade + telefone + cpf + crm + crm_uf + especialidade + codigo + produto + valor + pagante + termo + sabendo + profissao + cargo + status + '}';
-
-                                                        $.post({
-                                                            url: "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook",
-                                                            data: dataString,
-                                                            dataType: 'json',
-                                                            crossDomain: true,
-                                                            cache: false,
-                                                            beforeSend: function() {
-                                                            },
-                                                            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                                                console.log(XMLHttpRequest);
-                                                                console.log(textStatus);
-                                                                console.log(errorThrown);
-                                                            },
-                                                            success: function() {
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            });
-
-
-                                            //----------------------------------------------------
-
                                             Cookies.set('cpf_login_sbem', data3.data[0].cpf, {
                                                 expires: 0.17
                                             });

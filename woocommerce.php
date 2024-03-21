@@ -4,7 +4,6 @@ add_action('woocommerce_order_status_completed', 'my_function');
 function my_function($order_id)
 {
 
-    // order object (optional but handy)
     $order = new WC_Order($order_id);
 
     foreach ($order->get_items() as $item) {
