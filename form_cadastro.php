@@ -333,7 +333,7 @@ function global_cadastra_form()
 								} else {
 									$("#area_atuacao").hide();
 									$("#codigo_errado").remove();
-									$("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Este código não é válido ou está com limite de usos exedido!</span>").insertAfter("#valida-codigo");
+									$("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Código inválido. Copie e cole o código atentando-se aos espaços, assim como consta no convite recebido. Tente novamente</span>").insertAfter("#valida-codigo");
 								}
 							});
 							

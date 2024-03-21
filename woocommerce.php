@@ -41,7 +41,6 @@ function my_function($order_id)
         "evento" => $evento,
         "email" => $email,
         "nome" => $nome,
-        "sobrenome" => $sobrenome,
         "uf" => $uf,
         "cidade" => $cidade,
         "profissao" => $profissao,
