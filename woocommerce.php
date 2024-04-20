@@ -636,36 +636,40 @@ function global_woo()
 
 function global_woo_phrase()
 {
-	
 	header("Access-Control-Allow-Origin: *");
-	
 	$param = array( 'limit' => -1 );
-	
 	$orders = wc_get_orders($param);
-
 	$arr = [];
 	
-	foreach ( $orders as $order ) {
-		$order_id = $order->get_id();
-		$order_data = $order->get_data();
-		
-		array_push($arr, (object)[
-			'id' =>  $order_data['id'],
-			'nome' => $order_data['billing']['first_name'] . " " . $order_data['billing']['last_name'],
-			'email' => $order_data['billing']['email'],
-			'uf' => $order_data['billing']['state'],
-			'cidade' => $order_data['billing']['city'],
-			'crm' => get_post_meta($order_data['id'], 'billing_crm', true),
-			'cpf' => get_post_meta($order_data['id'], '_billing_cpf', true),
+	foreach ($orders as $order) {
+        $order_data = $order->get_data();
+        $products = [];
+    
+        foreach ($order->get_items() as $item_id => $item) {
+            $product_name = $item->get_name();
+            $products[] = $product_name;
+        }
+    
+        $product_names = implode(", ", $products);
+    
+        array_push($arr, (object)[
+            'id' => $order_data['id'],
+            'nome' => $order_data['billing']['first_name'] . " " . $order_data['billing']['last_name'],
+            'email' => $order_data['billing']['email'],
+            'uf' => $order_data['billing']['state'],
+            'cidade' => $order_data['billing']['city'],
+            'crm' => get_post_meta($order_data['id'], 'billing_crm', true),
+            'cpf' => get_post_meta($order_data['id'], '_billing_cpf', true),
             'telefone' => get_post_meta($order_data['id'], '_billing_phone', true),
-			'area_atuacao' => get_post_meta($order_data['id'], 'billing_area_atuacao', true),
-			'status' => $order_data['status'],
-			'valor' => $order_data['total'],
-			'data' =>  $order_data['date_created']->date('Y-m-d H:i:s'),
-			'endereco' => get_post_meta($order_data['id'], '_billing_address_1', true) . ", "  . get_post_meta($order_data['id'], '_billing_number', true) . " "  . get_post_meta($order_data['id'], '_billing_neighborhood', true) . " - CEP: " . get_post_meta($order_data['id'], '_billing_postcode', true)
-		]);
-		
-	}
+            'area_atuacao' => get_post_meta($order_data['id'], 'billing_area_atuacao', true),
+            'status' => $order_data['status'],
+            'valor' => $order_data['total'],
+            'data' => $order_data['date_created']->date('Y-m-d H:i:s'),
+            'endereco' => get_post_meta($order_data['id'], '_billing_address_1', true) . ", " . get_post_meta($order_data['id'], '_billing_number', true) . " " . get_post_meta($order_data['id'], '_billing_neighborhood', true) . " - CEP: " . get_post_meta($order_data['id'], '_billing_postcode', true),
+            'produtos' => $product_names
+        ]);
+    }
+    
 	
 	echo json_encode($arr);
 	
