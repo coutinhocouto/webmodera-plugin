@@ -24,6 +24,19 @@ function global_codigos_checker($codigo) {
     return $total;
 }
 
+function global_codigos_validate($codigo) {
+    
+    global $wpdb;
+
+    $result = $wpdb->get_results ( "
+        SELECT *
+        FROM " . $wpdb->prefix . "global_codigos
+        WHERE `codigo` LIKE '" . $codigo . "'
+    ");
+
+    return $result;
+}
+
 function global_codigos_menu() {
     add_submenu_page(
         'global-admin',
