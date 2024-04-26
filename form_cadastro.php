@@ -102,9 +102,7 @@ function global_cadastra_form()
 
         $validate = global_codigos_validate($codigo);
 
-        if(count($validate) === 0) {
-            echo '<label class="error" for="email">Código inválido. Copie e cole o código atentando-se aos espaços, assim como consta no convite recebido. Tente novamente</label>';
-        } else if($qtd <= 0 && get_option('categoria_global') != "1") {
+        if($qtd <= 0 && get_option('categoria_global') != "1") {
 			echo '<label class="error" for="email">Este código está com o seu limite de uso excedido, tente novamente com outro código!</label>';
         
 		} else{
