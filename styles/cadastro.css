@@ -56,6 +56,10 @@
     background: #000;
 }
 
+#cadastramento input[type=submit]:disabled {
+    background-color: #666;
+}
+
 #cadastramento .md1,
 #cadastramento .md2,
 #cadastramento .nmd,
@@ -84,6 +88,13 @@ label.error {
     display: block;
     margin-top: 5px;
     border-radius: 3px;
+}
+
+.g-recaptcha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 800px) {

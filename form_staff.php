@@ -170,6 +170,10 @@ function global_cadastra_staff_form()
                 background: #000;
             }
 
+            #cadastramento input[type=submit]:disabled {
+                background-color: #666;
+            }
+
             #cadastramento .p1 {
                 display: none;
             }
@@ -195,6 +199,13 @@ function global_cadastra_staff_form()
                 border-radius: 3px;
             }
 
+            .g-recaptcha {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
             @media only screen and (max-width: 800px) {
 
                 #cadastramento .wb-70,
@@ -206,6 +217,9 @@ function global_cadastra_staff_form()
             }
         </style>
 
+        <?php if(get_option('captcha_key')) { ?>
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <?php } ?>
         <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -306,6 +320,14 @@ function global_cadastra_staff_form()
                 });
 
             });
+
+            function recaptchaCallback() {
+                document.getElementById('cadastro-submit').disabled = false;
+            }
+
+            function expiredCallback() {
+                document.getElementById('cadastro-submit').disabled = true;
+            }
         </script>
 
         <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post" id="cadastramento">
@@ -398,7 +420,10 @@ function global_cadastra_staff_form()
             </div>
 
             <div class="wb-100 p1">
-                <input type="submit" value="Cadastre-se" />
+                <?php if(get_option('captcha_key')) { ?>
+                    <div class="g-recaptcha" data-sitekey="<?php echo get_option('captcha_key'); ?>"  data-expired-callback="expiredCallback" data-callback="recaptchaCallback"></div>
+                <?php } ?>
+                <input type="submit" value="Cadastre-se" id="cadastro-submit" <?php if(get_option('captcha_key')) echo 'disabled' ?> />
             </div>
         </form>
 

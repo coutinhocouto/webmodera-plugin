@@ -158,6 +158,22 @@ function my_settings_init()
         'global_page_setting_section'
     );
 
+    add_settings_field(
+        'captcha_key',
+        'Captcha Key',
+        'global_captcha_key_markup',
+        'global-page',
+        'global_page_setting_section'
+    );
+
+    add_settings_field(
+        'captcha_secret',
+        'Captcha Secret',
+        'global_captcha_secret_markup',
+        'global-page',
+        'global_page_setting_section'
+    );
+
     register_setting('global-page', 'evento_global');
     register_setting('global-page', 'aovivo_global');
     register_setting('global-page', 'inscrito_global');
@@ -171,6 +187,8 @@ function my_settings_init()
     register_setting('global-page', 'tem_publico_global');
     register_setting('global-page', 'publico_atuacao_global');
     register_setting('global-page', 'nao_clannad');
+    register_setting('global-page', 'captcha_key');
+    register_setting('global-page', 'captcha_secret');
     
 }
 
@@ -328,6 +346,20 @@ function global_nao_clannad_markup()
 {
 ?>
     <input type="checkbox" id="nao_clannad" name="nao_clannad" value="1" <?php if (get_option('nao_clannad') == "1") { echo "checked";} ?>>
+<?php
+}
+
+function global_captcha_key_markup()
+{
+?>
+    <input type="text" class="global_field" id="captcha_key" name="captcha_key" value="<?php echo get_option('captcha_key'); ?>">
+<?php
+}
+
+function global_captcha_secret_markup()
+{
+?>
+    <input type="text" class="global_field" id="captcha_secret" name="captcha_secret" value="<?php echo get_option('captcha_secret'); ?>">
 <?php
 }
 
