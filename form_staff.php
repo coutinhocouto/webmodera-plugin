@@ -14,7 +14,7 @@ function global_cadastra_staff_form()
         $cpf = $_POST["cpf"];
         $crm = "";
         $crm_uf = "";
-        $especialidade = "";
+        $especialidade = "g";
         $codigo = "";
         $pagante = "0";
         $produto = "";
