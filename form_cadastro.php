@@ -13,7 +13,7 @@ function global_cadastra_form()
         $uf = $_POST["uf"];
         $cidade = $_POST["cidade"];
         $telefone = $_POST["telefone"];
-        $cpf = "";
+        $cpf = $_POST["cpf"];
         $crm = $_POST["crm"];
         $crm_uf = $_POST["crm_uf"];
         $especialidade = $_POST["especialidade"];
@@ -127,6 +127,7 @@ function global_cadastra_form()
 				update_user_meta($user_id, 'billing_extra2', $extra2);
 				update_user_meta($user_id, 'billing_extra3', $extra3);
 				update_user_meta($user_id, 'billing_extra4', $extra4);
+                update_user_meta($user_id, 'billing_cpf', $cpf);
                 
                 $table_name = $wpdb->prefix . 'global_codigos';
                 $wpdb->insert($table_name, array(
@@ -301,6 +302,14 @@ function global_cadastra_form()
 
                 });
 
+                $('#cadastramento').on('submit', function(e) {
+                    const cpf = $('#cpf-input').val();
+                    if (!validateCPF(cpf)) {
+                        $('#cpf').append('<span id="cpf-error" style="background: #f00; color: #fff; padding: 5px; display: block; margin-top: 5px; border-radius: 3px;">CPF inválido.</span>');
+                        e.preventDefault();
+                    }
+                });
+
             });
 
             function recaptchaCallback() {
@@ -310,6 +319,52 @@ function global_cadastra_form()
             function expiredCallback() {
                 document.getElementById('cadastro-submit').disabled = true;
             }
+
+            function validateCPF(cpf) {
+                cpf = cpf.replace(/[^\d]+/g, '');
+                if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
+                    return false;
+                }
+                let sum, remainder;
+                sum = 0;
+                for (let i = 1; i <= 9; i++) {
+                    sum += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+                }
+                remainder = (sum * 10) % 11;
+                if (remainder === 10 || remainder === 11) remainder = 0;
+                if (remainder !== parseInt(cpf.substring(9, 10))) return false;
+                sum = 0;
+                for (let i = 1; i <= 10; i++) {
+                    sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+                }
+                remainder = (sum * 10) % 11;
+                if (remainder === 10 || remainder === 11) remainder = 0;
+                if (remainder !== parseInt(cpf.substring(10, 11))) return false;
+                return true;
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const cpfInput = document.getElementById('cpf-input');
+
+                cpfInput.addEventListener('input', function(event) {
+                    let value = event.target.value;
+
+                    // Remove any non-digit characters
+                    value = value.replace(/\D/g, '');
+
+                    // Add periods and dash at the appropriate places
+                    if (value.length > 3 && value.length <= 6) {
+                        value = value.replace(/(\d{3})(\d+)/, '$1.$2');
+                    } else if (value.length > 6 && value.length <= 9) {
+                        value = value.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+                    } else if (value.length > 9) {
+                        value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                    }
+
+                    // Update the input value with the formatted value
+                    event.target.value = value;
+                });
+            });
         </script>
         <script src="<?php echo plugin_dir_url( __FILE__ ) ?>scripts/cadastro.js"></script>
 
@@ -466,6 +521,11 @@ function global_cadastra_form()
 
             <div class="wb-30 staff" id="valida-email">
                 <button>Validar E-mail</button>
+            </div>
+
+            <div class="wb-100 md2 nmd staff" id="cpf">
+                <label for="cpf-input">CPF *</label>
+                <input type="text" name="cpf" maxlength="14" id="cpf-input" required />
             </div>
 
             <div class="wb-100 md2 nmd staff2">
