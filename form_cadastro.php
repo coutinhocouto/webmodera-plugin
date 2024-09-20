@@ -523,7 +523,7 @@ function global_cadastra_form()
                 <button>Validar E-mail</button>
             </div>
 
-            <div class="wb-100 md2 nmd staff" id="cpf">
+            <div class="wb-100 md2 nmd staff2" id="cpf">
                 <label for="cpf-input">CPF *</label>
                 <input type="text" name="cpf" maxlength="14" id="cpf-input" required />
             </div>
@@ -743,6 +743,13 @@ function global_cadastra_form()
 				</div>
 
 			<?php } ?>
+
+            <?php if(get_option('mostra_extra') == "1") { ?>
+                <div class="wb-100 md2 nmd staff2">
+                    <input type="checkbox" name="extra1" value="1" <?php if(get_option('sabendo_obr_global') == "1") { echo 'required'; }?>>
+                    <label form="extra1"><?php  echo get_option('texto_extra'); ?> <?php if(get_option('obrigatorio_extra') == "1") { echo '*'; }?></label>
+                </div>
+            <?php } ?>
 
             <div class="wb-100 md2 nmd staff2">
                 <strong>

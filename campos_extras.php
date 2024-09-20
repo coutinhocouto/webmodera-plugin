@@ -59,8 +59,37 @@ function extra_settings_init()
         'global_extra_page_setting_section'
     );
 
+    add_settings_field(
+        'mostra_extra',
+        'Exibir campo extra?',
+        'global_mostra_extra_markup',
+        'global-extra-page',
+        'global_extra_page_setting_section'
+    );
+
+    add_settings_field(
+        'texto_extra',
+        'Texto do campo extra',
+        'global_texto_extra_markup',
+        'global-extra-page',
+        'global_extra_page_setting_section'
+    );
+
+    add_settings_field(
+        'obrigatorio_extra',
+        'Campo extra é obrigatório?',
+        'global_obrigatorio_extra_markup',
+        'global-extra-page',
+        'global_extra_page_setting_section'
+    );
+
+
     register_setting('global-extra-page', 'mostra_sabendo_global');
     register_setting('global-extra-page', 'sabendo_obr_global');
+
+    register_setting('global-extra-page', 'mostra_extra');
+    register_setting('global-extra-page', 'texto_extra');
+    register_setting('global-extra-page', 'obrigatorio_extra');
 }
 
 function global_mostra_sabendo_markup()
@@ -75,5 +104,26 @@ function global_sabendo_obr_markup()
 {
 ?>
     <input type="checkbox" id="sabendo_obr_global" name="sabendo_obr_global" value="1" <?php if (get_option('sabendo_obr_global') == "1") { echo "checked";} ?>>
+<?php
+}
+
+function global_mostra_extra_markup()
+{
+?>
+    <input type="checkbox" id="mostra_extra" name="mostra_extra" value="1" <?php if (get_option('mostra_extra') == "1") { echo "checked";} ?>>
+<?php
+}
+
+function global_texto_extra_markup()
+{
+?>
+    <input type="text" id="texto_extra" name="texto_extra" value="<?php echo get_option('texto_extra'); ?>" style="width: 100%;">
+<?php
+}
+
+function global_obrigatorio_extra_markup()
+{
+?>
+    <input type="checkbox" id="obrigatorio_extra" name="obrigatorio_extra" value="1" <?php if (get_option('obrigatorio_extra') == "1") { echo "checked";} ?>>
 <?php
 }
