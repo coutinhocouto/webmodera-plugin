@@ -751,6 +751,13 @@ function global_cadastra_form()
                 </div>
             <?php } ?>
 
+            <?php if(get_option('mostra_extra2') == "1") { ?>
+                <div class="wb-100 md2 nmd staff2">
+                    <input type="checkbox" name="extra2" value="1" <?php if(get_option('obrigatorio_extra2') == "1") { echo 'required'; }?>>
+                    <label form="extra2"><?php  echo get_option('texto_extra2'); ?> <?php if(get_option('obrigatorio_extra2') == "1") { echo '*'; }?></label>
+                </div>
+            <?php } ?>
+
             <div class="wb-100 md2 nmd staff2">
                 <strong>
                     Para a segurança dos seus dados, recomenda-se o uso de senhas fortes. Utilize caracteres em caixa alta, em caixa baixa, letras, números e símbolos.

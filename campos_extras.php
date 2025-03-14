@@ -82,6 +82,30 @@ function extra_settings_init()
         'global-extra-page',
         'global_extra_page_setting_section'
     );
+	
+	add_settings_field(
+        'mostra_extra2',
+        'Exibir campo extra2?',
+        'global_mostra_extra_markup2',
+        'global-extra-page',
+        'global_extra_page_setting_section'
+    );
+
+    add_settings_field(
+        'texto_extra2',
+        'Texto do campo extra2',
+        'global_texto_extra_markup2',
+        'global-extra-page',
+        'global_extra_page_setting_section'
+    );
+
+    add_settings_field(
+        'obrigatorio_extra2',
+        'Campo extra2 é obrigatório?',
+        'global_obrigatorio_extra_markup2',
+        'global-extra-page',
+        'global_extra_page_setting_section'
+    );
 
 
     register_setting('global-extra-page', 'mostra_sabendo_global');
@@ -90,6 +114,10 @@ function extra_settings_init()
     register_setting('global-extra-page', 'mostra_extra');
     register_setting('global-extra-page', 'texto_extra');
     register_setting('global-extra-page', 'obrigatorio_extra');
+	
+	register_setting('global-extra-page', 'mostra_extra2');
+    register_setting('global-extra-page', 'texto_extra2');
+    register_setting('global-extra-page', 'obrigatorio_extra2');
 }
 
 function global_mostra_sabendo_markup()
@@ -125,5 +153,26 @@ function global_obrigatorio_extra_markup()
 {
 ?>
     <input type="checkbox" id="obrigatorio_extra" name="obrigatorio_extra" value="1" <?php if (get_option('obrigatorio_extra') == "1") { echo "checked";} ?>>
+<?php
+}
+
+function global_mostra_extra_markup2()
+{
+?>
+    <input type="checkbox" id="mostra_extra2" name="mostra_extra2" value="1" <?php if (get_option('mostra_extra2') == "1") { echo "checked";} ?>>
+<?php
+}
+
+function global_texto_extra_markup2()
+{
+?>
+    <input type="text" id="texto_extra2" name="texto_extra2" value="<?php echo get_option('texto_extra2'); ?>" style="width: 100%;">
+<?php
+}
+
+function global_obrigatorio_extra_markup2()
+{
+?>
+    <input type="checkbox" id="obrigatorio_extra2" name="obrigatorio_extra2" value="1" <?php if (get_option('obrigatorio_extra2') == "1") { echo "checked";} ?>>
 <?php
 }
