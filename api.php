@@ -28,23 +28,18 @@ function global_login()
 	);
 }
 
-function global_phrase()
-{
-
-	if ($_POST["action"] == 'login_ajax') {
-
-		$check = wp_authenticate_email_password(NULL, $_POST["username"], $_POST["password"]);
-
+function global_phrase( $request ) {
+	if ($request->get_param('action') == 'login_ajax') {
+		$check = wp_authenticate_email_password(null, $request->get_param('username'), $request->get_param('password'));
 		if (is_wp_error($check)) {
 			$arr = array('message' => 'não autorizado');
 		} else {
-			$user = get_user_by('email', $_POST["username"]);
+			$user = get_user_by('email', $request->get_param('username'));
 			$id = $user->ID;
-			$live = get_option('evento_global');
 			$nome = $user->first_name;
 			$cidade = get_user_meta($id, 'billing_city', true);
 			$uf = get_user_meta($id, 'billing_state', true);
-			$email = $_POST["username"];
+			$email = $request->get_param('username');
 			$role = get_user_role_name($id);
 			$arr = array(
 				'nome' => $nome,
@@ -54,10 +49,10 @@ function global_phrase()
 				'role' => $role
 			);
 		}
-
-		echo json_encode($arr);
+		return rest_ensure_response($arr);
 	}
-};
+	return rest_ensure_response(array('message' => 'Ação inválida'));
+}
 
 //------------------------------------------------------------------
 //---------------------- API ALTERAR SENHA -------------------------
