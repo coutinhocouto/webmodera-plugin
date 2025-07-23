@@ -37,7 +37,7 @@ function global_cadastra_vip_form()
         $valor = "";
         $sabendo = "";
         $termo = "";
-        $senha = "";
+        $senha = $_POST["password"];
         $cargo = "";
         $status = "2";
 
