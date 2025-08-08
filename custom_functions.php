@@ -27,7 +27,6 @@ function global_cadastra_vip_form()
         $uf = "";
         $cidade = "";
         $telefone = "";
-        $cpf = "";
         $crm = "";
         $crm_uf = "";
         $especialidade = "";
@@ -75,7 +74,6 @@ function global_cadastra_vip_form()
                 "uf" => $uf,
                 "cidade" => $cidade,
                 "telefone" => $telefone,
-                "cpf" => $cpf,
                 "crm" => $crm,
                 "crm_uf" => $crm_uf,
                 "codigo" => $codigo,
