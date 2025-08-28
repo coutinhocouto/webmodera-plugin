@@ -1,6 +1,133 @@
 <?php
 
 //------------------------------------------------------------------
+//---------------------- CRM VALIDATION ----------------------------
+//------------------------------------------------------------------
+
+function global_crm_exists_validation($crm, $crm_uf) {
+    global $wpdb;
+    
+    // Skip validation if CRM or CRM_UF are empty
+    if (empty($crm) || empty($crm_uf)) {
+        return false;
+    }
+    
+    // Query to find users with the same CRM and CRM_UF combination
+    $users = get_users(array(
+        'meta_query' => array(
+            'relation' => 'AND',
+            array(
+                'key' => 'billing_crm',
+                'value' => $crm,
+                'compare' => '='
+            ),
+            array(
+                'key' => 'billing_crm_uf',
+                'value' => $crm_uf,
+                'compare' => '='
+            )
+        )
+    ));
+    
+    return count($users) > 0;
+}
+
+//------------------------------------------------------------------
+//---------------------- USER PROFILE FIELDS ----------------------
+//------------------------------------------------------------------
+
+// Add CRM fields to user profile (read-only display)
+add_action('show_user_profile', 'global_add_crm_profile_fields');
+add_action('edit_user_profile', 'global_add_crm_profile_fields');
+
+function global_add_crm_profile_fields($user) {
+    $crm = get_user_meta($user->ID, 'billing_crm', true);
+    $crm_uf = get_user_meta($user->ID, 'billing_crm_uf', true);
+    $especialidade = get_user_meta($user->ID, 'billing_espec_medica', true);
+    $area_atuacao = get_user_meta($user->ID, 'billing_area_atuacao', true);
+    
+    // Only show section if user has at least one professional field filled
+    if (!empty($crm) || !empty($crm_uf) || !empty($especialidade) || !empty($area_atuacao)) {
+        ?>
+        <h3>Informações Profissionais</h3>
+        <table class="form-table">
+            <?php if (!empty($crm)) { ?>
+            <tr>
+                <th>CRM</th>
+                <td>
+                    <strong><?php echo esc_html($crm); ?></strong>
+                    <br><span class="description">Número do CRM</span>
+                </td>
+            </tr>
+            <?php } ?>
+            
+            <?php if (!empty($crm_uf)) { ?>
+            <tr>
+                <th>Estado do CRM</th>
+                <td>
+                    <strong><?php echo esc_html($crm_uf); ?></strong>
+                    <br><span class="description">Estado onde o CRM foi emitido</span>
+                </td>
+            </tr>
+            <?php } ?>
+            
+            <?php if (!empty($especialidade)) { ?>
+            <tr>
+                <th>Especialidade</th>
+                <td>
+                    <strong><?php echo esc_html($especialidade); ?></strong>
+                    <br><span class="description">Especialidade médica</span>
+                </td>
+            </tr>
+            <?php } ?>
+            
+            <?php if (!empty($area_atuacao)) { ?>
+            <tr>
+                <th>Área de Atuação</th>
+                <td>
+                    <strong><?php echo esc_html($area_atuacao); ?></strong>
+                    <br><span class="description">Área de atuação profissional</span>
+                </td>
+            </tr>
+            <?php } ?>
+        </table>
+        <?php
+    }
+}
+
+// Add CRM columns to user list in admin
+add_filter('manage_users_columns', 'global_add_user_crm_columns');
+function global_add_user_crm_columns($columns) {
+    $columns['billing_crm'] = 'CRM';
+    $columns['billing_crm_uf'] = 'Estado CRM';
+    $columns['billing_area_atuacao'] = 'Área de Atuação';
+    return $columns;
+}
+
+// Display CRM data in user list columns
+add_action('manage_users_custom_column', 'global_show_user_crm_columns', 10, 3);
+function global_show_user_crm_columns($value, $column_name, $user_id) {
+    switch ($column_name) {
+        case 'billing_crm':
+            return get_user_meta($user_id, 'billing_crm', true);
+        case 'billing_crm_uf':
+            return get_user_meta($user_id, 'billing_crm_uf', true);
+        case 'billing_area_atuacao':
+            return get_user_meta($user_id, 'billing_area_atuacao', true);
+    }
+    return $value;
+}
+
+// Make CRM columns sortable
+add_filter('manage_users_sortable_columns', 'global_make_user_crm_columns_sortable');
+function global_make_user_crm_columns_sortable($columns) {
+    $columns['billing_crm'] = 'billing_crm';
+    $columns['billing_crm_uf'] = 'billing_crm_uf';
+    $columns['billing_area_atuacao'] = 'billing_area_atuacao';
+    return $columns;
+}
+
+//------------------------------------------------------------------
 //---------------------- CONTEUDO BLOQUEADO ------------------------
 //------------------------------------------------------------------
 
@@ -27,7 +154,6 @@ function global_cadastra_vip_form()
         $uf = "";
         $cidade = "";
         $telefone = "";
-        $cpf = "";
         $crm = "";
         $crm_uf = "";
         $especialidade = "";
@@ -75,7 +201,6 @@ function global_cadastra_vip_form()
                 "uf" => $uf,
                 "cidade" => $cidade,
                 "telefone" => $telefone,
-                "cpf" => $cpf,
                 "crm" => $crm,
                 "crm_uf" => $crm_uf,
                 "codigo" => $codigo,

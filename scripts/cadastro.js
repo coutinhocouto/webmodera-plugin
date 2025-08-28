@@ -46,33 +46,83 @@ jQuery(document).ready(function ($) {
 
         var uf = $('select[name=crm_uf]').val();
         var crm = $('input[name=crm]').val();
-        var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/check-crm/" + uf + "/" + crm;
-
-        $.getJSON(url, function (result) {
-
-            if (result.length) {
-
-                $.each(result, function (i, field) {
-
-                    $('.semi-error').remove();
-
-                    if (field.situacao == 'Ativo') {
-
-                        $(".nmd, .staff").hide();
-                        $(".md2, .md1").css('display', 'inline-block');
-                        $('input[name=nome]').val(field.nome);
-                        $('input[name=nome]').attr("readonly", true);
-
-                    } else {
-                        $('#crm_error').html('<div class="validation_error semi-error">Somente médicos com cadastro ativo podem se cadastrar, verifique o crm e o estado informado para prosseguir.</div>');
-                    }
-
-                });
-
-            } else {
-                $('#crm_error').html('<div class="validation_error semi-error">Somente médicos podem se cadastrar, verifique o crm e o estado informado para prosseguir.</div>');
+        
+        // Clear previous errors
+        $('.semi-error').remove();
+        
+        // First check if CRM already exists in our database
+        var checkUrl = window.location.origin + "/wp-json/crm-check/crm-check?crm=" + crm + "&crm_uf=" + uf;
+        
+        $.getJSON(checkUrl, function (duplicateResult) {
+            
+            if (duplicateResult.exists) {
+                // Show duplicate error message
+                $('#crm_error').html('<div class="validation_error semi-error">Você já está cadastrado. Se não souber sua senha, clique em "Esqueci minha senha" no menu acima</div>');
+                return false;
             }
+            
+            // If no duplicate found, proceed with original CRM validation
+            var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/check-crm/" + uf + "/" + crm;
 
+            $.getJSON(url, function (result) {
+
+                if (result.length) {
+
+                    $.each(result, function (i, field) {
+
+                        $('.semi-error').remove();
+
+                        if (field.situacao == 'Ativo') {
+
+                            $(".nmd, .staff").hide();
+                            $(".md2, .md1").css('display', 'inline-block');
+                            $('input[name=nome]').val(field.nome);
+                            $('input[name=nome]').attr("readonly", true);
+
+                        } else {
+                            $('#crm_error').html('<div class="validation_error semi-error">Somente médicos com cadastro ativo podem se cadastrar, verifique o crm e o estado informado para prosseguir.</div>');
+                        }
+
+                    });
+
+                } else {
+                    $('#crm_error').html('<div class="validation_error semi-error">Somente médicos podem se cadastrar, verifique o crm e o estado informado para prosseguir.</div>');
+                }
+
+            }).fail(function() {
+                $('#crm_error').html('<div class="validation_error semi-error">Erro ao validar CRM. Tente novamente.</div>');
+            });
+            
+        }).fail(function() {
+            // If duplicate check fails, proceed with original validation
+            var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/check-crm/" + uf + "/" + crm;
+
+            $.getJSON(url, function (result) {
+
+                if (result.length) {
+
+                    $.each(result, function (i, field) {
+
+                        $('.semi-error').remove();
+
+                        if (field.situacao == 'Ativo') {
+
+                            $(".nmd, .staff").hide();
+                            $(".md2, .md1").css('display', 'inline-block');
+                            $('input[name=nome]').val(field.nome);
+                            $('input[name=nome]').attr("readonly", true);
+
+                        } else {
+                            $('#crm_error').html('<div class="validation_error semi-error">Somente médicos com cadastro ativo podem se cadastrar, verifique o crm e o estado informado para prosseguir.</div>');
+                        }
+
+                    });
+
+                } else {
+                    $('#crm_error').html('<div class="validation_error semi-error">Somente médicos podem se cadastrar, verifique o crm e o estado informado para prosseguir.</div>');
+                }
+
+            });
         });
 
         return false;

@@ -191,6 +191,12 @@ function global_cadastro_api()
             
         }
 
+        // Check if user already exists with same CRM and CRM_UF
+        if (global_crm_exists_validation($crm, $crm_uf)) {
+            echo json_encode(array('message' => 'Você já está cadastrado. Se não souber sua senha, clique em "Esqueci minha senha" no menu acima'));
+            return;
+        }
+
         $userdata = array(
             'user_login' => $email,
             'user_pass' => $senha,
@@ -260,6 +266,33 @@ function global_cadastro_api_func($data)
 	echo json_encode(array('usos' => $result[0]->qtd ));
 }
 
+
+//------------------------------------------------------------------
+//------------------ API CHECK CRM DUPLICATE -----------------------
+//------------------------------------------------------------------
+
+add_action('rest_api_init', 'global_crm_check_api');
+function global_crm_check_api()
+{
+	register_rest_route( 
+		'crm-check', 
+		'crm-check', 
+		array(
+        'methods' => 'GET',
+        'callback' => 'global_crm_check_func',
+    ) );
+}
+
+function global_crm_check_func($data)
+{
+	$crm = $data->get_param('crm');
+	$crm_uf = $data->get_param('crm_uf');
+	
+	// Use the existing validation function
+	$exists = global_crm_exists_validation($crm, $crm_uf);
+	
+	echo json_encode(array('exists' => $exists));
+}
 
 //------------------------------------------------------------------
 //---------------- API CÓDIGOS PASSAPORTE CLANNAD ------------------
