@@ -14,7 +14,7 @@ function global_codigos_checker($codigo) {
     $usos = intval($result[0]->qtd);
     
     foreach($codigos as $item){
-        if($item->codigo  === $codigo){
+        if(strtoupper($item->codigo) === strtoupper($codigo)){
             $qtd = intval($item->qtd);
         }
     }

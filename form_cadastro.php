@@ -317,14 +317,32 @@ function global_cadastra_form()
                         $("#area_atuacao").hide();
                         var codigos = $('#codigos_new').val();
 
-                        $('#valida-codigo button').click(function() {
-
-                            var url = "<?php echo get_site_url() ?>" + "/wp-json/codigos/codigo?cod=" + $('input[name=codigo]').val().toUpperCase();
+                        $('#valida-codigo button').click(function(e) {
+                            e.preventDefault();
+                            
                             var cod = $('input[name=codigo]').val().toUpperCase();
-                            var codigo = JSON.parse(codigos).filter(({
-                                codigo
-                            }) => codigo === cod);
-                            var qtd = codigo[0].qtd;
+                            
+                            if (!cod) {
+                                $("#codigo_errado").remove();
+                                $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Por favor, informe um código!</span>").insertAfter("#valida-codigo");
+                                return false;
+                            }
+                            
+                            var url = "<?php echo get_site_url() ?>" + "/wp-json/codigos/codigo?cod=" + cod;
+                            var codigosArray = JSON.parse(codigos);
+                            var codigoEncontrado = codigosArray.filter(function(item) {
+                                return item.codigo.toUpperCase() === cod;
+                            });
+                            
+                            // Verifica se o código existe no JSON
+                            if (codigoEncontrado.length === 0) {
+                                $("#area_atuacao").hide();
+                                $("#codigo_errado").remove();
+                                $("<span id='codigo_errado' style='background: #f00; color: #fff; padding: 10px; display: block; margin-top: 0px; border-radius: 3px; font-weight: 700;'>Código não encontrado. Verifique se digitou corretamente!</span>").insertAfter("#valida-codigo");
+                                return false;
+                            }
+                            
+                            var qtd = codigoEncontrado[0].qtd;
 
                             $.get(url, function(data, status) {
                                 var limit = qtd - data.usos;
@@ -358,7 +376,7 @@ function global_cadastra_form()
                 </div>
 
                 <div class="wb-30" id="valida-codigo">
-                    <button>Validar Código</button>
+                    <button type="button">Validar Código</button>
                 </div>
 
             <?php } ?>
