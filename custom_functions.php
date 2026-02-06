@@ -443,13 +443,10 @@ add_shortcode( 'sair', 'sair_shortcode' );
 
 add_action('wp_head', 'global_nome_head');
 function global_nome_head(){
-
-    $user_info = get_userdata(get_current_user_id());
-    $first_name = $user_info->first_name;	
-
     if(is_user_logged_in()) {
+        $user_info = get_userdata(get_current_user_id());
+        $first_name = $user_info->first_name;
         ?>
-
             <style>
                 .global-elemento-deslogado {display: none;}
             </style>
@@ -457,11 +454,10 @@ function global_nome_head(){
             <script>
                 jQuery(document).ready(function($) {
                     
-                    $('#ast-desktop-header ul').append('<li><span style="color: #fff; padding: 6px 0 5px; display: block;">Olá, <?php echo $first_name;?></span></li>');
+                    $('#ast-desktop-header ul').append('<li><span style="color: #fff; padding: 6px 0 5px; display: block;">Olá, <?php echo esc_html($first_name); ?></span></li>');
                     
                 })
             </script>
-
         <?php
     }
 };
