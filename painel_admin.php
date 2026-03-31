@@ -55,6 +55,14 @@ function my_settings_init()
     );
 
     add_settings_field(
+        'api_base_global',
+        'API Base URL',
+        'global_api_base_markup',
+        'global-page',
+        'global_page_setting_section'
+    );
+
+    add_settings_field(
         'categoria_global',
         'Categoria do site',
         'global_categoria_markup',
@@ -174,6 +182,7 @@ function my_settings_init()
         'global_page_setting_section'
     );
 
+    register_setting('global-page', 'api_base_global');
     register_setting('global-page', 'evento_global');
     register_setting('global-page', 'aovivo_global');
     register_setting('global-page', 'inscrito_global');
@@ -192,14 +201,87 @@ function my_settings_init()
     
 }
 
+function global_api_base_markup()
+{
+    $saved_value = get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera');
+?>
+    <input type="text" class="global_field" id="api_base_global" name="api_base_global" 
+        value="<?php echo esc_attr($saved_value); ?>" 
+        data-saved-value="<?php echo esc_attr($saved_value); ?>" />
+    <p class="description">URL base da API utilizada pelo plugin. <strong>Alterar este valor pode quebrar toda a funcionalidade do plugin.</strong></p>
+
+    <div id="global-api-modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999999; justify-content:center; align-items:center;">
+        <div style="background:#fff; border-radius:8px; padding:30px 36px; max-width:520px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.25); text-align:center; position:relative;">
+            <div style="margin-bottom:18px;">
+                <span style="display:inline-block; width:48px; height:48px; border-radius:50%; background:#fef3cd; line-height:48px; font-size:24px;">&#9888;</span>
+            </div>
+            <h2 style="margin:0 0 12px; font-size:20px; color:#d63638;">Atenção: Alteração Crítica</h2>
+            <p style="color:#50575e; font-size:14px; line-height:1.6; margin:0 0 8px;">
+                Você está alterando a <strong>API Base URL</strong> do plugin. Essa mudança afeta <strong>todas as funcionalidades</strong> incluindo cadastro, login, validação de CRM, carregamento de eventos e webhooks.
+            </p>
+            <p style="color:#d63638; font-weight:600; font-size:14px; margin:0 0 20px;">
+                Se a nova URL estiver incorreta, todo o plugin irá parar de funcionar.
+            </p>
+            <div style="display:flex; gap:12px; justify-content:center;">
+                <button type="button" id="global-api-modal-cancel" style="padding:8px 24px; border:1px solid #c3c4c7; background:#f0f0f1; border-radius:4px; cursor:pointer; font-size:14px; color:#50575e;">
+                    Cancelar
+                </button>
+                <button type="button" id="global-api-modal-confirm" style="padding:8px 24px; border:none; background:#d63638; color:#fff; border-radius:4px; cursor:pointer; font-size:14px; font-weight:600;">
+                    Confirmar Alteração
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        jQuery(document).ready(function($) {
+            var $apiField = $('#api_base_global');
+            var $modal = $('#global-api-modal-overlay');
+            var savedApiValue = $apiField.data('saved-value');
+            var formSubmitPending = false;
+
+            $apiField.closest('form').on('submit', function(e) {
+                var currentValue = $apiField.val().replace(/\/+$/, '');
+                var originalValue = String(savedApiValue).replace(/\/+$/, '');
+
+                if (currentValue !== originalValue && !formSubmitPending) {
+                    e.preventDefault();
+                    $modal.css('display', 'flex');
+                    return false;
+                }
+            });
+
+            $('#global-api-modal-confirm').on('click', function() {
+                formSubmitPending = true;
+                $modal.hide();
+                $apiField.closest('form').submit();
+            });
+
+            $('#global-api-modal-cancel').on('click', function() {
+                $apiField.val(savedApiValue);
+                $modal.hide();
+            });
+
+            $modal.on('click', function(e) {
+                if (e.target === this) {
+                    $apiField.val(savedApiValue);
+                    $modal.hide();
+                }
+            });
+        });
+    </script>
+<?php
+}
+
 function global_categoria_markup()
 {
+    $api_base = get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera');
 ?>
 
     <script>
         jQuery(document).ready(function($) {
 
-            var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/list-events";
+            var url = "<?php echo esc_url($api_base); ?>/list-events";
             $.getJSON(url, function(result) {
                 $.each(result, function(i, field) {
 

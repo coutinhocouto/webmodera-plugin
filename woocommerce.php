@@ -34,7 +34,7 @@ function my_function($order_id)
 
     $valor = $order->get_total();
 
-    $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
+    $url = get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera') . '/webhook';
 
     $data = array(
         "evento" => $evento,

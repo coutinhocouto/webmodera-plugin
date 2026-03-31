@@ -1,3 +1,5 @@
+var _apiBase = (typeof globalApiBase !== 'undefined') ? globalApiBase : 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera';
+
 jQuery(document).ready(function ($) {
 
     $('select[name=crm_uf]').on('change', function () {
@@ -62,7 +64,7 @@ jQuery(document).ready(function ($) {
             }
             
             // If no duplicate found, proceed with original CRM validation
-            var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/check-crm/" + uf + "/" + crm;
+            var url = _apiBase + "/check-crm/" + uf + "/" + crm;
 
             $.getJSON(url, function (result) {
 
@@ -94,8 +96,7 @@ jQuery(document).ready(function ($) {
             });
             
         }).fail(function() {
-            // If duplicate check fails, proceed with original validation
-            var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/check-crm/" + uf + "/" + crm;
+            var url = _apiBase + "/check-crm/" + uf + "/" + crm;
 
             $.getJSON(url, function (result) {
 
@@ -133,7 +134,7 @@ jQuery(document).ready(function ($) {
     $('select[name=uf]').on('change', function () {
 
         var uf = $(this).val();
-        var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/municipios/" + uf;
+        var url = _apiBase + "/municipios/" + uf;
         $("select[name=cidade] option").remove();
         $("select[name=cidade]").append(new Option("", ""));
 

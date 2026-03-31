@@ -167,7 +167,7 @@ function global_cadastra_vip_form()
         $cargo = "";
         $status = "2";
 
-        $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
+        $url = get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera') . '/webhook';
 
         $userdata = array(
             'user_login' => $email,

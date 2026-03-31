@@ -17,7 +17,7 @@ function global_acessos()
         var dataString='{"evento": <?php echo $evento; ?>, "email":"<?php echo $email; ?>" , "link":"<?php echo $link; ?>","tipo": 1}';
 
         $.post({
-            url:"https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/acessos",
+            url:"<?php echo esc_url(get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera')); ?>/acessos",
             data: dataString,
             dataType: 'json',
             crossDomain: true,
@@ -40,7 +40,7 @@ function global_acessos()
 		var dataString='{"evento": <?php echo $evento; ?>, "email":"<?php echo $email; ?>" , "link":"<?php echo $link; ?>","tipo": 2}';
 
         jQuery.post({
-            url:"https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/acessos",
+            url:"<?php echo esc_url(get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera')); ?>/acessos",
             data: dataString,
             dataType: 'json',
             crossDomain: true,

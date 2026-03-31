@@ -29,7 +29,7 @@ function global_acesso_gravado($atts)
 		
 		if (endDate < TodayDate) {
 			$.post({
-				url:"https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/inscrito-aovivo",
+				url:"<?php echo esc_url(get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera')); ?>/inscrito-aovivo",
 				data: dataString,
 				dataType: 'json',
 				crossDomain: true,

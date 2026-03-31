@@ -24,7 +24,7 @@ function global_cadastra_staff_form()
         $cargo = $_POST["cargo"];
         $status = "1";
 
-        $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
+        $url = get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera') . '/webhook';
 
         $userdata = array(
             'user_login' => $email,
@@ -261,7 +261,7 @@ function global_cadastra_staff_form()
                 $('select[name=uf]').on('change', function() {
 
                     var uf = $(this).val();
-                    var url = "https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/municipios/" + uf;
+                    var url = "<?php echo esc_url(get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera')); ?>/municipios/" + uf;
                     $("select[name=cidade] option").remove();
                     $("select[name=cidade]").append(new Option("", "Selecione"));
 

@@ -77,7 +77,7 @@ function global_cadastra_form()
             }
         }
 
-        $url = 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera/webhook';
+        $url = get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera') . '/webhook';
         $userdata = array(
             'user_login' => $email,
             'user_pass' => $senha,
@@ -303,6 +303,7 @@ function global_cadastra_form()
                 document.getElementById('cadastro-submit').disabled = true;
             }
         </script>
+        <script>var globalApiBase = "<?php echo esc_url(get_option('api_base_global', 'https://4k5zxy0dui.execute-api.us-east-1.amazonaws.com/webmodera')); ?>";</script>
         <script src="<?php echo plugin_dir_url(__FILE__) ?>scripts/cadastro.js"></script>
 
         <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post" id="cadastramento">
