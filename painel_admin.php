@@ -254,7 +254,7 @@ function global_api_base_markup()
             $('#global-api-modal-confirm').on('click', function() {
                 formSubmitPending = true;
                 $modal.hide();
-                $apiField.closest('form').submit();
+                $apiField.closest('form').find('#submit').click();
             });
 
             $('#global-api-modal-cancel').on('click', function() {
